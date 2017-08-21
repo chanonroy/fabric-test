@@ -12,6 +12,12 @@
    <body>
      <div id="app">
          <h1> FabricJS Test </h1>
+         <h2> 
+           y: {{ Math.round(rect.top) }} 
+           x: {{ Math.round(rect.left) }} 
+           angle: {{ Math.round(rect.angle) }} 
+         </h2>
+         <input type="file" id="file">
          <canvas id="c"></canvas>
          <button v-on:click="test()"> Canvas Test Button </button>
      </div>
