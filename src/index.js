@@ -1,25 +1,35 @@
 import Vue from 'vue';
+import './scss/main.scss';
+
 
 var app = new Vue({
   el: '#app',
   data: {
-    message: 'Hello Vue!'
+    message: 'Hello Vue!',
+    canvas: '',
   },
   mounted() {
-    console.log(fabric);
+    this.canvas = new fabric.Canvas('c');
 
-    var canvas = new fabric.Canvas('c');
+    this.canvas.backgroundColor="lightgrey";
+    this.canvas.setHeight(500);
+    this.canvas.setWidth(800);
 
-    console.log(canvas);
+    console.log(this.canvas);
 
     var rect = new fabric.Rect({
         left: 100,
         top: 100,
         fill: 'red',
-        width: 20,
-        height: 20
+        width: 50,
+        height: 50
     });
-
-    canvas.add(rect);
+      
+    this.canvas.add(rect);
+  },
+  methods: {
+    test() {
+      this.canvas.setHeight(800);
+    }
   }
 })
