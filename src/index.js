@@ -1,30 +1,47 @@
 import Vue from 'vue';
+import { Chrome } from 'vue-color'
+import { defaultColors } from './js/default_colors'
 import './scss/main.scss';
 
 
 var app = new Vue({
   el: '#app',
+  components: {
+    'chrome-picker': Chrome
+  },
   data: {
     message: 'Hello Vue!',
     canvas: '',
+    colors: defaultColors,
     rect: new fabric.Rect({
       left: 100,
       top: 100,
-      fill: 'red',
+      fill: 'crimson',
       angle: 0,
       width: 50,
       height: 50
     }),
-    rect2: new fabric.Rect({
+    cover: new fabric.Rect({
       left: 200,
       top: 200,
-      fil: 'mediumseagreen',
+      fill: 'red',
       angle: 0,
-      width: 60,
-      height: 60,
+      width: 400,
+      height: 100,
       selectable: false,
       hoverCursor: 'default'
     })
+  },
+  watch: {
+    colors() {
+      this.cover.set('fill', this.colors.hex);
+      this.canvas.renderAll();
+    }
+  },
+  methods: {
+    test() {
+      this.canvas.setHeight(800);
+    }
   },
   mounted() {
     // Initialize canvas as fabric
@@ -54,12 +71,7 @@ var app = new Vue({
           obj.left = Math.min(obj.left, obj.canvas.width-obj.getBoundingRect().width+obj.left-obj.getBoundingRect().left);
       }
     });
-    this.canvas.add(this.rect2);
+    this.canvas.add(this.cover);
     this.canvas.add(this.rect);
   },
-  methods: {
-    test() {
-      this.canvas.setHeight(800);
-    }
-  }
 })
