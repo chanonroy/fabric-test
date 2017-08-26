@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import { Chrome } from 'vue-color'
 import { defaultColors } from './js/default_colors'
+import './assets/server.jpg';
 import './scss/main.scss';
 
 
@@ -14,20 +15,21 @@ var app = new Vue({
     canvas: '',
     colors: defaultColors,
     rect: new fabric.Rect({
-      left: 100,
-      top: 100,
+      left: 0,
+      top: 0,
       fill: 'crimson',
       angle: 0,
       width: 50,
       height: 50
     }),
     cover: new fabric.Rect({
-      left: 200,
-      top: 200,
-      fill: 'red',
+      left: 0,
+      top: 0,
+      fill: 'lightblue',
       angle: 0,
-      width: 400,
+      width: 555,
       height: 100,
+      opacity: 0.8,
       selectable: false,
       hoverCursor: 'default'
     })
@@ -40,16 +42,16 @@ var app = new Vue({
   },
   methods: {
     test() {
-      this.canvas.setHeight(800);
+      this.canvas.setHeight(400);
     }
   },
   mounted() {
     // Initialize canvas as fabric
     this.canvas = new fabric.Canvas('c');
 
-    this.canvas.backgroundColor="lightgrey";
-    this.canvas.setHeight(500);
-    this.canvas.setWidth(800);
+    this.canvas.backgroundColor="rgba(0, 0, 0, 0)";
+    this.canvas.setHeight(100);
+    this.canvas.setWidth(555);
 
     this.canvas.on('object:moving', function (e) {
       // Prevent object from leaving canvas

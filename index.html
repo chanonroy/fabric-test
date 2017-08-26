@@ -10,15 +10,19 @@
      <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/2.0.0-beta.4/fabric.js"></script>
    </head>
    <body>
-     <div id="app">
+     <div id="app" class="container">
          <h1> FabricJS Test </h1>
          <h2> 
            y: {{ Math.round(rect.top) }} 
            x: {{ Math.round(rect.left) }} 
            angle: {{ Math.round(rect.angle) }} 
          </h2>
-         <input type="file" id="file">
-         <canvas id="c"></canvas>
+
+        <div class="preview-container">
+          <img src="assets/server.jpg" alt="server">
+          <canvas id="c"></canvas>
+        </div>
+         
          <button v-on:click="test()"> Canvas Test Button </button>
          <chrome-picker v-model="colors" />
      </div>
