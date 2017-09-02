@@ -13,6 +13,10 @@ body {
   }
 }
 
+[v-cloak] {
+  display: none;
+}
+
 .container {
   // from Bootstrap
   padding-right: 15px;
@@ -52,4 +56,12 @@ body {
     position: absolute;
   }
 
+}
+
+.step {
+  display: none;
+
+  &.isActive {
+    display: block;
+  }
 }

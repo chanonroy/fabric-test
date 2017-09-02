@@ -1,17 +1,27 @@
 import Vue from 'vue';
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-default/index.css'
+import Progress from './js/components/progress.vue'
 import { Chrome } from 'vue-color'
 import { defaultColors } from './js/default_colors'
 import './assets/server.jpg';
 import './scss/main.scss';
 
+Vue.use(ElementUI);
 
 var app = new Vue({
   el: '#app',
   components: {
-    'chrome-picker': Chrome
+    'chrome-picker': Chrome,
+    'progress-bar': Progress
   },
   data: {
-    message: 'Hello Vue!',
+    step: 1,                    // 1, 2, 3, 4
+    
+    frame: '',
+    mesh: '',
+    badge: '',
+
     canvas: '',
     colors: defaultColors,
     rect: new fabric.Rect({

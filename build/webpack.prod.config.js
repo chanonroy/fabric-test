@@ -29,6 +29,10 @@ module.exports = {
           use: 'babel-loader'
         },
         {
+          test: /\.vue$/, 
+          loader: "vue-loader"
+        },
+        {
           // Style Loaders (Sass, PostCSS)
           test: /\.scss$/,
           use: ExtractTextPlugin.extract({
