@@ -2,7 +2,7 @@ import Vue from 'vue';
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 import Progress from './js/components/progress.vue'
-import { Chrome } from 'vue-color'
+import { Slider } from 'vue-color'
 import { defaultColors } from './js/default_colors'
 import './assets/server.jpg';
 import './scss/main.scss';
@@ -12,7 +12,7 @@ Vue.use(ElementUI);
 var app = new Vue({
   el: '#app',
   components: {
-    'chrome-picker': Chrome,
+    'slider-picker': Slider,
     'progress-bar': Progress
   },
   data: {
@@ -24,18 +24,11 @@ var app = new Vue({
 
     canvas: '',
     colors: defaultColors,
-    rect: new fabric.Rect({
-      left: 0,
-      top: 0,
-      fill: 'crimson',
-      angle: 0,
-      width: 50,
-      height: 50
-    }),
+    rect: '',
     cover: new fabric.Rect({
       left: 0,
       top: 0,
-      fill: 'lightblue',
+      fill: 'lightgrey',
       angle: 0,
       width: 555,
       height: 100,
@@ -48,21 +41,46 @@ var app = new Vue({
     colors() {
       this.cover.set('fill', this.colors.hex);
       this.canvas.renderAll();
+    },
+    frame(val) {
+      console.log(val);
+
+      this.clean_canvas();
+      
+    },
+    badge(val) {
+
+      this.rect = new fabric.Rect({
+        left: 0,
+        top: 0,
+        fill: 'red',
+        angle: 0,
+        width: 50,
+        height: 50,
+        opacity: 1,
+        selectable: true,
+        hoverCursor: 'default'
+      })
+
+      this.clean_canvas();
+
     }
   },
   methods: {
-    test() {
-      this.canvas.setHeight(400);
+    clean_canvas() {
+      this.canvas.remove(this.cover);
+      this.canvas.remove(this.rect);
+
+      if (this.cover) { this.canvas.add(this.cover); }
+      if (this.rect) { this.canvas.add(this.rect); }
     }
   },
   mounted() {
     // Initialize canvas as fabric
     this.canvas = new fabric.Canvas('c');
-
     this.canvas.backgroundColor="rgba(0, 0, 0, 0)";
     this.canvas.setHeight(100);
     this.canvas.setWidth(555);
-
     this.canvas.on('object:moving', function (e) {
       // Prevent object from leaving canvas
 
@@ -83,7 +101,5 @@ var app = new Vue({
           obj.left = Math.min(obj.left, obj.canvas.width-obj.getBoundingRect().width+obj.left-obj.getBoundingRect().left);
       }
     });
-    this.canvas.add(this.cover);
-    this.canvas.add(this.rect);
   },
 })

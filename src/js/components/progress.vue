@@ -1,5 +1,5 @@
 <template>
-    <el-steps :space="200" :active="active">
+    <el-steps :space="200" :active="Number(active)">
     <el-step title="Frame"></el-step>
     <el-step title="Mesh"></el-step>
     <el-step title="Logo"></el-step>

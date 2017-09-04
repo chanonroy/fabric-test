@@ -11,7 +11,7 @@
      <div id="app" class="container" v-cloak>
 
       <div class="step" :class="{ 'isActive' : step == 1 }">
-          <progress-bar active="1"></progress-bar>
+          <progress-bar active="0"></progress-bar>
 
           <h1> Step 1 - Frame Pick </h1>  
           <el-radio class="radio" v-model="frame" label="1"> Frame 1 </el-radio>
@@ -23,10 +23,12 @@
           <div style="margin: 20px 0;">
               <el-button v-on:click="step += 1" :disabled="frame.length == 0">Next</el-button>
           </div>
+
+          <slider-picker v-model="colors" />
       </div>
 
       <div class="step" :class="{ 'isActive' : step == 2 }">
-          <progress-bar active="2"></progress-bar>
+          <progress-bar active="1"></progress-bar>
 
           <h1> Step 2 - Pick your Mesh </h1>
           <el-radio class="radio" v-model="mesh" label="1"> Mesh 1 </el-radio>
@@ -42,7 +44,7 @@
       </div>
 
       <div class="step" :class="{ 'isActive' : step == 3 }">
-          <progress-bar active="3"></progress-bar>
+          <progress-bar active="2"></progress-bar>
 
           <h1> Step 3 - Add Your Logo </h1>
           <el-radio class="badge" v-model="badge" label="1"> Circle </el-radio>
@@ -58,7 +60,7 @@
       </div>
 
       <div class="step" :class="{ 'isActive' : step == 4 }">
-          <progress-bar active="4"></progress-bar>
+          <progress-bar active="3"></progress-bar>
 
          <h1> Step 4 - Plate Position on Canvas </h1>
          <h2> 
@@ -67,19 +69,18 @@
            angle: {{ Math.round(rect.angle) }} 
          </h2>
 
-        <div class="preview-container">
-          <img src="assets/server.jpg" alt="server">
-          <canvas id="c"></canvas>
-        </div>
-
         <div style="margin: 20px 0;">
             <el-button v-if="step > 1" v-on:click="step -= 1">Back</el-button> 
             <el-button v-if="step < 4" v-on:click="step += 1" :disabled="badge.length == 0">Next</el-button>
         </div>
          
          <button v-on:click="test()"> Canvas Test Button </button>
-         <chrome-picker v-model="colors" />
 
+      </div>
+
+      <div class="preview-container">
+        <img src="assets/server.jpg" alt="server">
+        <canvas id="c"></canvas>
       </div>
 
      </div>
