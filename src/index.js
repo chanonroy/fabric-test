@@ -4,6 +4,7 @@ import 'element-ui/lib/theme-default/index.css'
 import Progress from './js/components/progress.vue'
 import { Slider } from 'vue-color'
 import { defaultColors } from './js/default_colors'
+import './assets/server-icon.png';
 import './assets/server.jpg';
 import './scss/main.scss';
 
@@ -43,13 +44,12 @@ var app = new Vue({
       this.canvas.renderAll();
     },
     frame(val) {
-      console.log(val);
-
       this.clean_canvas();
       
     },
     badge(val) {
 
+      // Currently creates a new one every click
       this.rect = new fabric.Rect({
         left: 0,
         top: 0,
@@ -61,9 +61,7 @@ var app = new Vue({
         selectable: true,
         hoverCursor: 'default'
       })
-
       this.clean_canvas();
-
     }
   },
   methods: {

@@ -4,13 +4,15 @@
      <meta charset="utf-8">
      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
      <meta name="viewport" content="width=device-width, initial-scale=1">
+     <link rel="shortcut icon" href="dist/assets/server-icon.png" type="image/x-icon">
+     <link rel="icon" href="dist/assets/server-icon.png" type="image/x-icon">
      <title> Fabric.js Test </title>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/2.0.0-beta.4/fabric.js"></script>
    </head>
    <body>
      <div id="app" class="container" v-cloak>
 
-      <div class="step" :class="{ 'isActive' : step == 1 }">
+      <div class="step" v-show="step == 1">
           <progress-bar active="0"></progress-bar>
 
           <h1> Step 1 - Frame Pick </h1>  
@@ -24,10 +26,13 @@
               <el-button v-on:click="step += 1" :disabled="frame.length == 0">Next</el-button>
           </div>
 
-          <slider-picker v-model="colors" />
+          <div v-show="frame">
+            <slider-picker v-model="colors" />
+          </div>
+
       </div>
 
-      <div class="step" :class="{ 'isActive' : step == 2 }">
+      <div class="step" v-show="step == 2">
           <progress-bar active="1"></progress-bar>
 
           <h1> Step 2 - Pick your Mesh </h1>
@@ -43,7 +48,7 @@
           </div>
       </div>
 
-      <div class="step" :class="{ 'isActive' : step == 3 }">
+      <div class="step" v-show="step == 3">
           <progress-bar active="2"></progress-bar>
 
           <h1> Step 3 - Add Your Logo </h1>
@@ -59,7 +64,7 @@
           </div>
       </div>
 
-      <div class="step" :class="{ 'isActive' : step == 4 }">
+      <div class="step" v-show="step == 4">
           <progress-bar active="3"></progress-bar>
 
          <h1> Step 4 - Plate Position on Canvas </h1>
