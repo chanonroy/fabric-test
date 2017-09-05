@@ -13,21 +13,26 @@ Vue.use(ElementUI);
 var app = new Vue({
   el: '#app',
   components: {
-    'slider-picker': Slider,
-    'progress-bar': Progress      // Component for showing steps
+    'slider-picker': Slider,      // Color slider from vue-color
+    'progress-bar': Progress      // Custom Vue component for showing steps
   },
   data: {
-    step: 1,                      // { Number } - for keeping order of progress (e.g., 1, 2, 3, 4)
+    step: 1,                      // { Number } - for keeping order of app progress (e.g., 1, 2, 3, 4)
     
-    frame: '',                    // { String } - value indicating type of frame from select
+    // Settings Components
+    frame_val: '',                // { String } - value indicating type of frame from select
     frame_color: defaultColors,   // { Object } - hex property primarily used
-    mesh: '',                     // { String } - value indicating type of mesh from select
-    badge: '',                    // { String } - value indicating type of badge from select
+    
+    mesh_val: '',                 // { String } - value indicating type of mesh from select
+    mesh_color: defaultColors,    // { Object } - hex property primarily used
+    
+    badge_val: '',                // { String } - value indicating type of badge from select
     badge_color: defaultColors,   // { Object } - hex property primarily used
 
+    // Fabric.js Canvas Objects
     canvas: '',                   // { Object } - canvas Fabric.js obj to be instantiated on mounting Vue.js
-    rect: '',                     // { Object } - hex property primarily used
-    cover: new fabric.Rect({      // { Object } - Fabric.js obj for the frame
+    badge: '',                    // { Object } - hex property primarily used
+    frame: new fabric.Rect({      // { Object } - Fabric.js obj for the frame
       left: 0,
       top: 0,
       fill: 'lightgrey',
@@ -39,22 +44,22 @@ var app = new Vue({
       hoverCursor: 'default'
     })
   },
-  watch: {
+  watch: { // When these properties from data() change, do the following:
     frame_color() {
-      this.cover.set('fill', this.frame_color.hex);
+      this.frame.set('fill', this.frame_color.hex);
       this.canvas.renderAll();
     },
-    frame(val) {
+    frame_val(val) {
       this.clean_canvas();
     },
     badge_color() {
-      this.rect.set('fill', this.badge_color.hex);
+      this.badge.set('fill', this.badge_color.hex);
       this.canvas.renderAll();
     },
-    badge(val) {
+    badge_val(val) {
 
       // Currently creates a new one every click
-      this.rect = new fabric.Rect({
+      this.badge = new fabric.Rect({
         left: 0,
         top: 0,
         fill: 'red',
@@ -75,11 +80,13 @@ var app = new Vue({
   },
   methods: {
     clean_canvas() {
-      this.canvas.remove(this.cover);
-      this.canvas.remove(this.rect);
+      // Remove old Fabric.js canvas objects and replace with new if needed.
 
-      if (this.cover) { this.canvas.add(this.cover); }
-      if (this.rect) { this.canvas.add(this.rect); }
+      this.canvas.remove(this.frame);
+      this.canvas.remove(this.badge);
+
+      if (this.frame) { this.canvas.add(this.frame); }
+      if (this.badge) { this.canvas.add(this.badge); }
     }
   },
   mounted() {

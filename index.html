@@ -12,78 +12,83 @@
    <body>
      <div id="app" class="container" v-cloak>
 
-      <div class="step" v-show="step == 1">
+      <div v-show="step == 1">
           <progress-bar active="0"></progress-bar>
 
           <h1> Step 1 - Frame Pick </h1>  
-          <el-radio class="radio" v-model="frame" label="1"> Frame 1 </el-radio>
-          <el-radio class="radio" v-model="frame" label="2"> Frame 2 </el-radio>
-          <el-radio class="radio" v-model="frame" label="3"> Frame 3 </el-radio>
-          <el-radio class="radio" v-model="frame" label="4"> Frame 4 </el-radio>
-          <el-radio class="radio" v-model="frame" label="5"> Frame 5 </el-radio>
+          <el-radio class="radio" v-model="frame_val" label="1"> Frame 1 </el-radio>
+          <el-radio class="radio" v-model="frame_val" label="2"> Frame 2 </el-radio>
+          <el-radio class="radio" v-model="frame_val" label="3"> Frame 3 </el-radio>
+          <el-radio class="radio" v-model="frame_val" label="4"> Frame 4 </el-radio>
+          <el-radio class="radio" v-model="frame_val" label="5"> Frame 5 </el-radio>
 
           <div style="margin: 20px 0;">
-              <el-button v-on:click="step += 1" :disabled="frame.length == 0">Next</el-button>
+              <el-button v-on:click="step += 1" :disabled="frame_val.length == 0">Next</el-button>
           </div>
 
-          <div v-show="frame">
+          <div v-show="frame_val">
             <slider-picker v-model="frame_color" />
           </div>
 
       </div>
 
-      <div class="step" v-show="step == 2">
+      <div v-show="step == 2">
           <progress-bar active="1"></progress-bar>
 
           <h1> Step 2 - Pick your Mesh </h1>
-          <el-radio class="radio" v-model="mesh" label="1"> Mesh 1 </el-radio>
-          <el-radio class="radio" v-model="mesh" label="2"> Mesh 2 </el-radio>
-          <el-radio class="radio" v-model="mesh" label="3"> Mesh 3 </el-radio>
-          <el-radio class="radio" v-model="mesh" label="4"> Mesh 4 </el-radio>
-          <el-radio class="radio" v-model="mesh" label="5"> Mesh 5 </el-radio>
+          <el-radio class="radio" v-model="mesh_val" label="1"> Mesh 1 </el-radio>
+          <el-radio class="radio" v-model="mesh_val" label="2"> Mesh 2 </el-radio>
+          <el-radio class="radio" v-model="mesh_val" label="3"> Mesh 3 </el-radio>
+          <el-radio class="radio" v-model="mesh_val" label="4"> Mesh 4 </el-radio>
+          <el-radio class="radio" v-model="mesh_val" label="5"> Mesh 5 </el-radio>
 
           <div style="margin: 20px 0;">
               <el-button v-if="step > 1" v-on:click="step -= 1">Back</el-button> 
-              <el-button v-if="step < 4" v-on:click="step += 1" :disabled="mesh.length == 0">Next</el-button>
+              <el-button v-if="step < 4" v-on:click="step += 1" :disabled="mesh_val.length == 0">Next</el-button>
           </div>
       </div>
 
-      <div class="step" v-show="step == 3">
+      <div v-show="step == 3">
           <progress-bar active="2"></progress-bar>
 
           <h1> Step 3 - Configure Your Logo </h1>
 
           <div> Select a Base </div>
-          <el-radio class="badge" v-model="badge" label="1"> Circle </el-radio>
-          <el-radio class="badge" v-model="badge" label="2"> Square </el-radio>
-          <el-radio class="badge" v-model="badge" label="3"> Horizontal Rectangle </el-radio>
-          <el-radio class="badge" v-model="badge" label="4"> Pill Shape </el-radio>
+          <el-radio class="badge" v-model="badge_val" label="1"> Circle </el-radio>
+          <el-radio class="badge" v-model="badge_val" label="2"> Square </el-radio>
+          <el-radio class="badge" v-model="badge_val" label="3"> Horizontal Rectangle </el-radio>
+          <el-radio class="badge" v-model="badge_val" label="4"> Pill Shape </el-radio>
           
           <div> Upload your Logo  </div>
 
           <div style="margin: 20px 0;">
               <el-button v-if="step > 1" v-on:click="step -= 1">Back</el-button> 
-              <el-button v-if="step < 4" v-on:click="step += 1" :disabled="badge.length == 0">Next</el-button>
+              <el-button v-if="step < 4" v-on:click="step += 1" :disabled="badge_val.length == 0">Next</el-button>
           </div>
 
-          <div v-show="badge">
+          <div v-show="badge_val">
             <slider-picker v-model="badge_color" />
           </div>
+
+          <div class="preview-container" v-show="step === 3">
+            <canvas id="badge_only"></canvas>
+          </div>
+
       </div>
 
-      <div class="step" v-show="step == 4">
+      <div v-show="step == 4">
           <progress-bar active="3"></progress-bar>
 
          <h1> Step 4 - Customize your Logo Position </h1>
          <h2> 
-           y: {{ Math.round(rect.top) }} 
-           x: {{ Math.round(rect.left) }} 
-           angle: {{ Math.round(rect.angle) }} 
+           y: {{ Math.round(badge.top) }} 
+           x: {{ Math.round(badge.left) }} 
+           angle: {{ Math.round(badge.angle) }} 
          </h2>
 
         <div style="margin: 20px 0;">
             <el-button v-if="step > 1" v-on:click="step -= 1">Back</el-button> 
-            <el-button v-if="step < 4" v-on:click="step += 1" :disabled="badge.length == 0">Next</el-button>
+            <el-button v-if="step < 4" v-on:click="step += 1" :disabled="badge_val.length == 0">Next</el-button>
         </div>
 
       </div>
