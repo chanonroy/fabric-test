@@ -27,7 +27,7 @@
           </div>
 
           <div v-show="frame">
-            <slider-picker v-model="colors" />
+            <slider-picker v-model="frame_color" />
           </div>
 
       </div>
@@ -51,23 +51,30 @@
       <div class="step" v-show="step == 3">
           <progress-bar active="2"></progress-bar>
 
-          <h1> Step 3 - Add Your Logo </h1>
+          <h1> Step 3 - Configure Your Logo </h1>
+
+          <div> Select a Base </div>
           <el-radio class="badge" v-model="badge" label="1"> Circle </el-radio>
           <el-radio class="badge" v-model="badge" label="2"> Square </el-radio>
           <el-radio class="badge" v-model="badge" label="3"> Horizontal Rectangle </el-radio>
           <el-radio class="badge" v-model="badge" label="4"> Pill Shape </el-radio>
-          <div> 3b) Choose  </div>
+          
+          <div> Upload your Logo  </div>
 
           <div style="margin: 20px 0;">
               <el-button v-if="step > 1" v-on:click="step -= 1">Back</el-button> 
               <el-button v-if="step < 4" v-on:click="step += 1" :disabled="badge.length == 0">Next</el-button>
+          </div>
+
+          <div v-show="badge">
+            <slider-picker v-model="badge_color" />
           </div>
       </div>
 
       <div class="step" v-show="step == 4">
           <progress-bar active="3"></progress-bar>
 
-         <h1> Step 4 - Plate Position on Canvas </h1>
+         <h1> Step 4 - Customize your Logo Position </h1>
          <h2> 
            y: {{ Math.round(rect.top) }} 
            x: {{ Math.round(rect.left) }} 
@@ -78,12 +85,10 @@
             <el-button v-if="step > 1" v-on:click="step -= 1">Back</el-button> 
             <el-button v-if="step < 4" v-on:click="step += 1" :disabled="badge.length == 0">Next</el-button>
         </div>
-         
-         <button v-on:click="test()"> Canvas Test Button </button>
 
       </div>
 
-      <div class="preview-container">
+      <div class="preview-container" v-show="step !== 3">
         <img src="assets/server.jpg" alt="server">
         <canvas id="c"></canvas>
       </div>

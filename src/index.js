@@ -14,19 +14,20 @@ var app = new Vue({
   el: '#app',
   components: {
     'slider-picker': Slider,
-    'progress-bar': Progress
+    'progress-bar': Progress      // Component for showing steps
   },
   data: {
-    step: 1,                    // 1, 2, 3, 4
+    step: 1,                      // { Number } - for keeping order of progress (e.g., 1, 2, 3, 4)
     
-    frame: '',
-    mesh: '',
-    badge: '',
+    frame: '',                    // { String } - value indicating type of frame from select
+    frame_color: defaultColors,   // { Object } - hex property primarily used
+    mesh: '',                     // { String } - value indicating type of mesh from select
+    badge: '',                    // { String } - value indicating type of badge from select
+    badge_color: defaultColors,   // { Object } - hex property primarily used
 
-    canvas: '',
-    colors: defaultColors,
-    rect: '',
-    cover: new fabric.Rect({
+    canvas: '',                   // { Object } - canvas Fabric.js obj to be instantiated on mounting Vue.js
+    rect: '',                     // { Object } - hex property primarily used
+    cover: new fabric.Rect({      // { Object } - Fabric.js obj for the frame
       left: 0,
       top: 0,
       fill: 'lightgrey',
@@ -39,13 +40,16 @@ var app = new Vue({
     })
   },
   watch: {
-    colors() {
-      this.cover.set('fill', this.colors.hex);
+    frame_color() {
+      this.cover.set('fill', this.frame_color.hex);
       this.canvas.renderAll();
     },
     frame(val) {
       this.clean_canvas();
-      
+    },
+    badge_color() {
+      this.rect.set('fill', this.badge_color.hex);
+      this.canvas.renderAll();
     },
     badge(val) {
 
@@ -59,8 +63,13 @@ var app = new Vue({
         height: 50,
         opacity: 1,
         selectable: true,
-        hoverCursor: 'default'
+        hasControls: false,
+        lockRotation: true,
+        lockScalingX: true,
+        lockScalingY: true,
+        hoverCursor: 'move'
       })
+
       this.clean_canvas();
     }
   },
