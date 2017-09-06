@@ -4,9 +4,8 @@ import 'element-ui/lib/theme-default/index.css'
 import Progress from './js/components/progress.vue'
 import { Slider } from 'vue-color'
 import { defaultColors } from './js/default_colors'
-import './assets/server-icon.png';
-import './assets/server.jpg';
 import './scss/main.scss';
+import './assets/_assets.js';
 
 Vue.use(ElementUI);
 
@@ -29,20 +28,13 @@ var app = new Vue({
     badge_val: '',                // { String } - value indicating type of badge from select
     badge_color: defaultColors,   // { Object } - hex property primarily used
 
+    server_size: 0,               // { Number } - 0 unassigned, 1 for 1U, 2 for 2U
+
     // Fabric.js Canvas Objects
     canvas: '',                   // { Object } - canvas Fabric.js obj to be instantiated on mounting Vue.js
     badge: '',                    // { Object } - hex property primarily used
-    frame: new fabric.Rect({      // { Object } - Fabric.js obj for the frame
-      left: 0,
-      top: 0,
-      fill: 'lightgrey',
-      angle: 0,
-      width: 555,
-      height: 100,
-      opacity: 0.8,
-      selectable: false,
-      hoverCursor: 'default'
-    })
+    frame: ''                     // { Object } - Fabric.js obj for the frame
+
   },
   watch: { // When these properties from data() change, do the following:
     frame_color() {
@@ -50,7 +42,38 @@ var app = new Vue({
       this.canvas.renderAll();
     },
     frame_val(val) {
-      this.clean_canvas();
+
+      var app = this;
+
+      app.canvas.remove(app.frame);
+
+      app.frame = new fabric.loadSVGFromURL('dist/fonts/' + val + '.svg', function(objects, options) {
+        var obj = fabric.util.groupSVGElements(objects, options);
+
+        obj.set({
+          top: 0,
+          left: 0
+        });
+
+        app.canvas.add(obj);
+        app.canvas.renderAll();
+      });
+
+      // Frame Instantiation
+      // this.frame = new fabric.Rect({      
+      //   left: 0,
+      //   top: 0,
+      //   fill: 'lightgrey',
+      //   angle: 0,
+      //   width: 555,
+      //   height: 100,
+      //   opacity: 0.8,
+      //   selectable: false,
+      //   hoverCursor: 'default'
+      // })
+
+      // this.clean_canvas();
+      this.server_size = Number(val[0]); // 1 or 2
     },
     badge_color() {
       this.badge.set('fill', this.badge_color.hex);
@@ -95,25 +118,25 @@ var app = new Vue({
     this.canvas.backgroundColor="rgba(0, 0, 0, 0)";
     this.canvas.setHeight(100);
     this.canvas.setWidth(555);
-    this.canvas.on('object:moving', function (e) {
-      // Prevent object from leaving canvas
+    // this.canvas.on('object:moving', function (e) {
+    //   // Prevent object from leaving canvas
 
-      var obj = e.target;
-       // if object is too big ignore
-      if(obj.currentHeight > obj.canvas.height || obj.currentWidth > obj.canvas.width){
-          return;
-      }        
-      obj.setCoords();        
-      // top-left  corner
-      if(obj.getBoundingRect().top < 0 || obj.getBoundingRect().left < 0){
-          obj.top = Math.max(obj.top, obj.top-obj.getBoundingRect().top);
-          obj.left = Math.max(obj.left, obj.left-obj.getBoundingRect().left);
-      }
-      // bot-right corner
-      if(obj.getBoundingRect().top+obj.getBoundingRect().height  > obj.canvas.height || obj.getBoundingRect().left+obj.getBoundingRect().width  > obj.canvas.width){
-          obj.top = Math.min(obj.top, obj.canvas.height-obj.getBoundingRect().height+obj.top-obj.getBoundingRect().top);
-          obj.left = Math.min(obj.left, obj.canvas.width-obj.getBoundingRect().width+obj.left-obj.getBoundingRect().left);
-      }
-    });
+    //   var obj = e.target;
+    //    // if object is too big ignore
+    //   if(obj.currentHeight > obj.canvas.height || obj.currentWidth > obj.canvas.width){
+    //       return;
+    //   }        
+    //   obj.setCoords();        
+    //   // top-left  corner
+    //   if(obj.getBoundingRect().top < 0 || obj.getBoundingRect().left < 0){
+    //       obj.top = Math.max(obj.top, obj.top-obj.getBoundingRect().top);
+    //       obj.left = Math.max(obj.left, obj.left-obj.getBoundingRect().left);
+    //   }
+    //   // bot-right corner
+    //   if(obj.getBoundingRect().top+obj.getBoundingRect().height  > obj.canvas.height || obj.getBoundingRect().left+obj.getBoundingRect().width  > obj.canvas.width){
+    //       obj.top = Math.min(obj.top, obj.canvas.height-obj.getBoundingRect().height+obj.top-obj.getBoundingRect().top);
+    //       obj.left = Math.min(obj.left, obj.canvas.width-obj.getBoundingRect().width+obj.left-obj.getBoundingRect().left);
+    //   }
+    // });
   },
 })

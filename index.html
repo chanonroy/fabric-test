@@ -16,11 +16,14 @@
           <progress-bar active="0"></progress-bar>
 
           <h1> Step 1 - Frame Pick </h1>  
-          <el-radio class="radio" v-model="frame_val" label="1"> Frame 1 </el-radio>
-          <el-radio class="radio" v-model="frame_val" label="2"> Frame 2 </el-radio>
-          <el-radio class="radio" v-model="frame_val" label="3"> Frame 3 </el-radio>
-          <el-radio class="radio" v-model="frame_val" label="4"> Frame 4 </el-radio>
-          <el-radio class="radio" v-model="frame_val" label="5"> Frame 5 </el-radio>
+
+          <div> 1U Options </div>
+          <el-radio class="" v-model="frame_val" label="1u-rectangle"> <img src="dist/fonts/1u-rectangle.svg" style="width: 350px;" alt=""> </el-radio>
+          <el-radio class="" v-model="frame_val" label="1u-dogbone"> <img src="dist/fonts/1u-dogbone.svg" style="width: 350px;" alt=""> </el-radio>
+          
+          <div> 2U Options </div>
+          <el-radio class="" v-model="frame_val" label="2u-rectangle"> <img src="dist/fonts/2u-rectangle.svg" style="width: 350px;" alt=""> </el-radio>
+          <el-radio class="" v-model="frame_val" label="2u-dogbone"> <img src="dist/fonts/2u-dogbone.svg" style="width: 350px;" alt=""> </el-radio>
 
           <div style="margin: 20px 0;">
               <el-button v-on:click="step += 1" :disabled="frame_val.length == 0">Next</el-button>
@@ -36,11 +39,18 @@
           <progress-bar active="1"></progress-bar>
 
           <h1> Step 2 - Pick your Mesh </h1>
-          <el-radio class="radio" v-model="mesh_val" label="1"> Mesh 1 </el-radio>
-          <el-radio class="radio" v-model="mesh_val" label="2"> Mesh 2 </el-radio>
-          <el-radio class="radio" v-model="mesh_val" label="3"> Mesh 3 </el-radio>
-          <el-radio class="radio" v-model="mesh_val" label="4"> Mesh 4 </el-radio>
-          <el-radio class="radio" v-model="mesh_val" label="5"> Mesh 5 </el-radio>
+
+          <div v-if="server_size > 0"> 
+            <div> {{ server_size }}U mesh is available in partial or full coverage options </div> 
+
+            <el-radio class="" v-model="mesh_val" label="1"> <img :src="'dist/fonts/' + server_size + 'u-circle.svg'" style="width: 350px;" alt=""> </el-radio>
+            <el-radio class="" v-model="mesh_val" label="2"> <img :src="'dist/fonts/' + server_size + 'u-hex.svg'" style="width: 350px;" alt=""> </el-radio>
+            <el-radio class="" v-model="mesh_val" label="3"> <img :src="'dist/fonts/' + server_size + 'u-square.svg'" style="width: 350px;" alt=""> </el-radio>
+          </div>
+
+          <div v-if="server_size == 0">
+            <div> Please go back and select a frame </div>
+          </div>
 
           <div style="margin: 20px 0;">
               <el-button v-if="step > 1" v-on:click="step -= 1">Back</el-button> 

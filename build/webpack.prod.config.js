@@ -62,7 +62,7 @@ module.exports = {
         },
         {
           // Image Assets
-          test: /\.(png|jpg|jpeg|gif|ico|svg)$/,
+          test: /\.(png|jpg|jpeg|gif|ico)$/,
           loader: 'file-loader',
           options: {
             name: 'assets/[name].[ext]'
