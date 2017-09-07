@@ -41,7 +41,11 @@ var app = new Vue({
   },
   watch: { // When these properties from data() change, do the following:
     frame_color() {
-      this.frame.set('fill', this.frame_color.hex);
+
+      for (var i in this.frame._objects) {
+        this.frame.item(i).set('fill', this.frame_color.hex);
+      }
+      
       this.canvas.renderAll();
     },
     frame_val(val) {
@@ -49,6 +53,7 @@ var app = new Vue({
 
       new fabric.loadSVGFromURL('dist/fonts/' + val + '.svg', function(objects, options) {
         app.canvas.remove(app.frame);
+
         app.frame = fabric.util.groupSVGElements(objects, options);
 
         app.frame.set({
