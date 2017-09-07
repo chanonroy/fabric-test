@@ -56,6 +56,10 @@ var app = new Vue({
 
         app.frame = fabric.util.groupSVGElements(objects, options);
 
+        for (var i in app.frame._objects) {
+          app.frame.item(i).set('fill', app.frame_color.hex);
+        }
+
         app.frame.set({
           selectable: false,
           hasControls: false,
