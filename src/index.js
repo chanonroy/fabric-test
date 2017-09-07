@@ -16,7 +16,10 @@ var app = new Vue({
     'progress-bar': Progress      // Custom Vue component for showing steps
   },
   data: {
+    // General Settings
     step: 1,                      // { Number } - for keeping order of app progress (e.g., 1, 2, 3, 4)
+    canvas_height: 120,           // { Number } - canvas height
+    canvas_width: 565,            // { Number } - canvas width
     
     // Settings Components
     frame_val: '',                // { String } - value indicating type of frame from select
@@ -42,35 +45,28 @@ var app = new Vue({
       this.canvas.renderAll();
     },
     frame_val(val) {
-
       var app = this;
 
-      app.canvas.remove(app.frame);
+      new fabric.loadSVGFromURL('dist/fonts/' + val + '.svg', function(objects, options) {
+        app.canvas.remove(app.frame);
+        app.frame = fabric.util.groupSVGElements(objects, options);
 
-      app.frame = new fabric.loadSVGFromURL('dist/fonts/' + val + '.svg', function(objects, options) {
-        var obj = fabric.util.groupSVGElements(objects, options);
+        app.frame.set({
+          selectable: false,
+          hasControls: false,
+          hoverCursor: 'default',
 
-        obj.set({
-          top: 0,
-          left: 0
+          top: -5,
+          left: -5,
+          width: app.frame.width,
+
+          scaleX: app.canvas.width / app.frame.width,
+          scaleY: app.canvas.height / app.frame.height
         });
 
-        app.canvas.add(obj);
+        app.canvas.add(app.frame);
         app.canvas.renderAll();
       });
-
-      // Frame Instantiation
-      // this.frame = new fabric.Rect({      
-      //   left: 0,
-      //   top: 0,
-      //   fill: 'lightgrey',
-      //   angle: 0,
-      //   width: 555,
-      //   height: 100,
-      //   opacity: 0.8,
-      //   selectable: false,
-      //   hoverCursor: 'default'
-      // })
 
       // this.clean_canvas();
       this.server_size = Number(val[0]); // 1 or 2
@@ -116,8 +112,9 @@ var app = new Vue({
     // Initialize canvas as fabric
     this.canvas = new fabric.Canvas('c');
     this.canvas.backgroundColor="rgba(0, 0, 0, 0)";
-    this.canvas.setHeight(100);
-    this.canvas.setWidth(555);
+    this.canvas.setHeight(this.canvas_height);
+    this.canvas.setWidth(this.canvas_width);
+
     // this.canvas.on('object:moving', function (e) {
     //   // Prevent object from leaving canvas
 
