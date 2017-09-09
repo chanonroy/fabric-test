@@ -43,13 +43,17 @@
           <div v-if="server_size > 0"> 
             <div> {{ server_size }}U mesh is available in partial or full coverage options </div> 
 
-            <el-radio class="" v-model="mesh_val" label="1"> <img :src="'dist/fonts/' + server_size + 'u-circle.svg'" style="width: 350px;" alt=""> </el-radio>
-            <el-radio class="" v-model="mesh_val" label="2"> <img :src="'dist/fonts/' + server_size + 'u-hex.svg'" style="width: 350px;" alt=""> </el-radio>
-            <el-radio class="" v-model="mesh_val" label="3"> <img :src="'dist/fonts/' + server_size + 'u-square.svg'" style="width: 350px;" alt=""> </el-radio>
+            <el-radio class="" v-model="mesh_val" :label="server_size + 'u-circle'"> <img :src="'dist/fonts/' + server_size + 'u-circle.svg'" style="width: 350px;" alt=""> </el-radio>
+            <el-radio class="" v-model="mesh_val" :label="server_size + 'u-hex'"> <img :src="'dist/fonts/' + server_size + 'u-hex.svg'" style="width: 350px;" alt=""> </el-radio>
+            <el-radio class="" v-model="mesh_val" :label="server_size + 'u-square'"> <img :src="'dist/fonts/' + server_size + 'u-square.svg'" style="width: 350px;" alt=""> </el-radio>
           </div>
 
           <div v-if="server_size == 0">
             <div> Please go back and select a frame </div>
+          </div>
+
+          <div v-show="mesh_val">
+            <slider-picker v-model="mesh_color" />
           </div>
 
           <div style="margin: 20px 0;">

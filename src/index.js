@@ -35,17 +35,16 @@ var app = new Vue({
 
     // Fabric.js Canvas Objects
     canvas: '',                   // { Object } - canvas Fabric.js obj to be instantiated on mounting Vue.js
-    badge: '',                    // { Object } - hex property primarily used
-    frame: ''                     // { Object } - Fabric.js obj for the frame
+    frame: '',                    // { Object } - Fabric.js obj for the frame
+    mesh: '',                     // { Object } - Fabric.js obj for the mesh
+    badge: '',                    // { Object } - Fabric.js obj for the badge
 
   },
   watch: { // When these properties from data() change, do the following:
     frame_color() {
-
       for (var i in this.frame._objects) {
         this.frame.item(i).set('fill', this.frame_color.hex);
       }
-      
       this.canvas.renderAll();
     },
     frame_val(val) {
@@ -53,7 +52,6 @@ var app = new Vue({
 
       new fabric.loadSVGFromURL('dist/fonts/' + val + '.svg', function(objects, options) {
         app.canvas.remove(app.frame);
-
         app.frame = fabric.util.groupSVGElements(objects, options);
 
         for (var i in app.frame._objects) {
@@ -64,13 +62,11 @@ var app = new Vue({
           selectable: false,
           hasControls: false,
           hoverCursor: 'default',
-
           top: -5,
           left: -5,
           width: app.frame.width,
-
-          scaleX: app.canvas.width / app.frame.width,
-          scaleY: app.canvas.height / app.frame.height
+          scaleX: app.canvas.width / app.frame.width + 0.01,
+          scaleY: app.canvas.height / app.frame.height + 0.025
         });
 
         app.canvas.add(app.frame);
@@ -79,6 +75,42 @@ var app = new Vue({
 
       // this.clean_canvas();
       this.server_size = Number(val[0]); // 1 or 2
+    },
+    mesh_color() {
+      for (var i in this.mesh._objects) {
+        this.mesh.item(i).set('fill', this.mesh_color.hex);
+      }
+      this.canvas.renderAll();
+    },
+    mesh_val(val) {
+      var app = this;
+      
+      // TODO: Cache this below operation
+      new fabric.loadSVGFromURL('dist/fonts/' + val + '.svg', function(objects, options) {
+        app.canvas.remove(app.mesh);
+        app.mesh = fabric.util.groupSVGElements(objects, options);
+
+        for (var i in app.mesh._objects) {
+          app.mesh.item(i).set('fill', app.mesh_color.hex);
+        }
+
+        app.mesh.set({
+          selectable: false,
+          hasControls: false,
+          hoverCursor: 'default',
+          top: -5,
+          left: -5,
+          width: app.mesh.width,
+          scaleX: app.canvas.width / app.mesh.width + 0.01,
+          scaleY: app.canvas.height / app.mesh.height + 0.025
+        });
+
+        app.canvas.remove(app.frame);
+        app.canvas.add(app.mesh);
+        app.canvas.add(app.frame);
+
+        app.canvas.renderAll();
+      });
     },
     badge_color() {
       this.badge.set('fill', this.badge_color.hex);
@@ -124,25 +156,25 @@ var app = new Vue({
     this.canvas.setHeight(this.canvas_height);
     this.canvas.setWidth(this.canvas_width);
 
-    // this.canvas.on('object:moving', function (e) {
-    //   // Prevent object from leaving canvas
+    this.canvas.on('object:moving', function (e) {
+      // Prevent object from leaving canvas
 
-    //   var obj = e.target;
-    //    // if object is too big ignore
-    //   if(obj.currentHeight > obj.canvas.height || obj.currentWidth > obj.canvas.width){
-    //       return;
-    //   }        
-    //   obj.setCoords();        
-    //   // top-left  corner
-    //   if(obj.getBoundingRect().top < 0 || obj.getBoundingRect().left < 0){
-    //       obj.top = Math.max(obj.top, obj.top-obj.getBoundingRect().top);
-    //       obj.left = Math.max(obj.left, obj.left-obj.getBoundingRect().left);
-    //   }
-    //   // bot-right corner
-    //   if(obj.getBoundingRect().top+obj.getBoundingRect().height  > obj.canvas.height || obj.getBoundingRect().left+obj.getBoundingRect().width  > obj.canvas.width){
-    //       obj.top = Math.min(obj.top, obj.canvas.height-obj.getBoundingRect().height+obj.top-obj.getBoundingRect().top);
-    //       obj.left = Math.min(obj.left, obj.canvas.width-obj.getBoundingRect().width+obj.left-obj.getBoundingRect().left);
-    //   }
-    // });
+      var obj = e.target;
+       // if object is too big ignore
+      if(obj.currentHeight > obj.canvas.height || obj.currentWidth > obj.canvas.width){
+          return;
+      }        
+      obj.setCoords();        
+      // top-left  corner
+      if(obj.getBoundingRect().top < 0 || obj.getBoundingRect().left < 0){
+          obj.top = Math.max(obj.top, obj.top-obj.getBoundingRect().top);
+          obj.left = Math.max(obj.left, obj.left-obj.getBoundingRect().left);
+      }
+      // bot-right corner
+      if(obj.getBoundingRect().top+obj.getBoundingRect().height > obj.canvas.height || obj.getBoundingRect().left+obj.getBoundingRect().width  > obj.canvas.width){
+          obj.top = Math.min(obj.top, obj.canvas.height-obj.getBoundingRect().height+obj.top-obj.getBoundingRect().top);
+          obj.left = Math.min(obj.left, obj.canvas.width-obj.getBoundingRect().width+obj.left-obj.getBoundingRect().left);
+      }
+    });
   },
 })
