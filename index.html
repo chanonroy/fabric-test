@@ -15,7 +15,7 @@
       <div v-show="step == 1">
           <progress-bar active="0"></progress-bar>
 
-          <h1> Step 1 - Frame Pick </h1>  
+          <h1> Step 1 - Frame Pick <i v-if="loading" class="el-icon-loading"></i> </h1>  
 
           <div> 1U Options </div>
           <el-radio class="" v-model="frame_val" label="1u-rectangle"> <img src="dist/fonts/1u-rectangle.svg" style="width: 350px;" alt=""> </el-radio>
@@ -38,7 +38,7 @@
       <div v-show="step == 2">
           <progress-bar active="1"></progress-bar>
 
-          <h1> Step 2 - Pick your Mesh </h1>
+          <h1> Step 2 - Pick your Mesh <i v-if="loading" class="el-icon-loading"></i> </h1>
 
           <div v-if="server_size > 0"> 
             <div> {{ server_size }}U mesh is available in partial or full coverage options </div> 
@@ -65,7 +65,7 @@
       <div v-show="step == 3">
           <progress-bar active="2"></progress-bar>
 
-          <h1> Step 3 - Configure Your Logo </h1>
+          <h1> Step 3 - Configure Your Logo <i v-if="loading" class="el-icon-loading"></i> </h1>
 
           <div> Select a Base </div>
           <el-radio class="badge" v-model="badge_val" label="1"> Circle </el-radio>
@@ -93,7 +93,7 @@
       <div v-show="step == 4">
           <progress-bar active="3"></progress-bar>
 
-         <h1> Step 4 - Customize your Logo Position </h1>
+         <h1> Step 4 - Customize your Logo Position <i v-if="loading" class="el-icon-loading"></i> </h1>
          <h2> 
            y: {{ Math.round(badge.top) }} 
            x: {{ Math.round(badge.left) }} 

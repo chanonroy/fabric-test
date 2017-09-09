@@ -18,6 +18,7 @@ var app = new Vue({
   data: {
     // General Settings
     step: 1,                      // { Number } - for keeping order of app progress (e.g., 1, 2, 3, 4)
+    loading: false,               // { Boolean } - to trigger loading icon
     canvas_height: 120,           // { Number } - canvas height
     canvas_width: 565,            // { Number } - canvas width
     
@@ -38,6 +39,14 @@ var app = new Vue({
     frame: '',                    // { Object } - Fabric.js obj for the frame
     mesh: '',                     // { Object } - Fabric.js obj for the mesh
     badge: '',                    // { Object } - Fabric.js obj for the badge
+    mesh_cache: {                // { Object } - holds rendered fabric svg groups in cache
+      '1u-circle': '',
+      '1u-hex': '',
+      '1u-square': '',
+      '2u-circle': '',
+      '2u-hex': '',
+      '2u-square': ''
+    }
 
   },
   watch: { // When these properties from data() change, do the following:
@@ -50,6 +59,7 @@ var app = new Vue({
     frame_val(val) {
       var app = this;
 
+      app.loading = true;
       new fabric.loadSVGFromURL('dist/fonts/' + val + '.svg', function(objects, options) {
         app.canvas.remove(app.frame);
         app.frame = fabric.util.groupSVGElements(objects, options);
@@ -71,9 +81,9 @@ var app = new Vue({
 
         app.canvas.add(app.frame);
         app.canvas.renderAll();
+        app.loading = false;
       });
 
-      // this.clean_canvas();
       this.server_size = Number(val[0]); // 1 or 2
     },
     mesh_color() {
@@ -84,33 +94,23 @@ var app = new Vue({
     },
     mesh_val(val) {
       var app = this;
-      
-      // TODO: Cache this below operation
-      new fabric.loadSVGFromURL('dist/fonts/' + val + '.svg', function(objects, options) {
+
+      if (app.mesh_cache[val] !== '') {
+        // Cache hit, use mesh cache
         app.canvas.remove(app.mesh);
-        app.mesh = fabric.util.groupSVGElements(objects, options);
-
-        for (var i in app.mesh._objects) {
-          app.mesh.item(i).set('fill', app.mesh_color.hex);
-        }
-
-        app.mesh.set({
-          selectable: false,
-          hasControls: false,
-          hoverCursor: 'default',
-          top: -5,
-          left: -5,
-          width: app.mesh.width,
-          scaleX: app.canvas.width / app.mesh.width + 0.01,
-          scaleY: app.canvas.height / app.mesh.height + 0.025
-        });
-
-        app.canvas.remove(app.frame);
-        app.canvas.add(app.mesh);
-        app.canvas.add(app.frame);
-
-        app.canvas.renderAll();
-      });
+        app.mesh = app.mesh_cache[val];
+        app.setup_mesh();
+      } else {
+        // Cache miss, generate mesh (2-3 seconds)
+        app.loading = true;
+        new fabric.loadSVGFromURL('dist/fonts/' + val + '.svg', function(objects, options) {
+            app.canvas.remove(app.mesh);
+            app.mesh_cache[val] = fabric.util.groupSVGElements(objects, options);
+            app.mesh = app.mesh_cache[val];
+            app.setup_mesh();
+          }
+        );
+      } // - else
     },
     badge_color() {
       this.badge.set('fill', this.badge_color.hex);
@@ -147,6 +147,30 @@ var app = new Vue({
 
       if (this.frame) { this.canvas.add(this.frame); }
       if (this.badge) { this.canvas.add(this.badge); }
+    },
+    setup_mesh() {
+      var app = this;
+
+      for (var i in app.mesh._objects) {
+        app.mesh.item(i).set('fill', app.mesh_color.hex);
+      }
+
+      app.mesh.set({
+        selectable: false,
+        hasControls: false,
+        hoverCursor: 'default',
+        top: -5,
+        left: -5,
+        width: app.mesh.width,
+        scaleX: app.canvas.width / app.mesh.width + 0.01,
+        scaleY: app.canvas.height / app.mesh.height + 0.025
+      });
+
+      app.canvas.remove(app.frame);
+      app.canvas.add(app.mesh);
+      app.canvas.add(app.frame);
+      app.canvas.renderAll();
+      app.loading = false;
     }
   },
   mounted() {
