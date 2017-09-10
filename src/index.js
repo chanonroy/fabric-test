@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
-import Croppie from 'croppie'
 import Progress from './js/components/progress.vue'
 import { Slider } from 'vue-color'
 import { defaultColors } from './js/default_colors'
+import { canvas_prevent_overfill } from './js/utils/canvas_prevent_overfill'
 import './scss/main.scss';
 import './assets/_assets.js';
 
@@ -51,8 +51,12 @@ var app = new Vue({
       '2u-hex': '',
       '2u-square': ''
     },
+
+    // Logo Uploading
     logo_canvas: '',              // { Object } - For configuring the badge
-    badge_group: '',              
+    badge_photo: '',
+    badge_base: '',            
+
 
   },
   watch: { // When these properties from data() change, do the following:
@@ -198,54 +202,50 @@ var app = new Vue({
     },
     save_badge() {
       var app = this;
-      var badge_string = app.badge_group.toSVG();
+
+      var badge_group = new fabric.Group([ this.badge_base, this.badge_photo ]);
+      var badge_string = badge_group.toSVG();
+
       new fabric.loadSVGFromString(badge_string, function(objects, options) {
         var obj = fabric.util.groupSVGElements(objects, options);
+
+        obj.set({
+          selectable: true,
+          hasControls: false,
+          lockRotation: true,
+          lockScalingX: true,
+          lockScalingY: true,
+        })
+
         app.canvas.add(obj).renderAll();
       });
     }
   },
   mounted() {
-    // Initialize canvas as fabric
+    // Server Preview Canvas
     this.canvas = new fabric.Canvas('c');
     this.canvas.backgroundColor="rgba(0, 0, 0, 0)";
     this.canvas.setHeight(this.canvas_height);
     this.canvas.setWidth(this.canvas_width);
     this.canvas.preserveObjectStacking = true;
-    this.canvas.on('object:moving', function (e) {
-      // Prevent object from leaving canvas
 
-      var obj = e.target;
-       // if object is too big ignore
-      if(obj.currentHeight > obj.canvas.height || obj.currentWidth > obj.canvas.width){
-          return;
-      }        
-      obj.setCoords();        
-      // top-left  corner
-      if(obj.getBoundingRect().top < 0 || obj.getBoundingRect().left < 0){
-          obj.top = Math.max(obj.top, obj.top-obj.getBoundingRect().top);
-          obj.left = Math.max(obj.left, obj.left-obj.getBoundingRect().left);
-      }
-      // bot-right corner
-      if(obj.getBoundingRect().top+obj.getBoundingRect().height > obj.canvas.height || obj.getBoundingRect().left+obj.getBoundingRect().width  > obj.canvas.width){
-          obj.top = Math.min(obj.top, obj.canvas.height-obj.getBoundingRect().height+obj.top-obj.getBoundingRect().top);
-          obj.left = Math.min(obj.left, obj.canvas.width-obj.getBoundingRect().width+obj.left-obj.getBoundingRect().left);
-      }
-    });
+    canvas_prevent_overfill(this.canvas);
 
-    // Image Upload and Badge Selection
+    // Image Upload and Badge Selection Canvas
     this.logo_canvas = new fabric.Canvas('logo_canvas');
     this.logo_canvas.backgroundColor="lightgrey";
-    this.logo_canvas.setHeight(200);
-    this.logo_canvas.setWidth(400);
+    this.logo_canvas.setHeight(100);
+    this.logo_canvas.setWidth(200);
 
-    var temp_badge = new fabric.Rect({
+    canvas_prevent_overfill(this.logo_canvas);
+
+    this.badge_base = new fabric.Rect({
       left: 0,
       top: 0,
       fill: 'red',
       angle: 0,
-      width: this.logo_canvas.width / 2,
-      height: this.logo_canvas.height / 2,
+      width: this.logo_canvas.width,
+      height: this.logo_canvas.height,
       opacity: 1,
       rx: 50,
       selectable: false,
@@ -253,25 +253,24 @@ var app = new Vue({
       lockRotation: true,
       lockScalingX: true,
       lockScalingY: true,
+      hasBorders: false,
       hoverCursor: 'default'
     })
 
-    var temp_2 = new fabric.Rect({
-      left: 0,
-      top: 0,
-      fill: 'blue',
-      width: 50,
-      height: 50
-    })
+    // this.badge_photo = new fabric.Rect({
+    //   left: 0,
+    //   top: 0,
+    //   fill: 'blue',
+    //   width: 50,
+    //   height: 50
+    // })
 
-    this.logo_canvas.add(temp_badge);
-    this.logo_canvas.add(temp_2);
-    this.badge_group = new fabric.Group([ temp_badge, temp_2 ]);
-
-    console.log(this.badge_group);
+    this.logo_canvas.add(this.badge_base);
+    // this.logo_canvas.add(this.badge_photo);
 
     var app = this;
 
+    // Image Uploading
     document.getElementById('imgLoader').onchange = function handleImage(e) {
       var reader = new FileReader();
       reader.readAsDataURL(e.target.files[0]);
@@ -279,14 +278,15 @@ var app = new Vue({
           var imgObj = new Image();
           imgObj.src = event.target.result;
           imgObj.onload = function () {    
-              var image = new fabric.Image(imgObj);
-              image.set({
+              app.badge_photo = new fabric.Image(imgObj);
+              
+              app.badge_photo.set({
                   selectable: true,
                   padding: 10,
                   cornersize: 10
               });
               
-              app.logo_canvas.add(image);
+              app.logo_canvas.add(app.badge_photo);
               app.logo_canvas.renderAll();
           }    
       }

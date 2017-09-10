@@ -1,4 +1,4 @@
-export default function (canvas) {
+export function canvas_prevent_overfill (canvas) {
 
     canvas.on('object:moving', function (e) {
         // Prevent object from leaving canvas
