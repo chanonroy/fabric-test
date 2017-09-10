@@ -194,6 +194,9 @@ var app = new Vue({
       app.canvas.add(app.frame);
       app.canvas.renderAll();
       app.loading = false;
+    },
+    save_badge() {
+      console.log(this.logo_canvas.toSVG());
     }
   },
   mounted() {
@@ -224,14 +227,34 @@ var app = new Vue({
       }
     });
 
+    // Image Upload and Generation Test
     this.logo_canvas = new fabric.Canvas('logo_canvas');
     this.logo_canvas.backgroundColor="lightgrey";
     this.logo_canvas.setHeight(300);
     this.logo_canvas.setWidth(500);
 
+    var app = this;
+
     document.getElementById('imgLoader').onchange = function handleImage(e) {
-      
+      var reader = new FileReader();
+      reader.readAsDataURL(e.target.files[0]);
+      reader.onload = function (event) {
+          var imgObj = new Image();
+          imgObj.src = event.target.result;
+          imgObj.onload = function () {    
+              var image = new fabric.Image(imgObj);
+              image.set({
+                  selectable: true,
+                  padding: 10,
+                  cornersize: 10
+              });
+              
+              app.logo_canvas.add(image);
+              app.logo_canvas.renderAll();
+          }    
+      }
     }
+
 
 
   },

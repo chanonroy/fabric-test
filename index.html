@@ -13,6 +13,7 @@
      <div id="app" class="container" v-cloak>
 
       <div class="step" v-show="step == 10">
+          <el-button @click="save_badge"> Save </el-button>
           <input type="file" id="imgLoader">
           <canvas id="logo_canvas"></canvas>
       </div>
