@@ -73,22 +73,24 @@ body {
   margin-top: 10px !important;
 }
 
-.canvas-container {
-  position: absolute !important;
-  top: 42%;
-  left: 20.7%;
-}
-
 .preview {
 
   &-container {
     position: relative; 
     margin: 10px 0;
+
+    .canvas-container {
+      position: absolute !important;
+      top: 42%;
+      left: 20.7%;
+    }
+
     img {
       display: block;
       width: 812px;
       margin: 0 auto;
     }
+
   }
 
   canvas {

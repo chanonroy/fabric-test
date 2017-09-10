@@ -12,6 +12,11 @@
    <body>
      <div id="app" class="container" v-cloak>
 
+      <div class="step" v-show="step == 10">
+          <input type="file" id="imgLoader">
+          <canvas id="logo_canvas"></canvas>
+      </div>
+
       <div class="step" v-show="step == 1">
           <progress-bar active="0"></progress-bar>
 
@@ -38,7 +43,6 @@
           </el-row>
 
           <div v-show="frame_val" class="step__title">
-            <div> {{ frame_color.hex }} </div>
             <div class="label-margin"> Choose a Frame Color </div>
             <div class="color-input">
               <el-input v-model="frame_color_input"></el-input>
@@ -142,7 +146,7 @@
 
       </div>
 
-      <div class="preview-container" v-show="step !== 3">
+      <div class="preview-container" v-show="step !== 10">
         <img src="assets/server.jpg" alt="server">
         <canvas id="c"></canvas>
       </div>

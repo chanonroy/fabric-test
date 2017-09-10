@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
+import Croppie from 'croppie'
 import Progress from './js/components/progress.vue'
 import { Slider } from 'vue-color'
 import { defaultColors } from './js/default_colors'
@@ -17,7 +18,7 @@ var app = new Vue({
   },
   data: {
     // General Settings
-    step: 1,                      // { Number } - for keeping order of app progress (e.g., 1, 2, 3, 4)
+    step: 10,                      // { Number } - for keeping order of app progress (e.g., 1, 2, 3, 4)
     loading: false,               // { Boolean } - to trigger loading icon
     canvas_height: 120,           // { Number } - canvas height
     canvas_width: 565,            // { Number } - canvas width
@@ -42,14 +43,15 @@ var app = new Vue({
     frame: '',                    // { Object } - Fabric.js obj for the frame
     mesh: '',                     // { Object } - Fabric.js obj for the mesh
     badge: '',                    // { Object } - Fabric.js obj for the badge
-    mesh_cache: {                // { Object } - holds rendered fabric svg groups in cache
+    mesh_cache: {                 // { Object } - holds rendered fabric svg groups in cache
       '1u-circle': '',
       '1u-hex': '',
       '1u-square': '',
       '2u-circle': '',
       '2u-hex': '',
       '2u-square': ''
-    }
+    },
+    logo_canvas: '',
 
   },
   watch: { // When these properties from data() change, do the following:
@@ -201,7 +203,6 @@ var app = new Vue({
     this.canvas.setHeight(this.canvas_height);
     this.canvas.setWidth(this.canvas_width);
     this.canvas.preserveObjectStacking = true;
-
     this.canvas.on('object:moving', function (e) {
       // Prevent object from leaving canvas
 
@@ -222,5 +223,16 @@ var app = new Vue({
           obj.left = Math.min(obj.left, obj.canvas.width-obj.getBoundingRect().width+obj.left-obj.getBoundingRect().left);
       }
     });
+
+    this.logo_canvas = new fabric.Canvas('logo_canvas');
+    this.logo_canvas.backgroundColor="lightgrey";
+    this.logo_canvas.setHeight(300);
+    this.logo_canvas.setWidth(500);
+
+    document.getElementById('imgLoader').onchange = function handleImage(e) {
+      
+    }
+
+
   },
 })
