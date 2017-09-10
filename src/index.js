@@ -137,33 +137,35 @@ var app = new Vue({
     badge_color() {
       this.badge_color_input = this.badge_color.hex;
     },
-    badge_input_color(val) {
+    badge_color_input(val) {
       if (val.length == 7 && val[0] == '#') {
-        this.badge.set('fill', this.badge_color.hex);
+        this.badge_base.set('fill', this.badge_color.hex);
       }
       this.badge_color.hex = this.badge_color_input;
-      this.canvas.renderAll();
+      this.logo_canvas.renderAll();
     },
     badge_val(val) {
+      var custom_props = {
+        fill: 'blue'
+      };
+      var default_props = {
+        left: 0,
+        top: 0,
+        width: this.logo_canvas.width,
+        height: this.logo_canvas.height,
+        selectable: false,
+        hasControls: false,
+        lockRotation: true,
+        lockScalingX: true,
+        lockScalingY: true,
+        hasBorders: false,
+        hoverCursor: 'default'
+      };
 
-      // Currently creates a new one every click
-      // this.badge = new fabric.Rect({
-      //   left: 0,
-      //   top: 0,
-      //   fill: 'red',
-      //   angle: 0,
-      //   width: 50,
-      //   height: 50,
-      //   opacity: 1,
-      //   selectable: true,
-      //   hasControls: false,
-      //   lockRotation: true,
-      //   lockScalingX: true,
-      //   lockScalingY: true,
-      //   hoverCursor: 'move'
-      // })
+      var concat_props = Object.assign({}, default_props, custom_props);
 
-      // this.clean_canvas();
+      this.badge_base = new fabric.Rect(concat_props);
+      this.logo_canvas.add(this.badge_base);
     },
   },
   methods: {
@@ -203,13 +205,15 @@ var app = new Vue({
     save_badge() {
       var app = this;
 
+      // TODO: account for no badge
+
       var badge_group = new fabric.Group([ this.badge_base, this.badge_photo ]);
       var badge_string = badge_group.toSVG();
 
       new fabric.loadSVGFromString(badge_string, function(objects, options) {
-        var obj = fabric.util.groupSVGElements(objects, options);
+        app.badge = fabric.util.groupSVGElements(objects, options);
 
-        obj.set({
+        app.badge.set({
           selectable: true,
           hasControls: false,
           lockRotation: true,
@@ -217,7 +221,7 @@ var app = new Vue({
           lockScalingY: true,
         })
 
-        app.canvas.add(obj).renderAll();
+        app.canvas.add(app.badge).renderAll();
       });
     }
   },
@@ -239,56 +243,49 @@ var app = new Vue({
 
     canvas_prevent_overfill(this.logo_canvas);
 
-    this.badge_base = new fabric.Rect({
-      left: 0,
-      top: 0,
-      fill: 'red',
-      angle: 0,
-      width: this.logo_canvas.width,
-      height: this.logo_canvas.height,
-      opacity: 1,
-      rx: 50,
-      selectable: false,
-      hasControls: false,
-      lockRotation: true,
-      lockScalingX: true,
-      lockScalingY: true,
-      hasBorders: false,
-      hoverCursor: 'default'
-    })
-
-    // this.badge_photo = new fabric.Rect({
-    //   left: 0,
-    //   top: 0,
-    //   fill: 'blue',
-    //   width: 50,
-    //   height: 50
-    // })
-
-    this.logo_canvas.add(this.badge_base);
-    // this.logo_canvas.add(this.badge_photo);
-
     var app = this;
 
     // Image Uploading
     document.getElementById('imgLoader').onchange = function handleImage(e) {
+      // https://stackoverflow.com/questions/44745476/is-there-a-way-to-import-an-image-file-using-fabric-js
       var reader = new FileReader();
       reader.readAsDataURL(e.target.files[0]);
       reader.onload = function (event) {
-          var imgObj = new Image();
-          imgObj.src = event.target.result;
-          imgObj.onload = function () {    
-              app.badge_photo = new fabric.Image(imgObj);
-              
-              app.badge_photo.set({
-                  selectable: true,
-                  padding: 10,
-                  cornersize: 10
-              });
-              
+          var fileType = e.target.files[0].type
+          var url = URL.createObjectURL(e.target.files[0]);
+
+          if (fileType === 'image/svg+xml') {
+            fabric.loadSVGFromURL(url, function(objects, options) {
+              var badge_logo = fabric.util.groupSVGElements(objects, options);
+              badge_logo.scaleToWidth(app.logo_canvas.width / 2);
+              badge_logo.scaleToHeight(app.logo_canvas.height / 2);
+
+              app.badge_photo = badge_logo;
               app.logo_canvas.add(app.badge_photo);
               app.logo_canvas.renderAll();
-          }    
+           });
+          } else {
+            app.$message({
+              message: 'Incorrect upload format. SVG only',
+              type: 'error'
+            })
+            return;
+          }
+
+          // var imgObj = new Image();
+          // imgObj.src = event.target.result;
+          // imgObj.onload = function () {    
+          //     app.badge_photo = new fabric.Image(imgObj);
+              
+          //     app.badge_photo.set({
+          //         selectable: true,
+          //         padding: 10,
+          //         cornersize: 10
+          //     });
+              
+          //     app.logo_canvas.add(app.badge_photo);
+          //     app.logo_canvas.renderAll();
+          // }    
       }
     }
 
