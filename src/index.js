@@ -18,7 +18,7 @@ var app = new Vue({
   },
   data: {
     // General Settings
-    step: 10,                      // { Number } - for keeping order of app progress (e.g., 1, 2, 3, 4)
+    step: 1,                      // { Number } - for keeping order of app progress (e.g., 1, 2, 3, 4)
     loading: false,               // { Boolean } - to trigger loading icon
     canvas_height: 120,           // { Number } - canvas height
     canvas_width: 565,            // { Number } - canvas width
@@ -51,7 +51,8 @@ var app = new Vue({
       '2u-hex': '',
       '2u-square': ''
     },
-    logo_canvas: '',
+    logo_canvas: '',              // { Object } - For configuring the badge
+    badge_group: '',              
 
   },
   watch: { // When these properties from data() change, do the following:
@@ -142,24 +143,24 @@ var app = new Vue({
     badge_val(val) {
 
       // Currently creates a new one every click
-      this.badge = new fabric.Rect({
-        left: 0,
-        top: 0,
-        fill: 'red',
-        angle: 0,
-        width: 50,
-        height: 50,
-        opacity: 1,
-        selectable: true,
-        hasControls: false,
-        lockRotation: true,
-        lockScalingX: true,
-        lockScalingY: true,
-        hoverCursor: 'move'
-      })
+      // this.badge = new fabric.Rect({
+      //   left: 0,
+      //   top: 0,
+      //   fill: 'red',
+      //   angle: 0,
+      //   width: 50,
+      //   height: 50,
+      //   opacity: 1,
+      //   selectable: true,
+      //   hasControls: false,
+      //   lockRotation: true,
+      //   lockScalingX: true,
+      //   lockScalingY: true,
+      //   hoverCursor: 'move'
+      // })
 
-      this.clean_canvas();
-    }
+      // this.clean_canvas();
+    },
   },
   methods: {
     clean_canvas() {
@@ -196,7 +197,12 @@ var app = new Vue({
       app.loading = false;
     },
     save_badge() {
-      console.log(this.logo_canvas.toSVG());
+      var app = this;
+      var badge_string = app.badge_group.toSVG();
+      new fabric.loadSVGFromString(badge_string, function(objects, options) {
+        var obj = fabric.util.groupSVGElements(objects, options);
+        app.canvas.add(obj).renderAll();
+      });
     }
   },
   mounted() {
@@ -227,11 +233,42 @@ var app = new Vue({
       }
     });
 
-    // Image Upload and Generation Test
+    // Image Upload and Badge Selection
     this.logo_canvas = new fabric.Canvas('logo_canvas');
     this.logo_canvas.backgroundColor="lightgrey";
-    this.logo_canvas.setHeight(300);
-    this.logo_canvas.setWidth(500);
+    this.logo_canvas.setHeight(200);
+    this.logo_canvas.setWidth(400);
+
+    var temp_badge = new fabric.Rect({
+      left: 0,
+      top: 0,
+      fill: 'red',
+      angle: 0,
+      width: this.logo_canvas.width / 2,
+      height: this.logo_canvas.height / 2,
+      opacity: 1,
+      rx: 50,
+      selectable: false,
+      hasControls: false,
+      lockRotation: true,
+      lockScalingX: true,
+      lockScalingY: true,
+      hoverCursor: 'default'
+    })
+
+    var temp_2 = new fabric.Rect({
+      left: 0,
+      top: 0,
+      fill: 'blue',
+      width: 50,
+      height: 50
+    })
+
+    this.logo_canvas.add(temp_badge);
+    this.logo_canvas.add(temp_2);
+    this.badge_group = new fabric.Group([ temp_badge, temp_2 ]);
+
+    console.log(this.badge_group);
 
     var app = this;
 

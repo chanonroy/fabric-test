@@ -12,12 +12,6 @@
    <body>
      <div id="app" class="container" v-cloak>
 
-      <div class="step" v-show="step == 10">
-          <el-button @click="save_badge"> Save </el-button>
-          <input type="file" id="imgLoader">
-          <canvas id="logo_canvas"></canvas>
-      </div>
-
       <div class="step" v-show="step == 1">
           <progress-bar active="0"></progress-bar>
 
@@ -111,6 +105,12 @@
           
           <div class="label-margin"> Upload your Logo  </div>
 
+          <div>
+            <el-button @click="save_badge"> Save </el-button>
+            <input type="file" id="imgLoader">
+            <canvas id="logo_canvas"></canvas>
+          </div>
+
           <div v-show="badge_val" class="step__title">
               <div class="label-margin"> Choose a Badge Color </div>
               <div class="color-input">
@@ -147,7 +147,7 @@
 
       </div>
 
-      <div class="preview-container" v-show="step !== 10">
+      <div class="preview-container" v-show="step !== 3">
         <img src="assets/server.jpg" alt="server">
         <canvas id="c"></canvas>
       </div>
