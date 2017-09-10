@@ -33,7 +33,7 @@ var app = new Vue({
     
     badge_val: '',                // { String } - value indicating type of badge from select
     badge_color: defaultColors,   // { Object } - hex property primarily used
-    badge_color_input: '',        // { String } - hex for input
+    badge_color_input: '#B3DAE5', // { String } - hex for input
 
     server_size: 0,               // { Number } - 0 unassigned, 1 for 1U, 2 for 2U
 
@@ -54,11 +54,7 @@ var app = new Vue({
   },
   watch: { // When these properties from data() change, do the following:
     frame_color() {
-      for (var i in this.frame._objects) {
-        this.frame.item(i).set('fill', this.frame_color.hex);
-      }
       this.frame_color_input = this.frame_color.hex;
-      this.canvas.renderAll();
     },
     frame_color_input(val) {
       if (val.length == 7 && val[0] == '#') {
@@ -100,11 +96,7 @@ var app = new Vue({
       this.server_size = Number(val[0]); // 1 or 2
     },
     mesh_color() {
-      for (var i in this.mesh._objects) {
-        this.mesh.item(i).set('fill', this.mesh_color.hex);
-      }
       this.mesh_color_input = this.mesh_color.hex;
-      this.canvas.renderAll();
     },
     mesh_color_input(val) {
       if (val.length == 7 && val[0] == '#') {
@@ -136,7 +128,13 @@ var app = new Vue({
       } // - else
     },
     badge_color() {
-      this.badge.set('fill', this.badge_color.hex);
+      this.badge_color_input = this.badge_color.hex;
+    },
+    badge_input_color(val) {
+      if (val.length == 7 && val[0] == '#') {
+        this.badge.set('fill', this.badge_color.hex);
+      }
+      this.badge_color.hex = this.badge_color_input;
       this.canvas.renderAll();
     },
     badge_val(val) {

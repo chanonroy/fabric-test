@@ -39,12 +39,34 @@ body {
   color: lightgrey;
 }
 
-.el-radio {
-  display: flex;
-  align-items: center;
-  &__input {
-    margin-right: 10px;
+// views
+.step {
+  &__title {
+    text-align: center;
+    margin: 30px 0;
   }
+
+  .color-input {
+    display: flex;
+    justify-content: center;
+    .el-input {
+      margin-right: 20px;
+      width: 100px;
+    }
+  }
+
+}
+
+.asset-radio {
+
+  .el-radio {
+    display: flex;
+    align-items: center;
+    &__input {
+      margin-right: 10px;
+    }
+  }
+
 }
 
 .vc-slider-swatches {
@@ -82,13 +104,4 @@ body {
 // utility
 .label-margin {
   margin: 20px 0;
-}
-
-// components
-.color-input {
-  display: flex;
-  .el-input {
-    margin-right: 20px;
-    width: 100px;
-  }
 }

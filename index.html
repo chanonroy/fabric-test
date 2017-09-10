@@ -12,13 +12,13 @@
    <body>
      <div id="app" class="container" v-cloak>
 
-      <div v-show="step == 1">
+      <div class="step" v-show="step == 1">
           <progress-bar active="0"></progress-bar>
 
-          <h1> Step 1 - Choose Your Frame <i v-if="loading" class="el-icon-loading"></i> </h1>  
+          <h1 class="step__title"> Step 1 - Choose Your Frame <i v-if="loading" class="el-icon-loading"></i> </h1>  
 
           <div class="label-margin"> 1U Options </div>
-          <el-row :gutter="10">
+          <el-row :gutter="10" class="asset-radio">
             <el-col :lg="12">
                 <el-radio class="" v-model="frame_val" label="1u-rectangle"> <img src="dist/fonts/1u-rectangle.svg" style="width: 400px;" alt=""> </el-radio>                
             </el-col>  
@@ -28,7 +28,7 @@
           </el-row>
           
           <div class="label-margin"> 2U Options </div>
-          <el-row :gutter="10">
+          <el-row :gutter="10" class="asset-radio">
             <el-col :lg="12">
               <el-radio class="" v-model="frame_val" label="2u-rectangle"> <img src="dist/fonts/2u-rectangle.svg" style="width: 400px;" alt=""> </el-radio>
             </el-col>
@@ -37,7 +37,8 @@
             </el-col>
           </el-row>
 
-          <div v-show="frame_val">
+          <div v-show="frame_val" class="step__title">
+            <div> {{ frame_color.hex }} </div>
             <div class="label-margin"> Choose a Frame Color </div>
             <div class="color-input">
               <el-input v-model="frame_color_input"></el-input>
@@ -51,14 +52,14 @@
 
       </div>
 
-      <div v-show="step == 2">
+      <div class="step" v-show="step == 2">
           <progress-bar active="1"></progress-bar>
 
-          <h1> Step 2 - Pick your Mesh <i v-if="loading" class="el-icon-loading"></i> </h1>
+          <h1 class="step__title"> Step 2 - Pick your Mesh <i v-if="loading" class="el-icon-loading"></i> </h1>
 
           <div v-if="server_size > 0"> 
             <div class="label-margin"> {{ server_size }}U mesh is available in partial or full coverage options </div> 
-            <el-row :gutter="10">
+            <el-row :gutter="10" class="asset-radio">
               <el-col :lg="8">
                 <el-radio class="" v-model="mesh_val" :label="server_size + 'u-circle'"> <img :src="'dist/fonts/' + server_size + 'u-circle.svg'" style="width: 250px;" alt=""> </el-radio>
               </el-col>
@@ -75,7 +76,7 @@
             <div> Please go back and select a frame </div>
           </div>
 
-          <div v-show="mesh_val">
+          <div v-show="mesh_val" class="step__title">
             <div class="label-margin"> Choose a Mesh Color </div>
             <div class="color-input">
               <el-input v-model="mesh_color_input"></el-input>
@@ -89,7 +90,7 @@
           </div>
       </div>
 
-      <div v-show="step == 3">
+      <div class="step" v-show="step == 3">
           <progress-bar active="2"></progress-bar>
 
           <h1> Step 3 - Configure Your Logo <i v-if="loading" class="el-icon-loading"></i> </h1>
@@ -97,21 +98,25 @@
           <div class="label-margin"> Select a Base </div>
 
           <el-row :gutter="10">
-            <el-col :lg="2"><el-radio class="badge" v-model="badge_val" label="1"> Circle </el-radio></el-col>
-            <el-col :lg="2"></el-col><el-radio class="badge" v-model="badge_val" label="2"> Square </el-radio></el-col>
-            <el-col :lg="2"></el-col><el-radio class="badge" v-model="badge_val" label="3"> Horizontal Rectangle </el-radio></el-col>
-            <el-col :lg="2"></el-col><el-radio class="badge" v-model="badge_val" label="4"> Pill Shape </el-radio></el-col>
+            <el-col :lg="6"><el-radio class="badge" v-model="badge_val" label="1"> Circle </el-radio></el-col>
+            <el-col :lg="6"><el-radio class="badge" v-model="badge_val" label="2"> Square </el-radio></el-col>
+            <el-col :lg="6"><el-radio class="badge" v-model="badge_val" label="3"> Horizontal Rectangle </el-radio></el-col>
+            <el-col :lg="6"><el-radio class="badge" v-model="badge_val" label="4"> Pill Shape </el-radio></el-col>
           </el-row>
           
-          <div> Upload your Logo  </div>
+          <div class="label-margin"> Upload your Logo  </div>
+
+          <div v-show="badge_val" class="step__title">
+              <div class="label-margin"> Choose a Badge Color </div>
+              <div class="color-input">
+                <el-input v-model="badge_color_input"></el-input>
+                <slider-picker v-model="badge_color" />
+              </div>
+          </div>
 
           <div class="label-margin">
               <el-button v-if="step > 1" v-on:click="step -= 1">Back</el-button> 
               <el-button v-if="step < 4" v-on:click="step += 1" :disabled="badge_val.length == 0">Next</el-button>
-          </div>
-
-          <div v-show="badge_val">
-            <slider-picker v-model="badge_color" />
           </div>
 
           <div class="preview-container" v-show="step === 3">
@@ -120,7 +125,7 @@
 
       </div>
 
-      <div v-show="step == 4">
+      <div class="step" v-show="step == 4">
           <progress-bar active="3"></progress-bar>
 
          <h1> Step 4 - Customize your Logo Position <i v-if="loading" class="el-icon-loading"></i> </h1>
