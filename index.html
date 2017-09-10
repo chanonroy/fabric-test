@@ -15,7 +15,7 @@
       <div class="step" v-show="step == 1">
           <progress-bar active="0"></progress-bar>
 
-          <h1 class="step__title"> Step 1 - Choose Your Frame <i v-if="loading" class="el-icon-loading"></i> </h1>  
+          <h2 class="step__title"> Select Your Frame <i v-if="loading" class="el-icon-loading"></i> </h2>  
 
           <div class="label-margin"> 1U Options </div>
           <el-row :gutter="10" class="asset-radio">
@@ -38,7 +38,7 @@
           </el-row>
 
           <div v-show="frame_val" class="step__title">
-            <div class="label-margin"> Choose a Frame Color </div>
+            <h2 class="label-margin"> Pick a Frame Color </h2>
             <div class="color-input">
               <el-input v-model="frame_color_input"></el-input>
               <slider-picker v-model="frame_color" />
@@ -54,7 +54,7 @@
       <div class="step" v-show="step == 2">
           <progress-bar active="1"></progress-bar>
 
-          <h1 class="step__title"> Step 2 - Pick your Mesh <i v-if="loading" class="el-icon-loading"></i> </h1>
+          <h2 class="step__title"> Select a Mesh <i v-if="loading" class="el-icon-loading"></i> </h2>
 
           <div v-if="server_size > 0"> 
             <div class="label-margin"> {{ server_size }}U mesh is available in partial or full coverage options </div> 
@@ -76,7 +76,7 @@
           </div>
 
           <div v-show="mesh_val" class="step__title">
-            <div class="label-margin"> Choose a Mesh Color </div>
+            <h2 class="label-margin"> Pick a Mesh Color </h2>
             <div class="color-input">
               <el-input v-model="mesh_color_input"></el-input>
               <slider-picker v-model="mesh_color" />
@@ -92,11 +92,9 @@
       <div class="step" v-show="step == 3">
           <progress-bar active="2"></progress-bar>
 
-          <h1> Step 3 - Configure Your Logo <i v-if="loading" class="el-icon-loading"></i> </h1>
+          <h2 class="step__title"> Select a Base <i v-if="loading" class="el-icon-loading"></i> </h2>
 
-          <div class="label-margin"> Select a Base </div>
-
-          <el-row :gutter="10">
+          <el-row :gutter="10" class="flex-center">
             <el-col :lg="4"><el-radio class="badge" v-model="badge_val" label="circle"> Circle </el-radio></el-col>
             <el-col :lg="4"><el-radio class="badge" v-model="badge_val" label="square"> Square </el-radio></el-col>
             <el-col :lg="4"><el-radio class="badge" v-model="badge_val" label="rectangle"> Rectangle </el-radio></el-col>
@@ -104,16 +102,18 @@
             <el-col :lg="4"><el-radio class="badge" v-model="badge_val" label="none"> No Logo </el-radio></el-col>
           </el-row>
           
-          <div class="label-margin"> Upload your Logo  </div>
+          <div v-show="badge_val">
+            <h2 class="step__title"> Upload Your Logo  </h2>
 
-          <div>
-            <el-button @click="save_badge"> Save </el-button>
-            <input type="file" id="imgLoader">
-            <canvas id="logo_canvas"></canvas>
+            <div>
+              <el-button @click="save_badge"> Save </el-button>
+              <input type="file" id="imgLoader">
+              <canvas id="logo_canvas"></canvas>
+            </div>
           </div>
 
           <div v-show="badge_val" class="step__title">
-              <div class="label-margin"> Choose a Badge Color </div>
+              <h2 class="label-margin"> Choose a Badge Color </h2>
               <div class="color-input">
                 <el-input v-model="badge_color_input"></el-input>
                 <slider-picker v-model="badge_color" />
@@ -134,7 +134,7 @@
       <div class="step" v-show="step == 4">
           <progress-bar active="3"></progress-bar>
 
-         <h1> Step 4 - Customize your Logo Position <i v-if="loading" class="el-icon-loading"></i> </h1>
+         <h2 class="flex-center"> Place Your Logo <i v-if="loading" class="el-icon-loading"></i> </h2>
          <h2> 
            y: {{ Math.round(badge.top) }} 
            x: {{ Math.round(badge.left) }} 

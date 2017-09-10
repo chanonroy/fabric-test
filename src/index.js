@@ -145,8 +145,12 @@ var app = new Vue({
       this.logo_canvas.renderAll();
     },
     badge_val(val) {
+      // Remove old values from logo canvas
+      this.logo_canvas.remove(this.badge_base);
+      if (this.badge_photo) { this.logo_canvas.remove(this.badge_photo); }
+
       var custom_props = {
-        fill: 'blue'
+        fill: 'lightblue'
       };
       var default_props = {
         left: 0,
@@ -162,18 +166,24 @@ var app = new Vue({
         hoverCursor: 'default'
       };
 
+      // Build necessary properties for base
       var concat_props = Object.assign({}, default_props, custom_props);
-
       this.badge_base = new fabric.Rect(concat_props);
+
+      // Add elements back to canvas
       this.logo_canvas.add(this.badge_base);
+      if (this.badge_photo) { this.logo_canvas.add(this.badge_photo); }
+
+      // Reload onto main canvas
+      this.save_badge();
     },
   },
   methods: {
-    clean_canvas() {
+    clean_logo_canvas() {
       // Remove old Fabric.js canvas objects and replace with new if needed.
 
-      this.canvas.remove(this.frame);
-      this.canvas.remove(this.badge);
+      this.logo_canvas.remove(this.frame);
+      this.logo_canvas.remove(this.badge);
 
       if (this.frame) { this.canvas.add(this.frame); }
       if (this.badge) { this.canvas.add(this.badge); }
@@ -204,9 +214,9 @@ var app = new Vue({
     },
     save_badge() {
       var app = this;
+      app.canvas.remove(app.badge);
 
       // TODO: account for no badge
-
       var badge_group = new fabric.Group([ this.badge_base, this.badge_photo ]);
       var badge_string = badge_group.toSVG();
 
@@ -271,21 +281,6 @@ var app = new Vue({
             })
             return;
           }
-
-          // var imgObj = new Image();
-          // imgObj.src = event.target.result;
-          // imgObj.onload = function () {    
-          //     app.badge_photo = new fabric.Image(imgObj);
-              
-          //     app.badge_photo.set({
-          //         selectable: true,
-          //         padding: 10,
-          //         cornersize: 10
-          //     });
-              
-          //     app.logo_canvas.add(app.badge_photo);
-          //     app.logo_canvas.renderAll();
-          // }    
       }
     }
 
