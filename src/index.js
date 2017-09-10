@@ -202,6 +202,7 @@ var app = new Vue({
     this.canvas.backgroundColor="rgba(0, 0, 0, 0)";
     this.canvas.setHeight(this.canvas_height);
     this.canvas.setWidth(this.canvas_width);
+    this.canvas.preserveObjectStacking = true;
 
     this.canvas.on('object:moving', function (e) {
       // Prevent object from leaving canvas
