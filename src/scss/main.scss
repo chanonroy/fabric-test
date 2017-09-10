@@ -30,18 +30,31 @@ body {
     width: 970px;
   }
   @media screen and (min-width: 1200px) {
-    width: 1170px;
+    width: 970px;
   }
 }
 
+// Overrides
 .el-icon-loading {
   color: lightgrey;
+}
+
+.el-radio {
+  display: flex;
+  align-items: center;
+  &__input {
+    margin-right: 10px;
+  }
+}
+
+.vc-slider-swatches {
+  margin-top: 10px !important;
 }
 
 .canvas-container {
   position: absolute !important;
   top: 42%;
-  left: 10.5%;
+  left: 20.7%;
 }
 
 .preview {
@@ -50,7 +63,9 @@ body {
     position: relative; 
     margin: 10px 0;
     img {
+      display: block;
       width: 812px;
+      margin: 0 auto;
     }
   }
 
@@ -62,4 +77,18 @@ body {
     position: absolute;
   }
 
+}
+
+// utility
+.label-margin {
+  margin: 20px 0;
+}
+
+// components
+.color-input {
+  display: flex;
+  .el-input {
+    margin-right: 20px;
+    width: 100px;
+  }
 }

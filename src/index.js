@@ -25,12 +25,15 @@ var app = new Vue({
     // Settings Components
     frame_val: '',                // { String } - value indicating type of frame from select
     frame_color: defaultColors,   // { Object } - hex property primarily used
+    frame_color_input: '#B3DAE5', // { String } - hex for input
     
     mesh_val: '',                 // { String } - value indicating type of mesh from select
     mesh_color: defaultColors,    // { Object } - hex property primarily used
+    mesh_color_input: '#B3DAE5',  // { String } - hex for input
     
     badge_val: '',                // { String } - value indicating type of badge from select
     badge_color: defaultColors,   // { Object } - hex property primarily used
+    badge_color_input: '',        // { String } - hex for input
 
     server_size: 0,               // { Number } - 0 unassigned, 1 for 1U, 2 for 2U
 
@@ -54,6 +57,16 @@ var app = new Vue({
       for (var i in this.frame._objects) {
         this.frame.item(i).set('fill', this.frame_color.hex);
       }
+      this.frame_color_input = this.frame_color.hex;
+      this.canvas.renderAll();
+    },
+    frame_color_input(val) {
+      if (val.length == 7 && val[0] == '#') {
+        for (var i in this.frame._objects) {
+          this.frame.item(i).set('fill', this.frame_color_input);
+        }
+      }
+      this.frame_color.hex = this.frame_color_input;
       this.canvas.renderAll();
     },
     frame_val(val) {
@@ -90,6 +103,16 @@ var app = new Vue({
       for (var i in this.mesh._objects) {
         this.mesh.item(i).set('fill', this.mesh_color.hex);
       }
+      this.mesh_color_input = this.mesh_color.hex;
+      this.canvas.renderAll();
+    },
+    mesh_color_input(val) {
+      if (val.length == 7 && val[0] == '#') {
+        for (var i in this.mesh._objects) {
+          this.mesh.item(i).set('fill', this.mesh_color_input);
+        }
+      }
+      this.mesh_color.hex = this.mesh_color_input;
       this.canvas.renderAll();
     },
     mesh_val(val) {
