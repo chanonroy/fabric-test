@@ -20,8 +20,8 @@ var app = new Vue({
     // General Settings
     step: 1,                      // { Number } - for keeping order of app progress (e.g., 1, 2, 3, 4)
     loading: false,               // { Boolean } - to trigger loading icon
-    canvas_height: 120,           // { Number } - canvas height
-    canvas_width: 565,            // { Number } - canvas width
+    canvas_height: 135,           // { Number } - canvas height
+    canvas_width: 661,            // { Number } - canvas width
     
     // Settings Components
     frame_val: '',                // { String } - value indicating type of frame from select
@@ -129,6 +129,11 @@ var app = new Vue({
             app.canvas.remove(app.mesh);
             app.mesh_cache[val] = fabric.util.groupSVGElements(objects, options);
             app.mesh = app.mesh_cache[val];
+          
+            if (app.server_size == '2') {
+              app.mesh.set({ height: app.mesh.height - 15 })
+            }
+
             app.setup_mesh();
           }
         );

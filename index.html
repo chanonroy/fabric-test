@@ -135,11 +135,11 @@
           <progress-bar active="3"></progress-bar>
 
          <h2 class="flex-center"> Place Your Logo <i v-if="loading" class="el-icon-loading"></i> </h2>
-         <h2> 
+         <!-- <h2> 
            y: {{ Math.round(badge.top) }} 
            x: {{ Math.round(badge.left) }} 
            angle: {{ Math.round(badge.angle) }} 
-         </h2>
+         </h2> -->
 
         <div style="margin: 20px 0;">
             <el-button v-if="step > 1" v-on:click="step -= 1">Back</el-button> 
@@ -149,7 +149,7 @@
       </div>
 
       <div class="preview-container" v-show="step !== 3">
-        <img src="assets/server.jpg" alt="server">
+        <img src="assets/server_crop.jpg" alt="server">
         <canvas id="c"></canvas>
       </div>
 
