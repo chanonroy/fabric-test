@@ -95,6 +95,10 @@ var app = new Vue({
         });
 
         app.canvas.add(app.frame);
+        if (app.badge) {
+          app.canvas.remove(app.badge); 
+          app.canvas.add(app.badge); 
+        }
         app.canvas.renderAll();
         app.loading = false;
       });
@@ -137,6 +141,7 @@ var app = new Vue({
           }
         );
       } // - else
+
     },
     badge_color() {
       this.badge_color_input = this.badge_color.hex;
@@ -180,7 +185,9 @@ var app = new Vue({
       if (this.badge_photo) { this.logo_canvas.add(this.badge_photo); }
 
       // Reload onto main canvas
-      this.save_badge();
+      if (this.badge_photo) {
+        this.save_badge();
+      }
     },
   },
   methods: {
@@ -214,6 +221,10 @@ var app = new Vue({
       app.canvas.remove(app.frame);
       app.canvas.add(app.mesh);
       app.canvas.add(app.frame);
+      if (app.badge) {
+        app.canvas.remove(app.badge); 
+        app.canvas.add(app.badge); 
+      }
       app.canvas.renderAll();
       app.loading = false;
     },
@@ -248,7 +259,7 @@ var app = new Vue({
     this.canvas.backgroundColor="rgba(0, 0, 0, 0)";
     this.canvas.setHeight(this.canvas_height);
     this.canvas.setWidth(this.canvas_width);
-    this.canvas.preserveObjectStacking = true;
+    // this.canvas.preserveObjectStacking = true;
 
     canvas_prevent_overfill(this.canvas);
 
