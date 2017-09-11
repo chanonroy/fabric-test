@@ -77,7 +77,7 @@
             <div> Please go back and select a frame </div>
           </div>
 
-          <div v-show="mesh_val" class="step__title">
+          <div v-show="mesh_val && mesh_val !== 'none'" class="step__title">
             <h2 class="label-margin"> Pick a Mesh Color </h2>
             <div class="color-input">
               <el-input v-model="mesh_color_input"></el-input>
@@ -104,7 +104,7 @@
             <el-col :lg="4"><el-radio class="badge" v-model="badge_val" label="none"> No Logo </el-radio></el-col>
           </el-row>
           
-          <div v-show="badge_val">
+          <div v-show="badge_val && badge_val !== 'none'">
             <h2 class="step__title"> Upload Your Logo  </h2>
 
             <div>
@@ -121,7 +121,7 @@
             </div>
           </div>
 
-          <div v-show="badge_val" class="step__title">
+          <div v-show="badge_val && badge_val !== 'none'" class="step__title">
               <h2 class="label-margin"> Choose a Background Color </h2>
               <div class="color-input">
                 <el-input v-model="badge_color_input"></el-input>

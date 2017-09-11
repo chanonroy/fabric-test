@@ -120,6 +120,11 @@ var app = new Vue({
     mesh_val(val) {
       var app = this;
 
+      if (val == 'none') {
+        app.canvas.remove(app.mesh);
+        return;
+      }
+
       if (app.mesh_cache[val] !== '') {
         // Cache hit, use mesh cache
         app.canvas.remove(app.mesh);
@@ -156,8 +161,16 @@ var app = new Vue({
     badge_val(val) {
       // Remove old values from logo canvas
       this.logo_canvas.remove(this.badge_base);
-      if (this.badge_photo) { this.logo_canvas.remove(this.badge_photo); }
-      if (this.badge) { this.logo_canvas.remove(this.badge); }
+      this.logo_canvas.remove(this.badge_photo);
+      this.logo_canvas.remove(this.badge);
+
+      console.log(this.logo_canvas);
+
+      if (val == 'none') {
+        app.canvas.remove(app.badge);
+        app.badge = '';
+        return;
+      }
 
       var custom_props = {
         fill: '#B3DAE6',
@@ -192,6 +205,16 @@ var app = new Vue({
     },
   },
   methods: {
+    setup_local_canvas() {
+      // Image Upload and Badge Selection Canvas
+      this.logo_canvas = new fabric.Canvas('logo_canvas');
+      this.logo_canvas.backgroundColor="lightgrey";
+      this.logo_canvas.setHeight(150);
+      this.logo_canvas.setWidth(300);
+      this.logo_canvas.preserveObjectStacking = true;
+      canvas_prevent_overfill(this.logo_canvas);
+
+    },
     clean_logo_canvas() {
       // Remove old Fabric.js canvas objects and replace with new if needed.
 
@@ -279,13 +302,7 @@ var app = new Vue({
     canvas_prevent_overfill(this.canvas);
 
     // Image Upload and Badge Selection Canvas
-    this.logo_canvas = new fabric.Canvas('logo_canvas');
-    this.logo_canvas.backgroundColor="lightgrey";
-    this.logo_canvas.setHeight(150);
-    this.logo_canvas.setWidth(300);
-    this.logo_canvas.preserveObjectStacking = true;
-    
-    canvas_prevent_overfill(this.logo_canvas);
+    this.setup_local_canvas();
 
     var app = this;
 
