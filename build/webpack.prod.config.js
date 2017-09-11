@@ -16,7 +16,7 @@ module.exports = {
 
     output: {
       path: path.join(BASE_DIR, 'dist'),
-      filename: '[name].[hash].js',
+      filename: '[name].js',
       publicPath: '/'
     },
 
@@ -103,9 +103,9 @@ module.exports = {
         template: 'index.html'
       }),
       new ExtractTextPlugin({
-        filename: "css/[name].[contenthash].css",
+        filename: "css/[name].css",
       }),
-      new UglifyJSPlugin()
+      // new UglifyJSPlugin()
     ],
 
 };

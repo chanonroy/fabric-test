@@ -216,7 +216,6 @@ var app = new Vue({
     },
     clean_logo_canvas() {
       // Remove old Fabric.js canvas objects and replace with new if needed.
-
       this.logo_canvas.remove(this.frame);
       this.logo_canvas.remove(this.badge);
 
@@ -253,14 +252,20 @@ var app = new Vue({
     },
     save_badge() {
       var app = this;
-      app.canvas.remove(app.badge);
 
+      // If no photo, don't save it
       if (!this.badge_photo) {
         console.log('No photo, cannot generate badge');
         return;
       }
 
-      var badge_group = new fabric.Group([ this.badge_base, this.badge_photo ]);
+      app.canvas.remove(app.badge);
+
+      // Create clones to not group the objects together
+      var temp_badge_base = fabric.util.object.clone(this.badge_base);
+      var temp_badge_photo = fabric.util.object.clone(this.badge_photo);
+
+      var badge_group = new fabric.Group([ temp_badge_base, temp_badge_photo ]);
       var badge_string = badge_group.toSVG();
 
       new fabric.loadSVGFromString(badge_string, function(objects, options) {

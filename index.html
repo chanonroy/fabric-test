@@ -110,19 +110,20 @@
             <div>
               <div class="step__title">
                 <el-upload
+                  v-if="!badge_photo"
                   action="https://jsonplaceholder.typicode.com/posts/"
                   :show-file-list="false"
                   :on-success="handleUpload"
                   :before-upload="beforeUpload">
                   <el-button type="primary"> Upload Photo </el-button>
                 </el-upload>
+                <el-button v-else @click="remove_photo"> Remove Photo </el-button>
               </div>
               <div class="upload-logo">
                 <canvas id="logo_canvas"></canvas>
               </div>
             </div>
             <div class="flex-center" style="margin-top: 20px;">
-              <el-button @click="remove_photo"> Remove Photo </el-button>
               <el-button @click="save_badge"> Save </el-button>
             </div>
           </div>
