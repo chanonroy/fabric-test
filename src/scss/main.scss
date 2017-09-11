@@ -55,6 +55,13 @@ body {
     }
   }
 
+  .upload-logo {
+    .canvas-container {
+      display: block;
+      margin: 0 auto;
+    }
+  }
+
 }
 
 .asset-radio {
@@ -62,6 +69,7 @@ body {
   .el-radio {
     display: flex;
     align-items: center;
+    margin: 10px 0;
     &__input {
       margin-right: 10px;
     }
@@ -111,4 +119,10 @@ body {
 .flex-center {
   display: flex;
   justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

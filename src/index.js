@@ -57,7 +57,6 @@ var app = new Vue({
     badge_photo: '',
     badge_base: '',            
 
-
   },
   watch: { // When these properties from data() change, do the following:
     frame_color() {
@@ -155,7 +154,8 @@ var app = new Vue({
       if (this.badge_photo) { this.logo_canvas.remove(this.badge_photo); }
 
       var custom_props = {
-        fill: 'lightblue'
+        fill: '#B3DAE6',
+        rx: 10
       };
       var default_props = {
         left: 0,
@@ -229,6 +229,8 @@ var app = new Vue({
         app.badge = fabric.util.groupSVGElements(objects, options);
 
         app.badge.set({
+          scaleX: app.canvas.width / app.frame.width + 0.01,
+          scaleY: app.canvas.height / app.frame.height + 0.025,
           selectable: true,
           hasControls: false,
           lockRotation: true,
@@ -253,9 +255,10 @@ var app = new Vue({
     // Image Upload and Badge Selection Canvas
     this.logo_canvas = new fabric.Canvas('logo_canvas');
     this.logo_canvas.backgroundColor="lightgrey";
-    this.logo_canvas.setHeight(100);
-    this.logo_canvas.setWidth(200);
-
+    this.logo_canvas.setHeight(150);
+    this.logo_canvas.setWidth(300);
+    this.logo_canvas.preserveObjectStacking = true;
+    
     canvas_prevent_overfill(this.logo_canvas);
 
     var app = this;

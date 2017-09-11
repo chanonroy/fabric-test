@@ -45,10 +45,9 @@
             </div>
           </div>
 
-          <div class="label-margin">
+          <div class="label-margin flex-center">
               <el-button v-on:click="step += 1" :disabled="frame_val.length == 0">Next</el-button>
-          </div>
-
+          </div>  
       </div>
 
       <div class="step" v-show="step == 2">
@@ -68,6 +67,9 @@
               <el-col :lg="8">
                 <el-radio class="" v-model="mesh_val" :label="server_size + 'u-square'"> <img :src="'dist/fonts/' + server_size + 'u-square.svg'" style="width: 250px;" alt=""> </el-radio>
               </el-col>
+              <el-col :lg="24">
+                <el-radio class="" v-model="mesh_val" :label="none"> No Mesh </el-radio>
+              </el-col>
             </el-row>
           </div>
 
@@ -83,7 +85,7 @@
             </div>
           </div>
 
-          <div class="label-margin">
+          <div class="label-margin flex-center">
               <el-button v-if="step > 1" v-on:click="step -= 1">Back</el-button> 
               <el-button v-if="step < 4" v-on:click="step += 1" :disabled="mesh_val.length == 0">Next</el-button>
           </div>
@@ -92,7 +94,7 @@
       <div class="step" v-show="step == 3">
           <progress-bar active="2"></progress-bar>
 
-          <h2 class="step__title"> Select a Base <i v-if="loading" class="el-icon-loading"></i> </h2>
+          <h2 class="step__title"> Choose a Shape <i v-if="loading" class="el-icon-loading"></i> </h2>
 
           <el-row :gutter="10" class="flex-center">
             <el-col :lg="4"><el-radio class="badge" v-model="badge_val" label="circle"> Circle </el-radio></el-col>
@@ -106,21 +108,27 @@
             <h2 class="step__title"> Upload Your Logo  </h2>
 
             <div>
-              <el-button @click="save_badge"> Save </el-button>
-              <input type="file" id="imgLoader">
-              <canvas id="logo_canvas"></canvas>
+              <div class="step__title">
+                <input type="file" id="imgLoader" style="width: 84px;">
+              </div>
+              <div class="upload-logo">
+                <canvas id="logo_canvas"></canvas>
+              </div>
+            </div>
+            <div class="flex-center" style="margin-top: 20px;">
+              <el-button @click="save_badge"> Save Changes </el-button>
             </div>
           </div>
 
           <div v-show="badge_val" class="step__title">
-              <h2 class="label-margin"> Choose a Badge Color </h2>
+              <h2 class="label-margin"> Choose a Background Color </h2>
               <div class="color-input">
                 <el-input v-model="badge_color_input"></el-input>
                 <slider-picker v-model="badge_color" />
               </div>
           </div>
 
-          <div class="label-margin">
+          <div class="step__title flex-center">
               <el-button v-if="step > 1" v-on:click="step -= 1">Back</el-button> 
               <el-button v-if="step < 4" v-on:click="step += 1" :disabled="badge_val.length == 0">Next</el-button>
           </div>
@@ -141,7 +149,7 @@
            angle: {{ Math.round(badge.angle) }} 
          </h2> -->
 
-        <div style="margin: 20px 0;">
+        <div class="flex-center" style="margin: 20px 0;">
             <el-button v-if="step > 1" v-on:click="step -= 1">Back</el-button> 
             <el-button v-if="step < 4" v-on:click="step += 1" :disabled="badge_val.length == 0">Next</el-button>
         </div>
