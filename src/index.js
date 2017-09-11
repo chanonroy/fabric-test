@@ -153,7 +153,7 @@ var app = new Vue({
     },
     badge_color_input(val) {
       if (val.length == 7 && val[0] == '#') {
-        this.badge_base.set('fill', this.badge_color.hex);
+        this.badge_base.set('fill', this.badge_color_input);
       }
       this.badge_color.hex = this.badge_color_input;
       this.logo_canvas.renderAll();
