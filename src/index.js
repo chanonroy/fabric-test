@@ -42,7 +42,6 @@ var app = new Vue({
     canvas: '',                   // { Object } - canvas Fabric.js obj to be instantiated on mounting Vue.js
     frame: '',                    // { Object } - Fabric.js obj for the frame
     mesh: '',                     // { Object } - Fabric.js obj for the mesh
-    badge: '',                    // { Object } - Fabric.js obj for the badge
     mesh_cache: {                 // { Object } - holds rendered fabric svg groups in cache
       '1u-circle': '',
       '1u-hex': '',
@@ -53,9 +52,10 @@ var app = new Vue({
     },
 
     // Logo Uploading
+    badge: '',                    // { Object } - Fabric.js obj for the badge
     logo_canvas: '',              // { Object } - For configuring the badge
-    badge_photo: '',
-    badge_base: '',            
+    badge_photo: '',              // { Object } = SVG object for the photo object
+    badge_base: '',               // { Object } - SVG object for the base plate
 
   },
   watch: { // When these properties from data() change, do the following:
@@ -157,6 +157,7 @@ var app = new Vue({
       // Remove old values from logo canvas
       this.logo_canvas.remove(this.badge_base);
       if (this.badge_photo) { this.logo_canvas.remove(this.badge_photo); }
+      if (this.badge) { this.logo_canvas.remove(this.badge); }
 
       var custom_props = {
         fill: '#B3DAE6',
@@ -232,7 +233,11 @@ var app = new Vue({
       var app = this;
       app.canvas.remove(app.badge);
 
-      // TODO: account for no badge
+      if (!this.badge_photo) {
+        console.log('No photo, cannot generate badge');
+        return;
+      }
+
       var badge_group = new fabric.Group([ this.badge_base, this.badge_photo ]);
       var badge_string = badge_group.toSVG();
 
@@ -251,6 +256,16 @@ var app = new Vue({
 
         app.canvas.add(app.badge).renderAll();
       });
+    },
+    remove_photo() {
+      var app = this;
+
+      app.canvas.remove(app.badge);
+      app.logo_canvas.remove(app.badge_photo);
+
+      app.badge = '';
+      app.badge_photo = '';
+
     }
   },
   mounted() {
