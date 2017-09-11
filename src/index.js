@@ -4,6 +4,7 @@ import 'element-ui/lib/theme-default/index.css'
 import Progress from './js/components/progress.vue'
 import { Slider } from 'vue-color'
 import { defaultColors } from './js/default_colors'
+import { canvas_prevent_overfill } from './js/utils/canvas_prevent_overfill'
 import './scss/main.scss';
 import './assets/_assets.js';
 
@@ -19,8 +20,8 @@ var app = new Vue({
     // General Settings
     step: 1,                      // { Number } - for keeping order of app progress (e.g., 1, 2, 3, 4)
     loading: false,               // { Boolean } - to trigger loading icon
-    canvas_height: 120,           // { Number } - canvas height
-    canvas_width: 565,            // { Number } - canvas width
+    canvas_height: 135,           // { Number } - canvas height
+    canvas_width: 661,            // { Number } - canvas width
     
     // Settings Components
     frame_val: '',                // { String } - value indicating type of frame from select
@@ -42,14 +43,19 @@ var app = new Vue({
     frame: '',                    // { Object } - Fabric.js obj for the frame
     mesh: '',                     // { Object } - Fabric.js obj for the mesh
     badge: '',                    // { Object } - Fabric.js obj for the badge
-    mesh_cache: {                // { Object } - holds rendered fabric svg groups in cache
+    mesh_cache: {                 // { Object } - holds rendered fabric svg groups in cache
       '1u-circle': '',
       '1u-hex': '',
       '1u-square': '',
       '2u-circle': '',
       '2u-hex': '',
       '2u-square': ''
-    }
+    },
+
+    // Logo Uploading
+    logo_canvas: '',              // { Object } - For configuring the badge
+    badge_photo: '',
+    badge_base: '',            
 
   },
   watch: { // When these properties from data() change, do the following:
@@ -122,6 +128,11 @@ var app = new Vue({
             app.canvas.remove(app.mesh);
             app.mesh_cache[val] = fabric.util.groupSVGElements(objects, options);
             app.mesh = app.mesh_cache[val];
+          
+            if (app.server_size == '2') {
+              app.mesh.set({ height: app.mesh.height - 15 })
+            }
+
             app.setup_mesh();
           }
         );
@@ -130,41 +141,54 @@ var app = new Vue({
     badge_color() {
       this.badge_color_input = this.badge_color.hex;
     },
-    badge_input_color(val) {
+    badge_color_input(val) {
       if (val.length == 7 && val[0] == '#') {
-        this.badge.set('fill', this.badge_color.hex);
+        this.badge_base.set('fill', this.badge_color.hex);
       }
       this.badge_color.hex = this.badge_color_input;
-      this.canvas.renderAll();
+      this.logo_canvas.renderAll();
     },
     badge_val(val) {
+      // Remove old values from logo canvas
+      this.logo_canvas.remove(this.badge_base);
+      if (this.badge_photo) { this.logo_canvas.remove(this.badge_photo); }
 
-      // Currently creates a new one every click
-      this.badge = new fabric.Rect({
+      var custom_props = {
+        fill: '#B3DAE6',
+        rx: 10
+      };
+      var default_props = {
         left: 0,
         top: 0,
-        fill: 'red',
-        angle: 0,
-        width: 50,
-        height: 50,
-        opacity: 1,
-        selectable: true,
+        width: this.logo_canvas.width,
+        height: this.logo_canvas.height,
+        selectable: false,
         hasControls: false,
         lockRotation: true,
         lockScalingX: true,
         lockScalingY: true,
-        hoverCursor: 'move'
-      })
+        hasBorders: false,
+        hoverCursor: 'default'
+      };
 
-      this.clean_canvas();
-    }
+      // Build necessary properties for base
+      var concat_props = Object.assign({}, default_props, custom_props);
+      this.badge_base = new fabric.Rect(concat_props);
+
+      // Add elements back to canvas
+      this.logo_canvas.add(this.badge_base);
+      if (this.badge_photo) { this.logo_canvas.add(this.badge_photo); }
+
+      // Reload onto main canvas
+      this.save_badge();
+    },
   },
   methods: {
-    clean_canvas() {
+    clean_logo_canvas() {
       // Remove old Fabric.js canvas objects and replace with new if needed.
 
-      this.canvas.remove(this.frame);
-      this.canvas.remove(this.badge);
+      this.logo_canvas.remove(this.frame);
+      this.logo_canvas.remove(this.badge);
 
       if (this.frame) { this.canvas.add(this.frame); }
       if (this.badge) { this.canvas.add(this.badge); }
@@ -192,35 +216,83 @@ var app = new Vue({
       app.canvas.add(app.frame);
       app.canvas.renderAll();
       app.loading = false;
+    },
+    save_badge() {
+      var app = this;
+      app.canvas.remove(app.badge);
+
+      // TODO: account for no badge
+      var badge_group = new fabric.Group([ this.badge_base, this.badge_photo ]);
+      var badge_string = badge_group.toSVG();
+
+      new fabric.loadSVGFromString(badge_string, function(objects, options) {
+        app.badge = fabric.util.groupSVGElements(objects, options);
+
+        app.badge.set({
+          scaleX: app.canvas.width / app.frame.width + 0.01,
+          scaleY: app.canvas.height / app.frame.height + 0.025,
+          selectable: true,
+          hasControls: false,
+          lockRotation: true,
+          lockScalingX: true,
+          lockScalingY: true,
+        })
+
+        app.canvas.add(app.badge).renderAll();
+      });
     }
   },
   mounted() {
-    // Initialize canvas as fabric
+    // Server Preview Canvas
     this.canvas = new fabric.Canvas('c');
     this.canvas.backgroundColor="rgba(0, 0, 0, 0)";
     this.canvas.setHeight(this.canvas_height);
     this.canvas.setWidth(this.canvas_width);
     this.canvas.preserveObjectStacking = true;
 
-    this.canvas.on('object:moving', function (e) {
-      // Prevent object from leaving canvas
+    canvas_prevent_overfill(this.canvas);
 
-      var obj = e.target;
-       // if object is too big ignore
-      if(obj.currentHeight > obj.canvas.height || obj.currentWidth > obj.canvas.width){
-          return;
-      }        
-      obj.setCoords();        
-      // top-left  corner
-      if(obj.getBoundingRect().top < 0 || obj.getBoundingRect().left < 0){
-          obj.top = Math.max(obj.top, obj.top-obj.getBoundingRect().top);
-          obj.left = Math.max(obj.left, obj.left-obj.getBoundingRect().left);
+    // Image Upload and Badge Selection Canvas
+    this.logo_canvas = new fabric.Canvas('logo_canvas');
+    this.logo_canvas.backgroundColor="lightgrey";
+    this.logo_canvas.setHeight(150);
+    this.logo_canvas.setWidth(300);
+    this.logo_canvas.preserveObjectStacking = true;
+    
+    canvas_prevent_overfill(this.logo_canvas);
+
+    var app = this;
+
+    // Image Uploading
+    document.getElementById('imgLoader').onchange = function handleImage(e) {
+      // https://stackoverflow.com/questions/44745476/is-there-a-way-to-import-an-image-file-using-fabric-js
+      var reader = new FileReader();
+      reader.readAsDataURL(e.target.files[0]);
+      reader.onload = function (event) {
+          var fileType = e.target.files[0].type
+          var url = URL.createObjectURL(e.target.files[0]);
+
+          if (fileType === 'image/svg+xml') {
+            fabric.loadSVGFromURL(url, function(objects, options) {
+              var badge_logo = fabric.util.groupSVGElements(objects, options);
+              badge_logo.scaleToWidth(app.logo_canvas.width / 2);
+              badge_logo.scaleToHeight(app.logo_canvas.height / 2);
+
+              app.badge_photo = badge_logo;
+              app.logo_canvas.add(app.badge_photo);
+              app.logo_canvas.renderAll();
+           });
+          } else {
+            app.$message({
+              message: 'Incorrect upload format. SVG only',
+              type: 'error'
+            })
+            return;
+          }
       }
-      // bot-right corner
-      if(obj.getBoundingRect().top+obj.getBoundingRect().height > obj.canvas.height || obj.getBoundingRect().left+obj.getBoundingRect().width  > obj.canvas.width){
-          obj.top = Math.min(obj.top, obj.canvas.height-obj.getBoundingRect().height+obj.top-obj.getBoundingRect().top);
-          obj.left = Math.min(obj.left, obj.canvas.width-obj.getBoundingRect().width+obj.left-obj.getBoundingRect().left);
-      }
-    });
+    }
+
+
+
   },
 })

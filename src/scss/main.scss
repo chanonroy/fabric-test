@@ -55,6 +55,13 @@ body {
     }
   }
 
+  .upload-logo {
+    .canvas-container {
+      display: block;
+      margin: 0 auto;
+    }
+  }
+
 }
 
 .asset-radio {
@@ -62,6 +69,7 @@ body {
   .el-radio {
     display: flex;
     align-items: center;
+    margin: 10px 0;
     &__input {
       margin-right: 10px;
     }
@@ -73,22 +81,24 @@ body {
   margin-top: 10px !important;
 }
 
-.canvas-container {
-  position: absolute !important;
-  top: 42%;
-  left: 20.7%;
-}
-
 .preview {
 
   &-container {
     position: relative; 
     margin: 10px 0;
+
+    .canvas-container {
+      position: absolute !important;
+      top: 33%;
+      left: 16%;
+    }
+
     img {
       display: block;
       width: 812px;
       margin: 0 auto;
     }
+
   }
 
   canvas {
@@ -104,4 +114,15 @@ body {
 // utility
 .label-margin {
   margin: 20px 0;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
