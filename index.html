@@ -109,15 +109,21 @@
 
             <div>
               <div class="step__title">
-                <input type="file" id="imgLoader" style="width: 80px;">
+                <el-upload
+                  action="https://jsonplaceholder.typicode.com/posts/"
+                  :show-file-list="false"
+                  :on-success="handleUpload"
+                  :before-upload="beforeUpload">
+                  <el-button type="primary"> Upload Photo </el-button>
+                </el-upload>
               </div>
               <div class="upload-logo">
                 <canvas id="logo_canvas"></canvas>
               </div>
             </div>
             <div class="flex-center" style="margin-top: 20px;">
-              <el-button @click="save_badge"> Save </el-button>
               <el-button @click="remove_photo"> Remove Photo </el-button>
+              <el-button @click="save_badge"> Save </el-button>
             </div>
           </div>
 

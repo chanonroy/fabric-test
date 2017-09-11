@@ -163,8 +163,7 @@ var app = new Vue({
       this.logo_canvas.remove(this.badge_base);
       this.logo_canvas.remove(this.badge_photo);
       this.logo_canvas.remove(this.badge);
-
-      console.log(this.logo_canvas);
+      this.badge_photo = '';
 
       if (val == 'none') {
         app.canvas.remove(app.badge);
@@ -196,10 +195,10 @@ var app = new Vue({
 
       // Add elements back to canvas
       this.logo_canvas.add(this.badge_base);
-      if (this.badge_photo) { this.logo_canvas.add(this.badge_photo); }
-
-      // Reload onto main canvas
-      if (this.badge_photo) {
+      
+      // A photo exists
+      if (this.badge_photo !== '') { 
+        this.logo_canvas.add(this.badge_photo); 
         this.save_badge();
       }
     },
@@ -289,6 +288,32 @@ var app = new Vue({
       app.badge = '';
       app.badge_photo = '';
 
+    },
+    beforeUpload(file) {
+      const isSVG = file.type === 'image/svg+xml';
+      if (!isSVG) {
+        this.$message.error('Invalid upload. Must be in SVG format.');
+        return false;
+      }
+    },
+    handleUpload(res, file) {
+      var app = this;
+
+      var reader = new FileReader();
+      reader.readAsDataURL(file.raw);
+      reader.onload = function (event) {
+        var url = URL.createObjectURL(file.raw);
+
+          fabric.loadSVGFromURL(url, function(objects, options) {
+            var badge_logo = fabric.util.groupSVGElements(objects, options);
+            badge_logo.scaleToWidth(app.logo_canvas.width / 2);
+            badge_logo.scaleToHeight(app.logo_canvas.height / 2);
+
+            app.badge_photo = badge_logo;
+            app.logo_canvas.add(app.badge_photo);
+            app.logo_canvas.renderAll();
+         });
+      }
     }
   },
   mounted() {
@@ -303,39 +328,6 @@ var app = new Vue({
 
     // Image Upload and Badge Selection Canvas
     this.setup_local_canvas();
-
-    var app = this;
-
-    // Image Uploading
-    document.getElementById('imgLoader').onchange = function handleImage(e) {
-      // https://stackoverflow.com/questions/44745476/is-there-a-way-to-import-an-image-file-using-fabric-js
-      var reader = new FileReader();
-      reader.readAsDataURL(e.target.files[0]);
-      reader.onload = function (event) {
-          var fileType = e.target.files[0].type
-          var url = URL.createObjectURL(e.target.files[0]);
-
-          if (fileType === 'image/svg+xml') {
-            fabric.loadSVGFromURL(url, function(objects, options) {
-              var badge_logo = fabric.util.groupSVGElements(objects, options);
-              badge_logo.scaleToWidth(app.logo_canvas.width / 2);
-              badge_logo.scaleToHeight(app.logo_canvas.height / 2);
-
-              app.badge_photo = badge_logo;
-              app.logo_canvas.add(app.badge_photo);
-              app.logo_canvas.renderAll();
-           });
-          } else {
-            app.$message({
-              message: 'Incorrect upload format. SVG only',
-              type: 'error'
-            })
-            return;
-          }
-      }
-    }
-
-
 
   },
 })
