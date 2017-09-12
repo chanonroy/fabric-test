@@ -12,28 +12,32 @@
    <body>
      <div id="app" class="container" v-cloak>
 
+      <h1 class="main-title"> Start building your brand <i v-if="loading" class="el-icon-loading"></i> </h1> 
+
+      <el-row class="nav">
+          <el-col :lg="6"> <div class="nav__item" :class="{ active: step == 1 }" @click="step = 1"> PICK YOUR FRAME </div> </el-col>
+          <el-col :lg="6"> <div class="nav__item" :class="{ active: step == 2 }" @click="step = 2"> ADD YOUR MESH </div> </el-col>
+          <el-col :lg="6"> <div class="nav__item" :class="{ active: step == 3 }" @click="step = 3"> ADD YOUR LOGO </div> </el-col>
+          <el-col :lg="6"> <div class="nav__item" :class="{ active: step == 4 }" @click="step = 4"> PICK YOUR COLORS </div> </el-col>
+      </el-row>
+
       <div class="step" v-show="step == 1">
-          <progress-bar active="0"></progress-bar>
 
-          <h2 class="step__title"> Select Your Frame <i v-if="loading" class="el-icon-loading"></i> </h2>  
-
-          <div class="label-margin"> 1U Options </div>
-          <el-row :gutter="10" class="asset-radio">
+          <el-row :gutter="50" class="asset-radio">
             <el-col :lg="12">
-                <el-radio class="" v-model="frame_val" label="1u-rectangle"> <img src="dist/fonts/1u-rectangle.svg" style="width: 400px;" alt=""> </el-radio>                
+                <el-radio class="" v-model="frame_val" label="1u-rectangle"> <img src="dist/fonts/1u-rectangle.svg" style="width: 100%;" alt=""> </el-radio>                
             </el-col>  
             <el-col :lg="12">         
-                <el-radio class="" v-model="frame_val" label="1u-dogbone"> <img src="dist/fonts/1u-dogbone.svg" style="width: 400px;" alt=""> </el-radio>
+                <el-radio class="" v-model="frame_val" label="1u-dogbone"> <img src="dist/fonts/1u-dogbone.svg" style="width: 100%" alt=""> </el-radio>
             </el-col>
           </el-row>
           
-          <div class="label-margin"> 2U Options </div>
-          <el-row :gutter="10" class="asset-radio">
+          <el-row :gutter="50" class="asset-radio">
             <el-col :lg="12">
-              <el-radio class="" v-model="frame_val" label="2u-rectangle"> <img src="dist/fonts/2u-rectangle.svg" style="width: 400px;" alt=""> </el-radio>
+              <el-radio class="" v-model="frame_val" label="2u-rectangle"> <img src="dist/fonts/2u-rectangle.svg" style="width: 100%;" alt=""> </el-radio>
             </el-col>
             <el-col :lg="12">
-              <el-radio class="" v-model="frame_val" label="2u-dogbone"> <img src="dist/fonts/2u-dogbone.svg" style="width: 400px;" alt=""> </el-radio>
+              <el-radio class="" v-model="frame_val" label="2u-dogbone"> <img src="dist/fonts/2u-dogbone.svg" style="width: 100%;" alt=""> </el-radio>
             </el-col>
           </el-row>
 
@@ -45,37 +49,25 @@
             </div>
           </div>
 
-          <div class="label-margin flex-center">
-              <el-button v-on:click="step += 1" :disabled="frame_val.length == 0">Next</el-button>
-          </div>  
       </div>
 
       <div class="step" v-show="step == 2">
-          <progress-bar active="1"></progress-bar>
 
-          <h2 class="step__title"> Select a Mesh <i v-if="loading" class="el-icon-loading"></i> </h2>
-
-          <div v-if="server_size > 0"> 
-            <div class="label-margin"> {{ server_size }}U mesh is available in partial or full coverage options </div> 
-            <el-row :gutter="10" class="asset-radio">
-              <el-col :lg="8">
-                <el-radio class="" v-model="mesh_val" :label="server_size + 'u-circle'"> <img :src="'dist/fonts/' + server_size + 'u-circle.svg'" style="width: 250px;" alt=""> </el-radio>
-              </el-col>
-              <el-col :lg="8">
-                <el-radio class="" v-model="mesh_val" :label="server_size + 'u-hex'"> <img :src="'dist/fonts/' + server_size + 'u-hex.svg'" style="width: 250px;" alt=""> </el-radio>
-              </el-col>
-              <el-col :lg="8">
-                <el-radio class="" v-model="mesh_val" :label="server_size + 'u-square'"> <img :src="'dist/fonts/' + server_size + 'u-square.svg'" style="width: 250px;" alt=""> </el-radio>
-              </el-col>
-              <el-col :lg="24">
-                <el-radio class="" v-model="mesh_val" label="none"> No Mesh </el-radio>
-              </el-col>
-            </el-row>
-          </div>
-
-          <div v-if="server_size == 0">
-            <div> Please go back and select a frame </div>
-          </div>
+          <div class="label-margin"> {{ server_size }}U mesh is available in partial or full coverage options </div> 
+          <el-row :gutter="10" class="asset-radio">
+            <el-col :lg="8">
+              <el-radio class="" v-model="mesh_val" :label="server_size + 'u-circle'"> <img :src="'dist/fonts/' + server_size + 'u-circle.svg'" style="width: 250px;" alt=""> </el-radio>
+            </el-col>
+            <el-col :lg="8">
+              <el-radio class="" v-model="mesh_val" :label="server_size + 'u-hex'"> <img :src="'dist/fonts/' + server_size + 'u-hex.svg'" style="width: 250px;" alt=""> </el-radio>
+            </el-col>
+            <el-col :lg="8">
+              <el-radio class="" v-model="mesh_val" :label="server_size + 'u-square'"> <img :src="'dist/fonts/' + server_size + 'u-square.svg'" style="width: 250px;" alt=""> </el-radio>
+            </el-col>
+            <el-col :lg="24">
+              <el-radio class="" v-model="mesh_val" label="none"> No Mesh </el-radio>
+            </el-col>
+          </el-row>
 
           <div v-show="mesh_val && mesh_val !== 'none'" class="step__title">
             <h2 class="label-margin"> Pick a Mesh Color </h2>
@@ -85,14 +77,9 @@
             </div>
           </div>
 
-          <div class="label-margin flex-center">
-              <el-button v-if="step > 1" v-on:click="step -= 1">Back</el-button> 
-              <el-button v-if="step < 4" v-on:click="step += 1" :disabled="mesh_val.length == 0">Next</el-button>
-          </div>
       </div>
 
       <div class="step" v-show="step == 3">
-          <progress-bar active="2"></progress-bar>
 
           <h2 class="step__title"> Choose a Shape <i v-if="loading" class="el-icon-loading"></i> </h2>
 
@@ -141,14 +128,9 @@
               <el-button v-if="step < 4" v-on:click="step += 1" :disabled="badge_val.length == 0">Next</el-button>
           </div>
 
-          <div class="preview-container" v-show="step === 3">
-            <canvas id="badge_only"></canvas>
-          </div>
-
       </div>
 
       <div class="step" v-show="step == 4">
-          <progress-bar active="3"></progress-bar>
 
          <h2 class="flex-center"> Place Your Logo <i v-if="loading" class="el-icon-loading"></i> </h2>
          <!-- <h2> 

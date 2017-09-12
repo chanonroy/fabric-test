@@ -1,0 +1,104 @@
+// Main title
+.main-title {
+    color: $color-green;
+    font-weight: 400;
+    padding: 40px 0;
+    text-align: center;
+}
+
+.nav {
+    &__item {
+        text-align: center;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        border: 2px solid transparent;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        &:hover {
+            color: $color-green;
+        }
+        &.active {
+            font-weight: bold;
+            border: 2px solid $color-green;
+            border-bottom: 2px solid transparent;
+            color: $color-green;
+        }
+    }
+}
+
+// Everything within a step
+.step {
+    padding: 40px;
+    border: 1.5px solid $color-green;
+
+    &__title {
+      text-align: center;
+      margin: 30px 0;
+    }
+  
+    .color-input {
+      display: flex;
+      justify-content: center;
+      .el-input {
+        margin-right: 20px;
+        width: 100px;
+      }
+    }
+  
+    .upload-logo {
+      .canvas-container {
+        display: block;
+        margin: 0 auto;
+      }
+    }
+  
+  }
+
+// Radio buttons on the form input
+.asset-radio {
+
+    .el-radio {
+        display: flex;
+        align-items: center;
+        margin: 10px 0;
+        &__input {
+            margin-right: 10px;
+        }
+    }
+}
+
+// Color Slider
+.vc-slider-swatches {
+    margin-top: 10px !important;
+}
+
+// Canvas Containers
+.preview {
+    
+    &-container {
+    position: relative; 
+    margin: 40px 0;
+
+    .canvas-container {
+        position: absolute !important;
+        top: 33%;
+        left: 16%;
+    }
+
+    img {
+        display: block;
+        width: 812px;
+        margin: 0 auto;
+    }
+
+    }
+
+    canvas {
+    position: absolute;
+    }
+
+    img {
+    position: absolute;
+    }
+
+}

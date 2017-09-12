@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
-import Progress from './js/components/progress.vue'
 import { Slider } from 'vue-color'
 import { defaultColors } from './js/default_colors'
 import { canvas_prevent_overfill } from './js/utils/canvas_prevent_overfill'
@@ -14,7 +13,6 @@ var app = new Vue({
   el: '#app',
   components: {
     'slider-picker': Slider,      // Color slider from vue-color
-    'progress-bar': Progress      // Custom Vue component for showing steps
   },
   data: {
     // General Settings
@@ -36,7 +34,7 @@ var app = new Vue({
     badge_color: defaultColors,   // { Object } - hex property primarily used
     badge_color_input: '#B3DAE5', // { String } - hex for input
 
-    server_size: 0,               // { Number } - 0 unassigned, 1 for 1U, 2 for 2U
+    server_size: 2,               // { Number } - 0 unassigned, 1 for 1U, 2 for 2U
 
     // Fabric.js Canvas Objects
     canvas: '',                   // { Object } - canvas Fabric.js obj to be instantiated on mounting Vue.js
