@@ -2,3 +2,12 @@
 .el-icon-loading {
     color: lightgrey;
 }
+
+.el-radio__input.is-checked .el-radio__inner {
+    border-color: darken(lightgrey, 15%);
+    background: darken(lightgrey, 15%);
+}
+
+.el-radio__inner:hover {
+    border-color: grey; 
+}

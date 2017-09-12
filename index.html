@@ -21,6 +21,7 @@
           <el-col :lg="6"> <div class="nav__item" :class="{ active: step == 4 }" @click="step = 4"> PICK YOUR COLORS </div> </el-col>
       </el-row>
 
+      <!-- Pick Frame -->
       <div class="step" v-show="step == 1">
 
           <el-row :gutter="50" class="asset-radio">
@@ -41,16 +42,13 @@
             </el-col>
           </el-row>
 
-          <div v-show="frame_val" class="step__title">
-            <h2 class="label-margin"> Pick a Frame Color </h2>
-            <div class="color-input">
-              <el-input v-model="frame_color_input"></el-input>
-              <slider-picker v-model="frame_color" />
-            </div>
+          <div class="step__footer">
+            <el-button icon="close"> Start Over </el-button>
           </div>
 
       </div>
 
+      <!-- Add Mesh -->
       <div class="step" v-show="step == 2">
 
           <div class="label-margin"> {{ server_size }}U mesh is available in partial or full coverage options </div> 
@@ -69,16 +67,13 @@
             </el-col>
           </el-row>
 
-          <div v-show="mesh_val && mesh_val !== 'none'" class="step__title">
-            <h2 class="label-margin"> Pick a Mesh Color </h2>
-            <div class="color-input">
-              <el-input v-model="mesh_color_input"></el-input>
-              <slider-picker v-model="mesh_color" />
+          <div class="step__footer">
+              <el-button icon="close"> Start Over </el-button>
             </div>
-          </div>
 
       </div>
 
+      <!-- Add Logo -->
       <div class="step" v-show="step == 3">
 
           <h2 class="step__title"> Choose a Shape <i v-if="loading" class="el-icon-loading"></i> </h2>
@@ -128,20 +123,34 @@
               <el-button v-if="step < 4" v-on:click="step += 1" :disabled="badge_val.length == 0">Next</el-button>
           </div>
 
+          <div class="step__footer">
+            <el-button icon="close"> Start Over </el-button>
+          </div>
+
       </div>
 
+      <!-- Pick Colors -->
       <div class="step" v-show="step == 4">
 
-         <h2 class="flex-center"> Place Your Logo <i v-if="loading" class="el-icon-loading"></i> </h2>
-         <!-- <h2> 
-           y: {{ Math.round(badge.top) }} 
-           x: {{ Math.round(badge.left) }} 
-           angle: {{ Math.round(badge.angle) }} 
-         </h2> -->
+        
+        <div v-show="frame_val">
+          <h2 class="label-margin"> Pick a Frame Color </h2>
+          <div class="color-input">
+            <el-input v-model="frame_color_input"></el-input>
+            <slider-picker v-model="frame_color" />
+          </div>
+        </div>
 
-        <div class="flex-center" style="margin: 20px 0;">
-            <el-button v-if="step > 1" v-on:click="step -= 1">Back</el-button> 
-            <el-button v-if="step < 4" v-on:click="step += 1" :disabled="badge_val.length == 0">Next</el-button>
+        <div v-show="mesh_val && mesh_val !== 'none'">
+          <h2 class="label-margin"> Pick a Mesh Color </h2>
+          <div class="color-input">
+            <el-input v-model="mesh_color_input"></el-input>
+            <slider-picker v-model="mesh_color" />
+          </div>
+        </div>
+
+        <div class="step__footer">
+          <el-button icon="close"> Start Over </el-button>
         </div>
 
       </div>

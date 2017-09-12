@@ -28,7 +28,7 @@
 
 // Everything within a step
 .step {
-    padding: 40px;
+    padding: 45px;
     border: 1.5px solid $color-green;
 
     &__title {
@@ -38,7 +38,6 @@
   
     .color-input {
       display: flex;
-      justify-content: center;
       .el-input {
         margin-right: 20px;
         width: 100px;
@@ -51,6 +50,17 @@
         margin: 0 auto;
       }
     }
+
+    &__footer {
+        margin-top: 20px;
+        text-align: right;
+        button:hover,
+        button:active,
+        button:focus {
+            color: $color-green;
+            border-color: $color-green;
+        }
+    }
   
   }
 
@@ -60,7 +70,7 @@
     .el-radio {
         display: flex;
         align-items: center;
-        margin: 10px 0;
+        margin-bottom: 30px;
         &__input {
             margin-right: 10px;
         }
