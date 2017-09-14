@@ -25,7 +25,7 @@ var app = new Vue({
     // Settings Components
     frame_val: '',                // { String } - value indicating type of frame from select
     frame_color: defaultColors,   // { Object } - hex property primarily used
-    frame_color_input: '#B3DAE5', // { String } - hex for input
+    frame_color_input: '#FFFFFF', // { String } - hex for input
     
     mesh_val: '',                 // { String } - value indicating type of mesh from select
     mesh_color: defaultColors,    // { Object } - hex property primarily used
@@ -85,7 +85,7 @@ var app = new Vue({
         app.frame = fabric.util.groupSVGElements(objects, options);
 
         for (var i in app.frame._objects) {
-          app.frame.item(i).set('fill', app.frame_color.hex);
+          app.frame.item(i).set('fill', app.frame_color_input);
         }
 
         app.frame.set({
