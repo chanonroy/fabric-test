@@ -1,5 +1,6 @@
 // Main title
 .main-title {
+    position: relative;
     color: $color-green;
     font-weight: 400;
     padding: 40px 0;
@@ -26,6 +27,11 @@
     }
 }
 
+.loading-circle {
+    position: absolute;
+    right: 0;
+}
+
 // Everything within a step
 .step {
     padding: 45px;
@@ -47,18 +53,20 @@
     .upload-logo {
       .canvas-container {
         display: block;
-        margin: 0 auto;
+        margin: 0 0 0 auto;
       }
     }
 
     &__footer {
         margin-top: 20px;
         text-align: right;
-        button:hover,
-        button:active,
-        button:focus {
+        button:hover {
             color: $color-green;
             border-color: $color-green;
+        }
+        button:focus {
+            color: $color-black;
+            border-color: $color-grey;
         }
     }
   
@@ -77,9 +85,23 @@
     }
 }
 
+.badge-radio {
+    .el-col {
+        margin-bottom: 15px;
+    }
+}
+
 // Color Slider
 .vc-slider-swatches {
     margin-top: 10px !important;
+}
+
+// Containers
+.badge-buttons {
+    width: 50%;
+}
+.badge-preview {
+    width: 50%;
 }
 
 // Canvas Containers

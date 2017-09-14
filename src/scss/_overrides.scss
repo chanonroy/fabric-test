@@ -11,3 +11,23 @@
 .el-radio__inner:hover {
     border-color: grey; 
 }
+
+// Buttons
+.el-button.el-button--primary {
+    background-color: $color-green;
+    border-color: $color-green;
+    &:hover {
+        background-color: lighten($color-green, 5%);
+    }
+}
+
+.el-button.el-button--default {
+    &:focus {
+        color: $color-black;
+        border-color: $color-grey;
+    }
+    &:hover {
+        color: $color-green;
+        border-color: $color-green;
+    }
+}
