@@ -1,6 +1,7 @@
+import './1u-server.png';
+import './2u-server.png';
 import './server-icon.png';
 import './server_crop.jpg';
-import './server.jpg';
 
 import './frames/1U/1u-dogbone.svg';
 import './frames/1U/1u-rectangle.svg';

@@ -109,19 +109,18 @@
     
     &-container {
     position: relative; 
-    margin: 40px 0;
+    margin: 20px 0;
 
-    .canvas-container {
-        position: absolute !important;
-        top: 33%;
-        left: 16%;
-    }
+        .canvas-container {
+            position: absolute !important;
+            top: 44%;
+            left: 8.2%;
+        }
 
-    img {
-        display: block;
-        width: 812px;
-        margin: 0 auto;
-    }
+        img {
+            display: block;
+            width: 730px;
+        }
 
     }
 
@@ -133,11 +132,18 @@
     position: absolute;
     }
 
+    &-buttons {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        padding-bottom: 30px;
+    }
+
 }
 
 .color-input {
     margin-bottom: 20px;
     .vc-slider {
-        width: 100%;
+        width: 75%;
     }
 }

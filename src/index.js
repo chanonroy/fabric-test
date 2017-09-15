@@ -19,8 +19,8 @@ var app = new Vue({
     // General Settings
     step: 1,                      // { Number } - for keeping order of app progress (e.g., 1, 2, 3, 4)
     loading: false,               // { Boolean } - to trigger loading icon
-    canvas_height: 135,           // { Number } - canvas height
-    canvas_width: 661,            // { Number } - canvas width
+    canvas_height: 114,           // { Number } - canvas height
+    canvas_width: 573,            // { Number } - canvas width
     
     // Settings Components
     frame_val: '',                // { String } - value indicating type of frame from select
@@ -231,17 +231,6 @@ var app = new Vue({
         this.canvas.add(this.badge);
       }
     },
-    // clean_logo_canvas() {
-    //   // Remove old Fabric.js canvas objects and replace with new if needed.
-    //   this.logo_canvas.remove(this.frame);
-    //   this.logo_canvas.remove(this.badge);
-
-    //   if (this.frame) { 
-    //     this.logo_canvas.remove(this.frame);
-    //     this.canvas.add(this.frame); 
-    //   }
-    //   if (this.badge) { this.canvas.add(this.badge); }
-    // },
     setup_mesh() {
       var app = this;
 
@@ -273,6 +262,8 @@ var app = new Vue({
         return;
       }
 
+      app.canvas.remove(app.badge);
+
       // Create clones to not group the objects together
       var temp_badge_base = fabric.util.object.clone(this.badge_base);
       var temp_badge_photo = fabric.util.object.clone(this.badge_photo);
@@ -289,6 +280,7 @@ var app = new Vue({
           scaleY: 0.3,
           selectable: true,
           hasControls: false,
+          hasBorders: false,
           lockRotation: true,
           lockScalingX: true,
           lockScalingY: true,
@@ -330,8 +322,13 @@ var app = new Vue({
 
           fabric.loadSVGFromURL(url, function(objects, options) {
             var badge_logo = fabric.util.groupSVGElements(objects, options);
+
             badge_logo.scaleToWidth(app.logo_canvas.width / 2);
             badge_logo.scaleToHeight(app.logo_canvas.height / 2);
+            badge_logo.set({
+              lockRotation: true,
+              hasRotatingPoint: false,
+            })
 
             app.badge_photo = badge_logo;
             app.logo_canvas.add(app.badge_photo);

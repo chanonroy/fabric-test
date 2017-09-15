@@ -88,6 +88,7 @@
                 <el-col :lg="8"><el-radio class="badge" v-model="badge_val" label="none"> No Badge </el-radio></el-col>
               </el-row>
 
+              <!-- TODO - fix url action here -->
               <div v-show="badge_val && badge_val !== 'none'">
                   <h2 class="label-margin"> Upload Your Logo  </h2>
                   <div class="label-margin">
@@ -169,8 +170,13 @@
       </div>
 
       <div class="preview-container" v-show="step !== 3">
-        <img src="assets/server_crop.jpg" alt="server">
+        <img src="assets/2u-server.png" alt="server">
         <canvas id="c"></canvas>
+        <div class="preview-buttons">
+            <div> Please make all the selections </div>
+            <div style="margin-top: 20px;"> <el-button @click="start_over()"> Place Your Order </el-button> </div>
+            <div style="margin-top: 20px;"> <el-button @click="start_over()"> Download PDF </el-button> </div>
+        </div>
       </div>
 
      </div>
