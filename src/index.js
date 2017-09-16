@@ -57,6 +57,11 @@ var app = new Vue({
     badge_base: '',               // { Object } - SVG object for the base plate
 
   },
+  computed: {
+    selections_done() {
+      
+    }
+  },
   watch: { // When these properties from data() change, do the following:
     frame_color() {
       this.frame_color_input = this.frame_color.hex;

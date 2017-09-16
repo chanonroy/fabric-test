@@ -136,7 +136,12 @@
         position: absolute;
         bottom: 0;
         right: 0;
+        text-align: right;
         padding-bottom: 30px;
+
+        .el-button {
+            min-width: 200px;
+        }
     }
 
 }

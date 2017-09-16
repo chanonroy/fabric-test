@@ -169,8 +169,8 @@
 
       </div>
 
-      <div class="preview-container" v-show="step !== 3">
-        <img src="assets/2u-server.png" alt="server">
+      <div class="preview-container" :class="server_size + 'U'" v-show="step !== 3">
+        <img :src="'assets/' + server_size + 'u-server.png'" alt="server">
         <canvas id="c"></canvas>
         <div class="preview-buttons">
             <div> Please make all the selections </div>
