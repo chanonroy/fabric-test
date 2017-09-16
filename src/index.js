@@ -83,9 +83,6 @@ var app = new Vue({
       return 0;
       
     },
-    no_selections() {
-      return (this.frame_val && this.frame_val !== 'none') && (this.mesh_val && this.mesh_val !== 'none') && (this.badge_val && this.badge_val !== 'none');
-    },
     size_label() {
       // CSS label for which server 
 
