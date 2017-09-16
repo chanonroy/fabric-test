@@ -45,7 +45,7 @@
     .color-input {
       display: flex;
       .el-input {
-        margin-right: 20px;
+        margin-right: 25px;
         width: 100px;
       }
     }
@@ -168,8 +168,14 @@
 }
 
 .color-input {
+    position: relative;
     margin-bottom: 20px;
     .vc-slider {
-        width: 75%;
+        width: 78%;
+    }
+
+    &__clear {
+        position: absolute;
+        right: 0;
     }
 }

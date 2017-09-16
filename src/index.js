@@ -32,19 +32,19 @@ var app = new Vue({
     
     // Settings Components
     frame_val: '',                // { String } - value indicating type of frame from select
-    frame_color: defaultColors,   // { Object } - hex property primarily used
+    frame_color: defaultColors,   // { Object } - color object used for the vue color sliders
     frame_color_input: '#808080', // { String } - hex for input
     frame_color_default: '#808080',
     
     mesh_val: '',                 // { String } - value indicating type of mesh from select
-    mesh_color: defaultColors,    // { Object } - hex property primarily used
+    mesh_color: defaultColors,    // { Object } - color object used for the vue color sliders
     mesh_color_input: '#414645',  // { String } - hex for input
     mesh_color_default: '#414645',
 
     badge_val: '',                // { String } - value indicating type of badge from select
-    badge_color: defaultColors,   // { Object } - hex property primarily used
-    badge_color_input: '#B3DAE5', // { String } - hex for input
-    badge_color_default: '#B3DAE5',
+    badge_color: defaultColors,   // { Object } - color object used for the vue color sliders
+    badge_color_input: '#AFAFB4', // { String } - hex for input
+    badge_color_default: '#AFAFB4',
 
     server_size: 2,               // { Number } - 0 unassigned, 1 for 1U, 2 for 2U
 
@@ -70,8 +70,9 @@ var app = new Vue({
   },
   computed: {
     selections_done() {
+      // True = eeverything is finished, False = we still have steps to finish
 
-      if (this.frame_val[0] == '1' || this.frame_val[0] == '2') {
+      if (this.frame_val && this.frame_val !== 'none') {
         if (this.mesh_val.length > 0) {
           if (this.badge_val.length > 0) {
             return 1;
@@ -82,7 +83,12 @@ var app = new Vue({
       return 0;
       
     },
+    no_selections() {
+      return (this.frame_val && this.frame_val !== 'none') && (this.mesh_val && this.mesh_val !== 'none') && (this.badge_val && this.badge_val !== 'none');
+    },
     size_label() {
+      // CSS label for which server 
+
       return this.server_size == 2 ? 'two' : 'one';
     }
   },
@@ -208,11 +214,13 @@ var app = new Vue({
         return;
       }
 
+      // badge types: 'circle', 'square', 'rectangle', 'pill shape', 'none'
+
       var custom_props = {
-        fill: '#B3DAE6',
         rx: 10
       };
       var default_props = {
+        fill: "#AFAFB4",
         left: 0,
         top: 0,
         width: this.logo_canvas.width,
@@ -271,10 +279,12 @@ var app = new Vue({
     setup_mesh() {
       var app = this;
 
+      // Set color of mesh object (O(n))
       for (var i in app.mesh._objects) {
         app.mesh.item(i).set('fill', app.mesh_color_input);
       }
 
+      // Set properties of the mesh
       app.mesh.set({
         selectable: false,
         hasControls: false,
@@ -365,6 +375,8 @@ var app = new Vue({
             badge_logo.set({
               lockRotation: true,
               hasRotatingPoint: false,
+              cornerColor: "#CDE6B3",
+              borderColor: "#FFFFFF",
             })
 
             app.badge_photo = badge_logo;
@@ -372,6 +384,9 @@ var app = new Vue({
             app.logo_canvas.renderAll();
          });
       }
+    },
+    reset_color(item) {
+      this[item + '_color_input'] = this[item + '_color_default'];
     },
     start_over() {
       // Hitting the reset button

@@ -142,10 +142,17 @@
 
         <el-row>
           <el-col :lg="24">
-            <div v-show="frame_val">
+            <div v-show="no_selections">
+              <span style="text-align: center;"> Make some selections </span>
+            </div>
+          </el-col>
+
+          <el-col :lg="24">
+            <div v-show="frame_val && frame_val !== 'none'">
               <h2 class="label-margin"> Pick a Frame Color </h2>
               <div class="color-input">
                 <el-input v-model="frame_color_input"></el-input>
+                <el-button class="color-input__clear" @click="reset_color('frame')"> X </el-button>                
                 <slider-picker v-model="frame_color" />
               </div>
             </div>
@@ -156,6 +163,7 @@
             <h2 class="label-margin"> Pick a Mesh Color </h2>
             <div class="color-input">
               <el-input v-model="mesh_color_input"></el-input>
+              <el-button class="color-input__clear" @click="reset_color('mesh')"> X </el-button>
               <slider-picker v-model="mesh_color" />
             </div>
           </div>
