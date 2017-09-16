@@ -111,26 +111,42 @@
     position: relative; 
     margin: 20px 0;
 
-        .canvas-container {
-            position: absolute !important;
-            top: 44%;
-            left: 8.2%;
+        &.two {
+            .canvas-container {
+                position: absolute !important;
+                top: 44%;
+                left: 8.1%;
+            }
+            img {
+                display: block;
+                width: 719px;
+            }
         }
 
-        img {
-            display: block;
-            width: 730px;
+        &.one {
+            margin: 50px 0;
+
+            .canvas-container {
+                position: absolute !important;
+                top: 45%;
+                left: 5.7%;
+            }
+            img {
+                display: block;
+                width: 719px;
+            }
         }
 
+
     }
 
-    canvas {
-    position: absolute;
-    }
+    // canvas {
+    // position: absolute;
+    // }
 
-    img {
-    position: absolute;
-    }
+    // img {
+    // position: absolute;
+    // }
 
     &-buttons {
         position: absolute;
@@ -142,6 +158,11 @@
         .el-button {
             min-width: 200px;
         }
+
+        div {
+            color: grey;
+            font-style: italic;
+        } 
     }
 
 }

@@ -169,12 +169,12 @@
 
       </div>
 
-      <div class="preview-container" :class="server_size + 'U'" v-show="step !== 3">
+      <div :class="'preview-container ' + size_label" v-show="step !== 3">
         <img :src="'assets/' + server_size + 'u-server.png'" alt="server">
         <canvas id="c"></canvas>
         <div class="preview-buttons">
-            <div> Please make all the selections </div>
-            <div style="margin-top: 20px;"> <el-button @click="start_over()"> Place Your Order </el-button> </div>
+            <div v-if="!selections_done"> Please make all the selections </div>
+            <div style="margin-top: 20px;"> <el-button @click="start_over()" :disabled="!selections_done"> Place Your Order </el-button> </div>
             <div style="margin-top: 20px;"> <el-button @click="start_over()"> Download PDF </el-button> </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 export let defaultColors = {
-  hex: '#B3DAE5',
+  hex: '#BF4040',
   rgba: {
     r: 25,
     g: 77,

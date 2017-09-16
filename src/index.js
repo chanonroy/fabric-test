@@ -19,21 +19,32 @@ var app = new Vue({
     // General Settings
     step: 1,                      // { Number } - for keeping order of app progress (e.g., 1, 2, 3, 4)
     loading: false,               // { Boolean } - to trigger loading icon
-    canvas_height: 114,           // { Number } - canvas height
-    canvas_width: 573,            // { Number } - canvas width
+    canvas_size: {
+      '1': {
+        'height': 60,
+        'width': 610,
+      },
+      '2': {
+        'height': 110,
+        'width': 564,
+      }
+    },
     
     // Settings Components
     frame_val: '',                // { String } - value indicating type of frame from select
     frame_color: defaultColors,   // { Object } - hex property primarily used
-    frame_color_input: '#FFFFFF', // { String } - hex for input
+    frame_color_input: '#808080', // { String } - hex for input
+    frame_color_default: '#808080',
     
     mesh_val: '',                 // { String } - value indicating type of mesh from select
     mesh_color: defaultColors,    // { Object } - hex property primarily used
-    mesh_color_input: '#B3DAE5',  // { String } - hex for input
-    
+    mesh_color_input: '#414645',  // { String } - hex for input
+    mesh_color_default: '#414645',
+
     badge_val: '',                // { String } - value indicating type of badge from select
     badge_color: defaultColors,   // { Object } - hex property primarily used
     badge_color_input: '#B3DAE5', // { String } - hex for input
+    badge_color_default: '#B3DAE5',
 
     server_size: 2,               // { Number } - 0 unassigned, 1 for 1U, 2 for 2U
 
@@ -59,7 +70,20 @@ var app = new Vue({
   },
   computed: {
     selections_done() {
+
+      if (this.frame_val[0] == '1' || this.frame_val[0] == '2') {
+        if (this.mesh_val.length > 0) {
+          if (this.badge_val.length > 0) {
+            return 1;
+          }
+        }
+      }
+
+      return 0;
       
+    },
+    size_label() {
+      return this.server_size == 2 ? 'two' : 'one';
     }
   },
   watch: { // When these properties from data() change, do the following:
@@ -83,6 +107,12 @@ var app = new Vue({
         app.frame = '';
         return;
       }
+
+      app.server_size = Number(val[0]); // 1 or 2
+
+      app.canvas.setHeight(app.canvas_size[app.server_size].height);
+      app.canvas.setWidth(app.canvas_size[app.server_size].width);
+      app.canvas.renderAll();
 
       app.loading = true;
       new fabric.loadSVGFromURL('dist/fonts/' + val + '.svg', function(objects, options) {
@@ -109,8 +139,6 @@ var app = new Vue({
         app.canvas.renderAll();
         app.loading = false;
       });
-
-      this.server_size = Number(val[0]); // 1 or 2
     },
     mesh_color() {
       this.mesh_color_input = this.mesh_color.hex;
@@ -146,8 +174,9 @@ var app = new Vue({
             app.mesh_cache[val] = fabric.util.groupSVGElements(objects, options);
             app.mesh = app.mesh_cache[val];
           
-            if (app.server_size == '2') {
-              app.mesh.set({ height: app.mesh.height - 15 })
+            if (app.server_size == 2) {
+              app.mesh.set({ 
+              })
             }
 
             app.setup_mesh();
@@ -210,6 +239,9 @@ var app = new Vue({
         this.save_badge();
       }
     },
+    server_size(val) {
+      this.mesh_val = 'none';
+    }
   },
   methods: {
     setup_local_canvas() {
@@ -240,7 +272,7 @@ var app = new Vue({
       var app = this;
 
       for (var i in app.mesh._objects) {
-        app.mesh.item(i).set('fill', app.mesh_color.hex);
+        app.mesh.item(i).set('fill', app.mesh_color_input);
       }
 
       app.mesh.set({
@@ -343,9 +375,17 @@ var app = new Vue({
     },
     start_over() {
       // Hitting the reset button
+
       this.frame_val = 'none';
       this.mesh_val = 'none';
       this.badge_val = 'none';
+
+      // Reset colors
+      this.frame_color_input = this.frame_color_default;
+      this.mesh_color_input = this.mesh_color_default;
+      this.badge_color_input = this.badge_color_default;
+
+      // Go back to step 1
       this.step = 1;
 
     }
@@ -354,8 +394,8 @@ var app = new Vue({
     // Server Preview Canvas
     this.canvas = new fabric.Canvas('c');
     this.canvas.backgroundColor="rgba(0, 0, 0, 0)";
-    this.canvas.setHeight(this.canvas_height);
-    this.canvas.setWidth(this.canvas_width);
+    this.canvas.setHeight(this.canvas_size[this.server_size].height);
+    this.canvas.setWidth(this.canvas_size[this.server_size].width);
     // this.canvas.preserveObjectStacking = true;
 
     canvas_prevent_overfill(this.canvas);
