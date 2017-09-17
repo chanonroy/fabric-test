@@ -78,7 +78,7 @@
           <el-row>
             <el-col :lg="12" class="badge-buttons">
 
-              <h2 class="label-margin"> Choose a Shape <i v-if="loading" class="el-icon-loading"></i> </h2>
+              <h2 class="label-margin"> Choose a Shape </h2>
 
               <el-row :gutter="10" class="badge-radio label-margin">
                 <el-col :lg="8"><el-radio class="badge" v-model="badge_val" label="circle"> Circle </el-radio></el-col>
@@ -111,8 +111,9 @@
             <el-col :lg="12" class="badge-preview" v-show="badge_val && badge_val !== 'none'">
 
               <div class="upload-logo">
+                <h2 class="label-margin"> Preview </h2>
                 <canvas id="logo_canvas"></canvas>
-                <div class="flex-center" style="margin-top: 20px;">
+                <div style="margin-top: 20px;">
                   <el-button @click="save_badge" style="text-align: right;"> Save </el-button>
                 </div>
               </div>

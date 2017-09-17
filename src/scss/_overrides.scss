@@ -31,3 +31,12 @@
         border-color: $color-green;
     }
 }
+
+.el-input__inner {
+    &:focus {
+        border-color: $color-grey;
+    }
+    &:hover {
+        border-color: $color-green;
+    }
+}

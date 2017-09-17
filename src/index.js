@@ -3,6 +3,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 import { Slider, Compact } from 'vue-color'
 import { defaultColors } from './js/default_colors'
+import { object_prevent_overfill } from './js/utils/object_prevent_overfill'
 import { canvas_prevent_overfill } from './js/utils/canvas_prevent_overfill'
 import './scss/main.scss';
 import './assets/_assets.js';
@@ -214,7 +215,7 @@ var app = new Vue({
       // badge types: 'circle', 'square', 'rectangle', 'pill shape', 'none'
 
       var custom_props = {
-        rx: 10
+        rx: 75
       };
       var default_props = {
         fill: "#AFAFB4",
@@ -256,7 +257,7 @@ var app = new Vue({
       this.logo_canvas.setHeight(150);
       this.logo_canvas.setWidth(300);
       this.logo_canvas.preserveObjectStacking = true;
-      canvas_prevent_overfill(this.logo_canvas);
+      object_prevent_overfill(this.logo_canvas);
     },
     clean_main_canvas() {
       this.canvas.remove(this.mesh);
@@ -331,6 +332,10 @@ var app = new Vue({
         })
 
         app.clean_main_canvas();
+        app.canvas.centerObject(app.badge);
+        app.badge.setCoords();
+        app.canvas.setActiveObject(app.badge);
+        app.canvas.renderAll();
         app.canvas.renderAll();
       });
     },
@@ -374,10 +379,15 @@ var app = new Vue({
               hasRotatingPoint: false,
               cornerColor: "#CDE6B3",
               borderColor: "#FFFFFF",
+              top: 25,
+              left: 25
             })
 
             app.badge_photo = badge_logo;
             app.logo_canvas.add(app.badge_photo);
+            app.logo_canvas.centerObject(app.badge_photo);
+            app.badge_photo.setCoords();
+            app.logo_canvas.setActiveObject(app.badge_photo);
             app.logo_canvas.renderAll();
          });
       }
