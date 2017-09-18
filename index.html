@@ -84,7 +84,8 @@
                 <el-col :lg="8"><el-radio class="badge" v-model="badge_val" label="circle"> Circle </el-radio></el-col>
                 <el-col :lg="8"><el-radio class="badge" v-model="badge_val" label="square"> Square </el-radio></el-col>
                 <el-col :lg="8"><el-radio class="badge" v-model="badge_val" label="rectangle"> Rectangle </el-radio></el-col>
-                <el-col :lg="8"><el-radio class="badge" v-model="badge_val" label="pill"> Pill Shape </el-radio></el-col>
+                <el-col :lg="8"><el-radio class="badge" v-model="badge_val" label="oval"> Oval </el-radio></el-col>
+                <el-col :lg="8"><el-radio class="badge" v-model="badge_val" label="racetrack"> Racetrack </el-radio></el-col>
                 <el-col :lg="8"><el-radio class="badge" v-model="badge_val" label="none"> No Badge </el-radio></el-col>
               </el-row>
 
@@ -112,7 +113,7 @@
 
               <div class="upload-logo">
                 <h2 class="label-margin"> Preview </h2>
-                <canvas id="logo_canvas"></canvas>
+                <div class="preview-center"><canvas id="logo_canvas"></canvas></div>
                 <div style="margin-top: 20px;">
                   <el-button @click="save_badge" style="text-align: right;"> Save </el-button>
                 </div>

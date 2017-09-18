@@ -201,10 +201,10 @@ var app = new Vue({
     },
     badge_val(val) {
       // Remove old values from logo canvas
-      this.logo_canvas.remove(this.badge_base);
-      this.logo_canvas.remove(this.badge_photo);
-      this.logo_canvas.remove(this.badge);
       this.badge_photo = '';
+
+      // initialize custom_props
+      var custom_props = {};
 
       if (val == 'none') {
         app.canvas.remove(app.badge);
@@ -212,11 +212,46 @@ var app = new Vue({
         return;
       }
 
-      // badge types: 'circle', 'square', 'rectangle', 'pill shape', 'none'
+      if (this.logo_canvas) {
+        this.logo_canvas.dispose();
+      }
 
-      var custom_props = {
-        rx: 75
-      };
+      // badge types: 'circle', 'square', 'rectangle', 'racetrack', 'oval', 'none'
+      if (val == 'circle') {
+        this.setup_logo_canvas(150, 150, 25);
+        custom_props = {
+          rx: 150
+        };
+      }
+      
+      if (val == 'square') {
+        this.setup_logo_canvas(150, 150, 5);
+        custom_props = {
+          rx: 10
+        };
+      }
+
+      if (val == 'rectangle') {
+        this.setup_logo_canvas(150, 300, 5);
+        custom_props = {
+          rx: 15
+        };
+      }
+      
+      if (val == 'racetrack') {
+        this.setup_logo_canvas(150, 350, 25);
+        custom_props = {
+          rx: 75
+        };
+      }
+
+      if (val == 'oval') {
+        this.setup_logo_canvas(150, 350, 25);
+        custom_props = {
+          rx: 175
+        };
+      }
+
       var default_props = {
         fill: "#AFAFB4",
         left: 0,
@@ -250,14 +285,14 @@ var app = new Vue({
     }
   },
   methods: {
-    setup_local_canvas() {
+    setup_logo_canvas(height, width, radius) {
       // Image Upload and Badge Selection Canvas
       this.logo_canvas = new fabric.Canvas('logo_canvas');
-      this.logo_canvas.backgroundColor="lightgrey";
-      this.logo_canvas.setHeight(150);
-      this.logo_canvas.setWidth(300);
+      this.logo_canvas.backgroundColor="rgba(0, 0, 0, 0)";
+      this.logo_canvas.setHeight(height);
+      this.logo_canvas.setWidth(width);
       this.logo_canvas.preserveObjectStacking = true;
-      object_prevent_overfill(this.logo_canvas);
+      object_prevent_overfill(this.logo_canvas, radius);
     },
     clean_main_canvas() {
       this.canvas.remove(this.mesh);
@@ -379,8 +414,6 @@ var app = new Vue({
               hasRotatingPoint: false,
               cornerColor: "#CDE6B3",
               borderColor: "#FFFFFF",
-              top: 25,
-              left: 25
             })
 
             app.badge_photo = badge_logo;
@@ -421,9 +454,5 @@ var app = new Vue({
     // this.canvas.preserveObjectStacking = true;
 
     canvas_prevent_overfill(this.canvas);
-
-    // Image Upload and Badge Selection Canvas
-    this.setup_local_canvas();
-
   },
 })

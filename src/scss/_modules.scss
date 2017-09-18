@@ -51,7 +51,7 @@
     }
   
     .upload-logo {
-        width: 300px;
+        width: 350px;
         text-align: center;
         margin: 0 0 0 auto;
 
@@ -168,6 +168,12 @@
         } 
     }
 
+}
+
+.preview-center {
+    .canvas-container {
+        margin: 0 auto;
+    }
 }
 
 .color-input {

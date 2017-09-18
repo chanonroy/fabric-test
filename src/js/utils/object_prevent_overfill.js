@@ -1,12 +1,10 @@
-export function object_prevent_overfill (canvas) {
+export function object_prevent_overfill (canvas, radius) {
     
         canvas.on('object:moving', function (e) {
             var obj = e.target;
             obj.setCoords();
     
             var boundingRect = obj.getBoundingRect(); // height, width
-
-            var radius = 10;
     
             var max_top = radius;
             var max_bot = canvas.height - boundingRect.height - radius;
