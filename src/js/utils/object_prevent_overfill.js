@@ -27,4 +27,20 @@ export function object_prevent_overfill (canvas, radius) {
                 obj.left = max_right;
             }
         });
+
+        canvas.on('object:scaling', function (options) {
+            let obj = options.target;
+            let boundingRect = obj.getBoundingRect(true);
+            if (boundingRect.left < 0 || boundingRect.top < 0 || boundingRect.left + boundingRect.width > canvas.width || boundingRect.top + boundingRect.height > canvas.height) {
+
+                obj.scaleX = 0.2;
+                obj.scaleY = 0.2;
+                canvas.centerObject(obj);
+                obj.setCoords();
+                canvas.setActiveObject(obj);
+                canvas.renderAll();
+
+            }
+        });
+
     }
