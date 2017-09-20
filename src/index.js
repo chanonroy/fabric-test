@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
+import { throttle, findIndex } from 'lodash'
 import { Slider, Compact } from 'vue-color'
 import { defaultColors } from './js/default_colors'
 import { object_prevent_overfill } from './js/utils/object_prevent_overfill'
@@ -194,10 +195,8 @@ var app = new Vue({
     },
     badge_color_input(val) {
       if (val.length == 7 && val[0] == '#') {
-        this.badge_base.set('fill', this.badge_color_input);
+        this.save_badge();
       }
-      this.badge_color.hex = this.badge_color_input;
-      this.logo_canvas.renderAll();
     },
     badge_val(val) {
       // Remove old values from logo canvas
@@ -333,7 +332,7 @@ var app = new Vue({
       app.canvas.renderAll();
       app.loading = false;
     },
-    save_badge() {
+    save_badge: throttle(function() {
       var app = this;
 
       // If no photo, don't save it
@@ -342,7 +341,7 @@ var app = new Vue({
         return;
       }
 
-      app.canvas.remove(app.badge);
+      app.badge_base.set('fill', app.badge_color_input);
 
       // Create clones to not group the objects together
       var temp_badge_base = fabric.util.object.clone(this.badge_base);
@@ -351,8 +350,24 @@ var app = new Vue({
       var badge_group = new fabric.Group([ temp_badge_base, temp_badge_photo ]);
       var badge_string = badge_group.toSVG();
 
+      app.badge_color.hex = app.badge_color_input;
+
       // Async load of the badge clone
       new fabric.loadSVGFromString(badge_string, function(objects, options) {
+        
+        var badge_exists = false;
+        var badge_top = 0;
+        var badge_left = 0;
+
+        if (app.badge) {
+          badge_exists = true;
+          var badge_index = findIndex(app.canvas._objects, [ 'selectable', true ]);
+          var badge_old = app.canvas._objects[badge_index];
+          badge_top = badge_old.top;
+          badge_left = badge_old.left;
+        }
+
+        app.canvas.remove(app.badge);
         app.badge = fabric.util.groupSVGElements(objects, options);
 
         app.badge.set({
@@ -366,14 +381,25 @@ var app = new Vue({
           lockScalingY: true,
         })
 
-        app.clean_main_canvas();
-        app.canvas.centerObject(app.badge);
-        app.badge.setCoords();
-        app.canvas.setActiveObject(app.badge);
-        app.canvas.renderAll();
+        app.logo_canvas.renderAll();
+
+        if (badge_exists) {
+          app.badge.set({
+            top: badge_top,
+            left: badge_left
+          })
+          app.clean_main_canvas();
+        } else {
+          app.clean_main_canvas();
+          app.canvas.centerObject(app.badge);
+          app.badge.setCoords();
+          app.canvas.setActiveObject(app.badge);
+        }
+
         app.canvas.renderAll();
       });
-    },
+
+    }, 100),
     remove_photo() {
       // Removing photo from the button
       var app = this;
