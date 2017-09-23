@@ -21,7 +21,7 @@
 
     </script>
 
-     <div id="app" class="container" v-cloak>
+     <div id="app" class="roy-container" v-cloak>
 
       <h1 class="main-title"> Start building your brand <i v-if="loading" class="el-icon-loading loading-circle"></i> </h1> 
 
@@ -107,7 +107,7 @@
                       <div v-if="!badge_photo">
                         <el-upload
                           v-if="!badge_photo"
-                          action="post_path"
+                          :action="post_path"
                           :show-file-list="false"
                           :on-success="handleUpload"
                           :before-upload="beforeUpload">

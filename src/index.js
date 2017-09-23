@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import ElementUI from 'element-ui'
 import { throttle, findIndex } from 'lodash'
+import axios from 'axios';
 import { Slider, Compact } from 'vue-color'
 import { defaultColors } from './js/default_colors'
 import { object_prevent_overfill } from './js/utils/object_prevent_overfill'
@@ -325,22 +326,30 @@ var app = new Vue({
   methods: {
     send_payload() {
 
-      var payload = {
-        'id_rack_size': this.frame_val ? this.pk_dict.frame[this.frame_val] : '',   // { Number }
-        'id_mesh': this.mesh_val ? this.pk_dict.mesh[this.mesh_val] : '',           // { Number }
-        'id_logo_shape': this.badge ? this.pk_dict.badge[this.badge_shape]: '',     // { String }
-        'id_logo': this.badge ? this.badge.toSVG() : 'none',                        // { String ? } <-- this is a giant SVG string
-        'id_top': this.badge ? this.badge.top : '',                                 // { Float }
-        'id_left': this.badge ? this.badge.left : '',                               // { Float }
-        'id_canvas_height': this.badge ? this.canvas.height : '',                   // { Number }
-        'id_canvas_width': this.badge ? this.canvas.width : '',                     // { Number }
-        'id_badge_color': this.badge ? this.mesh_color_input : '',                  // { String } - #414645
-        'id_mesh_color': this.mesh_color_input,                                     // { String } - #414645
-        'id_frame_color': this.frame_color_input,                                   // { String } - #414645
-      }
+      if (!this.selections_done) {
+        return false;
+      } else {
 
-      // AJAX HERE
-      // axios
+        var payload = {
+          'id_rack_size': this.frame_val ? this.pk_dict.frame[this.frame_val] : '',   // { Number }
+          'id_mesh': this.mesh_val ? this.pk_dict.mesh[this.mesh_val] : '',           // { Number }
+          'id_logo_shape': this.badge ? this.pk_dict.badge[this.badge_shape]: '',     // { String }
+          'id_logo': this.badge ? this.badge.toSVG() : 'none',                        // { String ? } <-- this is a giant SVG string
+          'id_top': this.badge ? this.badge.top : '',                                 // { Float }
+          'id_left': this.badge ? this.badge.left : '',                               // { Float }
+          'id_canvas_height': this.badge ? this.canvas.height : '',                   // { Number }
+          'id_canvas_width': this.badge ? this.canvas.width : '',                     // { Number }
+          'id_badge_color': this.badge ? this.mesh_color_input : '',                  // { String } - #414645
+          'id_mesh_color': this.mesh_color_input,                                     // { String } - #414645
+          'id_frame_color': this.frame_color_input,                                   // { String } - #414645
+        }
+
+        // AJAX HERE
+        axios.post('/shopping-cart/add/', payload)
+             .then(function(response) { console.log(response); })
+             .catch(function(error) { console.log(error); });
+
+      }
 
     },
     setup_logo_canvas(height, width, radius) {
@@ -538,8 +547,6 @@ var app = new Vue({
   },
   mounted() {
     // Grab inline Django template variables
-    this.static_path = static_path;
-    this.post_path = post_path;
 
     // Server Preview Canvas
     this.canvas = new fabric.Canvas('c');
@@ -550,4 +557,8 @@ var app = new Vue({
 
     server_prevent_overfill(this.canvas);
   },
+  created() {
+        this.static_path = static_path;
+        this.post_path = post_path;       // old_post_path
+  }
 })
