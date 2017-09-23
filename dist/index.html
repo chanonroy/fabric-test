@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+ <html>
+   <head>
+     <meta charset="utf-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <link rel="shortcut icon" href="dist/assets/server-icon.png" type="image/x-icon">
+     <link rel="icon" href="dist/assets/server-icon.png" type="image/x-icon">
+     <title> Fabric.js Test </title>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/2.0.0-beta.4/fabric.js"></script>
+   <link href="/css/main.css" rel="stylesheet"></head>
+   <body>
+     <div id="app" class="container" v-cloak>
+
+      <h1 class="main-title"> Start building your brand <i v-if="loading" class="el-icon-loading loading-circle"></i> </h1> 
+
+      <el-row class="nav">
+          <el-col :lg="6"> <div class="nav__item" :class="{ active: step == 1 }" @click="step = 1"> PICK YOUR FRAME </div> </el-col>
+          <el-col :lg="6"> <div class="nav__item" :class="{ active: step == 2 }" @click="step = 2"> ADD YOUR MESH </div> </el-col>
+          <el-col :lg="6"> <div class="nav__item" :class="{ active: step == 3 }" @click="step = 3"> ADD YOUR LOGO </div> </el-col>
+          <el-col :lg="6"> <div class="nav__item" :class="{ active: step == 4 }" @click="step = 4"> PICK YOUR COLORS </div> </el-col>
+      </el-row>
+
+      <!-- Pick Frame -->
+      <div class="step" v-show="step == 1">
+
+          <el-row :gutter="50" class="asset-radio">
+            <el-col :lg="12">
+                <el-radio class="" v-model="frame_val" label="1u-rectangle"> <img src="dist/fonts/1u-rectangle.svg" style="width: 100%;" alt=""> </el-radio>                
+            </el-col>  
+            <el-col :lg="12">         
+                <el-radio class="" v-model="frame_val" label="1u-dogbone"> <img src="dist/fonts/1u-dogbone.svg" style="width: 100%" alt=""> </el-radio>
+            </el-col>
+          </el-row>
+          
+          <el-row :gutter="50" class="asset-radio">
+            <el-col :lg="12">
+              <el-radio class="" v-model="frame_val" label="2u-rectangle"> <img src="dist/fonts/2u-rectangle.svg" style="width: 100%;" alt=""> </el-radio>
+            </el-col>
+            <el-col :lg="12">
+              <el-radio class="" v-model="frame_val" label="2u-dogbone"> <img src="dist/fonts/2u-dogbone.svg" style="width: 100%;" alt=""> </el-radio>
+            </el-col>
+          </el-row>
+
+          <div class="step__footer">
+            <el-button icon="close" @click="start_over()"> Start Over </el-button>
+          </div>
+
+      </div>
+
+      <!-- Add Mesh -->
+      <div class="step" v-show="step == 2">
+
+          <div class="label-margin"> {{ server_size }}U mesh is available in partial or full coverage options </div> 
+          <el-row :gutter="10" class="asset-radio">
+            <el-col :lg="8">
+              <el-radio class="" v-model="mesh_val" :label="server_size + 'u-circle'"> <img :src="'dist/fonts/' + server_size + 'u-circle.svg'" style="width: 250px;" alt=""> </el-radio>
+            </el-col>
+            <el-col :lg="8">
+              <el-radio class="" v-model="mesh_val" :label="server_size + 'u-hex'"> <img :src="'dist/fonts/' + server_size + 'u-hex.svg'" style="width: 250px;" alt=""> </el-radio>
+            </el-col>
+            <el-col :lg="8">
+              <el-radio class="" v-model="mesh_val" :label="server_size + 'u-square'"> <img :src="'dist/fonts/' + server_size + 'u-square.svg'" style="width: 250px;" alt=""> </el-radio>
+            </el-col>
+            <el-col :lg="24">
+              <el-radio class="" v-model="mesh_val" label="none"> No Mesh </el-radio>
+            </el-col>
+          </el-row>
+
+          <div class="step__footer">
+              <el-button icon="close" @click="start_over()"> Start Over </el-button>
+            </div>
+
+      </div>
+
+      <!-- Add Logo -->
+      <div class="step" v-show="step == 3">
+          <el-row>
+            <el-col :lg="12" class="badge-buttons">
+
+              <h2 class="label-margin"> Choose a Shape <i v-if="loading" class="el-icon-loading"></i> </h2>
+
+              <el-row :gutter="10" class="badge-radio label-margin">
+                <el-col :lg="8"><el-radio class="badge" v-model="badge_val" label="circle"> Circle </el-radio></el-col>
+                <el-col :lg="8"><el-radio class="badge" v-model="badge_val" label="square"> Square </el-radio></el-col>
+                <el-col :lg="8"><el-radio class="badge" v-model="badge_val" label="rectangle"> Rectangle </el-radio></el-col>
+                <el-col :lg="8"><el-radio class="badge" v-model="badge_val" label="pill"> Pill Shape </el-radio></el-col>
+                <el-col :lg="8"><el-radio class="badge" v-model="badge_val" label="none"> No Badge </el-radio></el-col>
+              </el-row>
+
+              <!-- TODO - fix url action here -->
+              <div v-show="badge_val && badge_val !== 'none'">
+                  <h2 class="label-margin"> Upload Your Logo  </h2>
+                  <div class="label-margin">
+                      <div v-if="!badge_photo">
+                        <el-upload
+                          v-if="!badge_photo"
+                          action="https://jsonplaceholder.typicode.com/posts/"
+                          :show-file-list="false"
+                          :on-success="handleUpload"
+                          :before-upload="beforeUpload">
+                          <el-button icon="picture" type="primary"> Upload Photo </el-button>
+                        </el-upload>
+                      </div>
+                      <el-button v-else @click="remove_photo"> Remove Photo </el-button>
+                  </div>
+              </div>
+
+            </el-col>
+
+            <el-col :lg="12" class="badge-preview" v-show="badge_val && badge_val !== 'none'">
+
+              <div class="upload-logo">
+                <canvas id="logo_canvas"></canvas>
+                <div class="flex-center" style="margin-top: 20px;">
+                  <el-button @click="save_badge" style="text-align: right;"> Save </el-button>
+                </div>
+              </div>
+
+            </el-col>
+
+            <el-col :lg="24" v-show="badge_val && badge_val !== 'none'">
+              <div>
+                <h2 class="label-margin"> Choose a Background Color </h2>
+                <div class="color-input">
+                  <el-input v-model="badge_color_input"></el-input>
+                  <slider-picker v-model="badge_color" />
+                </div>
+              </div>
+            </el-col>
+
+          </el-row>
+
+          <div class="step__footer">
+            <el-button icon="close" @click="start_over()"> Start Over </el-button>
+          </div>
+
+      </div>
+
+      <!-- Pick Colors -->
+      <div class="step" v-show="step == 4">
+
+        <el-row>
+          <el-col :lg="24">
+            <div v-show="frame_val">
+              <h2 class="label-margin"> Pick a Frame Color </h2>
+              <div class="color-input">
+                <el-input v-model="frame_color_input"></el-input>
+                <slider-picker v-model="frame_color" />
+              </div>
+            </div>
+          </el-col>
+
+          <el-col :lg="24">
+          <div v-show="mesh_val && mesh_val !== 'none'">
+            <h2 class="label-margin"> Pick a Mesh Color </h2>
+            <div class="color-input">
+              <el-input v-model="mesh_color_input"></el-input>
+              <slider-picker v-model="mesh_color" />
+            </div>
+          </div>
+        </el-col>
+
+        </el-row>
+
+        <div class="step__footer">
+          <el-button icon="close" @click="start_over()"> Start Over </el-button>
+        </div>
+
+      </div>
+
+      <div class="preview-container" :class="server_size + 'U'" v-show="step !== 3">
+        <img :src="'assets/' + server_size + 'u-server.png'" alt="server">
+        <canvas id="c"></canvas>
+        <div class="preview-buttons">
+            <div> Please make all the selections </div>
+            <div style="margin-top: 20px;"> <el-button @click="start_over()"> Place Your Order </el-button> </div>
+            <div style="margin-top: 20px;"> <el-button @click="start_over()"> Download PDF </el-button> </div>
+        </div>
+      </div>
+
+     </div>
+   <script type="text/javascript" src="/main.js"></script></body>
+ </html>
