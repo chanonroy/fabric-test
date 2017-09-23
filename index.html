@@ -37,19 +37,19 @@
 
           <el-row :gutter="50" class="asset-radio">
             <el-col :sm="12">
-                <el-radio class="" v-model="frame_val" label="1u-rectangle"> <img src="dist/assets/1u-rectangle.svg" style="width: 100%;" alt=""> </el-radio>                
+                <el-radio class="" v-model="frame_val" label="1u-rectangle"> <img :src="static_path + '1u-rectangle.svg'" style="width: 100%;" alt=""> </el-radio>                
             </el-col>  
             <el-col :sm="12">         
-                <el-radio class="" v-model="frame_val" label="1u-dogbone"> <img src="dist/assets/1u-dogbone.svg" style="width: 100%" alt=""> </el-radio>
+                <el-radio class="" v-model="frame_val" label="1u-dogbone"> <img :src="static_path + '1u-dogbone.svg'" style="width: 100%" alt=""> </el-radio>
             </el-col>
           </el-row>
           
           <el-row :gutter="50" class="asset-radio">
             <el-col :sm="12">
-              <el-radio class="" v-model="frame_val" label="2u-rectangle"> <img src="dist/assets/2u-rectangle.svg" style="width: 100%;" alt=""> </el-radio>
+              <el-radio class="" v-model="frame_val" label="2u-rectangle"> <img :src="static_path + '2u-rectangle.svg'" style="width: 100%;" alt=""> </el-radio>
             </el-col>
             <el-col :sm="12">
-              <el-radio class="" v-model="frame_val" label="2u-dogbone"> <img src="dist/assets/2u-dogbone.svg" style="width: 100%;" alt=""> </el-radio>
+              <el-radio class="" v-model="frame_val" label="2u-dogbone"> <img :src="static_path + '2u-dogbone.svg'" style="width: 100%;" alt=""> </el-radio>
             </el-col>
           </el-row>
 
@@ -65,13 +65,13 @@
           <div class="label-margin"> {{ server_size }}U mesh is available in partial or full coverage options </div> 
           <el-row :gutter="10" class="asset-radio">
             <el-col :sm="12" :lg="8">
-              <el-radio class="" v-model="mesh_val" :label="server_size + 'u-circle'"> <img :src="'dist/assets/' + server_size + 'u-circle.svg'" style="width: 250px;" alt=""> </el-radio>
+              <el-radio class="" v-model="mesh_val" :label="server_size + 'u-circle'"> <img :src="static_path + server_size + 'u-circle.svg'" style="width: 250px;" alt=""> </el-radio>
             </el-col>
             <el-col :sm="12" :lg="8">
-              <el-radio class="" v-model="mesh_val" :label="server_size + 'u-hex'"> <img :src="'dist/assets/' + server_size + 'u-hex.svg'" style="width: 250px;" alt=""> </el-radio>
+              <el-radio class="" v-model="mesh_val" :label="server_size + 'u-hex'"> <img :src="static_path + server_size + 'u-hex.svg'" style="width: 250px;" alt=""> </el-radio>
             </el-col>
             <el-col :sm="12" :lg="8">
-              <el-radio class="" v-model="mesh_val" :label="server_size + 'u-square'"> <img :src="'dist/assets/' + server_size + 'u-square.svg'" style="width: 250px;" alt=""> </el-radio>
+              <el-radio class="" v-model="mesh_val" :label="server_size + 'u-square'"> <img :src="static_path + server_size + 'u-square.svg'" style="width: 250px;" alt=""> </el-radio>
             </el-col>
             <el-col :sm="12" :lg="24">
               <el-radio class="" v-model="mesh_val" label="none"> No Mesh </el-radio>
@@ -188,10 +188,10 @@
 
       <div :class="'preview-container ' + size_label" v-show="step !== 3">
         <div v-if="server_size == 1">
-          <img src="dist/assets/1u-server.png" alt="server">
+          <img :src="static_path + '1u-server.png'" alt="server">
         </div>
         <div v-if="server_size == 2">
-          <img src="dist/assets/2u-server.png" alt="server">
+          <img :src="static_path + '2u-server.png'" alt="server">
         </div>
         <canvas id="c"></canvas>
         <div class="preview-buttons">
