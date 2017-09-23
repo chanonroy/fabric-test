@@ -20,7 +20,9 @@ var app = new Vue({
     step: 1,                      // { Number } - for keeping order of app progress (e.g., 1, 2, 3, 4)
     loading: false,               // { Boolean } - to trigger loading icon
     
+    // Shit from Django
     static_path: '',
+    post_path: '',
 
     canvas_size: {
       '1': {
@@ -30,6 +32,33 @@ var app = new Vue({
       '2': {
         'height': 110,
         'width': 564,
+      }
+    },
+
+    pk_dict: {
+      'frame': {
+        '1u-rectangle': 1,
+        '2u-rectangle': 2,
+        '1u-dogbone': 1,
+        '2u-dogbone': 4,
+        'none': ''
+      },
+      'mesh': {
+        '1u-circle': 1,
+        '1u-square': 2,
+        '1u-hex': 3,
+        '2u-square': 4,
+        '2u-circle': 5,
+        '2u-hexagon': 6,
+        'none': ''
+      },
+      'badge': {
+        'circle': 2,
+        'oval': 4,
+        'racetrack': 6,
+        'rectangle': 5,
+        'square': 3,
+        'none': ''
       }
     },
     
@@ -294,6 +323,26 @@ var app = new Vue({
     }
   },
   methods: {
+    send_payload() {
+
+      var payload = {
+        'id_rack_size': this.frame_val ? this.pk_dict.frame[this.frame_val] : '',   // { Number }
+        'id_mesh': this.mesh_val ? this.pk_dict.mesh[this.mesh_val] : '',           // { Number }
+        'id_logo_shape': this.badge ? this.pk_dict.badge[this.badge_shape]: '',     // { String }
+        'id_logo': this.badge ? this.badge.toSVG() : 'none',                        // { String ? } <-- this is a giant SVG string
+        'id_top': this.badge ? this.badge.top : '',                                 // { Float }
+        'id_left': this.badge ? this.badge.left : '',                               // { Float }
+        'id_canvas_height': this.badge ? this.canvas.height : '',                   // { Number }
+        'id_canvas_width': this.badge ? this.canvas.width : '',                     // { Number }
+        'id_badge_color': this.badge ? this.mesh_color_input : '',                  // { String } - #414645
+        'id_mesh_color': this.mesh_color_input,                                     // { String } - #414645
+        'id_frame_color': this.frame_color_input,                                   // { String } - #414645
+      }
+
+      // AJAX HERE
+      // axios
+
+    },
     setup_logo_canvas(height, width, radius) {
       // Image Upload and Badge Selection Canvas
       this.logo_canvas = new fabric.Canvas('logo_canvas');
@@ -490,6 +539,7 @@ var app = new Vue({
   mounted() {
     // Grab inline Django template variables
     this.static_path = static_path;
+    this.post_path = post_path;
 
     // Server Preview Canvas
     this.canvas = new fabric.Canvas('c');

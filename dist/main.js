@@ -59740,6 +59740,33 @@ var app = new _vue2.default({
       }
     },
 
+    pk_dict: {
+      'frame': {
+        '1u-rectangle': 1,
+        '2u-rectangle': 2,
+        '1u-dogbone': 1,
+        '2u-dogbone': 4,
+        'none': ''
+      },
+      'mesh': {
+        '1u-circle': 1,
+        '1u-square': 2,
+        '1u-hex': 3,
+        '2u-square': 4,
+        '2u-circle': 5,
+        '2u-hexagon': 6,
+        'none': ''
+      },
+      'badge': {
+        'circle': 2,
+        'oval': 4,
+        'racetrack': 6,
+        'rectangle': 5,
+        'square': 3,
+        'none': ''
+      }
+    },
+
     // Settings Components
     frame_val: '', // { String } - value indicating type of frame from select
     frame_color: _default_colors.defaultColors, // { Object } - color object used for the vue color sliders
@@ -59998,6 +60025,27 @@ var app = new _vue2.default({
     }
   },
   methods: {
+    send_payload: function send_payload() {
+
+      var payload = {
+        'frame': this.frame_val ? this.pk_dict.frame[this.frame_val] : '', // { Number }
+        'frame_color': this.frame_color_input, // { String } - #414645
+        'mesh': this.mesh_val ? this.pk_dict.mesh[this.mesh_val] : '', // { Number }                       
+        'mesh_color': this.mesh_color_input, // { String } - #414645\
+        'badge_shape': this.badge ? this.pk_dict.badge[this.badge_shape] : '',
+        'badge': this.badge ? this.badge.toSVG() : 'none', // { String ? } <-- this is a giant SVG string
+        'top': this.badge ? this.badge.top : '', // { Float }
+        'left': this.badge ? this.badge.left : '', // { Float }
+        'canvas_height': this.badge ? this.canvas.height : '', // { Number }
+        'canvas_width': this.badge ? this.canvas.width : '', // { Number }
+        'badge_color': this.badge ? this.mesh_color_input : '' // { String } - #414645
+      };
+
+      console.log(JSON.stringify(payload));
+
+      // AJAX HERE
+      // axios
+    },
     setup_logo_canvas: function setup_logo_canvas(height, width, radius) {
       // Image Upload and Badge Selection Canvas
       this.logo_canvas = new fabric.Canvas('logo_canvas');

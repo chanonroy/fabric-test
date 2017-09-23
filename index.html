@@ -12,9 +12,13 @@
    </head>
    <body>
     <script>
+      // Ian's Section
+
       // Django static files should give paths here
       var static_path = 'dist/assets/';
-      var post_path = '';                 // just gimmie a random url to POST against here
+      var post_path = '/200/';                 // just gimmie a random url to POST against here with 200
+      var old_post_path = 'https://jsonplaceholder.typicode.com/posts/';
+
     </script>
 
      <div id="app" class="container" v-cloak>
@@ -103,7 +107,7 @@
                       <div v-if="!badge_photo">
                         <el-upload
                           v-if="!badge_photo"
-                          action="https://jsonplaceholder.typicode.com/posts/"
+                          action="post_path"
                           :show-file-list="false"
                           :on-success="handleUpload"
                           :before-upload="beforeUpload">
@@ -193,7 +197,7 @@
         <div class="preview-buttons">
             <div v-show="badge && badge_val !== 'none'" style="margin-bottom: 30px;"> Position your logo by dragging it</div>
             <div v-if="!selections_done"> Please make all the selections </div>
-            <div style="margin-top: 20px;"> <el-button @click="start_over()" :disabled="!selections_done"> Place Your Order </el-button> </div>
+            <div style="margin-top: 20px;"> <el-button @click="send_payload()" :disabled="!selections_done"> Place Your Order </el-button> </div>
             <div style="margin-top: 20px;"> <el-button @click="start_over()"> Download PDF </el-button> </div>
         </div>
       </div>
