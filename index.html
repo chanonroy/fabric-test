@@ -10,34 +10,52 @@
      <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/2.0.0-beta.4/fabric.js"></script>
    </head>
    <body>
+    <script>
+      // Django static files should give paths here
+      var one_dogbone     = '1u-dogbone.svg';  
+      var one_rectangle   = '1u-rectangle.svg";'
+      var two_dogbone     = '2u-dogbone.svg';
+      var two_rectangle   = '2u-rectangle.svg';
+
+      var one_circle      = '1u-circle.svg';
+      var one_hex         = '1u-hex.svg';
+      var one_square      = '1u-square.svg';
+      var two_circle      = '2u-circle.svg';
+      var two_hex         = '2u-hex.svg';
+      var two_square      = '2u-square.svg';
+
+      var one_server      = '1u-server.png';
+      var two_server      = '2u-server.png';
+    </script>
+
      <div id="app" class="container" v-cloak>
 
       <h1 class="main-title"> Start building your brand <i v-if="loading" class="el-icon-loading loading-circle"></i> </h1> 
 
       <el-row class="nav">
-          <el-col :lg="6"> <div class="nav__item" :class="{ active: step == 1 }" @click="step = 1"> PICK YOUR FRAME </div> </el-col>
-          <el-col :lg="6"> <div class="nav__item" :class="{ active: step == 2 }" @click="step = 2"> ADD YOUR MESH </div> </el-col>
-          <el-col :lg="6"> <div class="nav__item" :class="{ active: step == 3 }" @click="step = 3"> ADD YOUR LOGO </div> </el-col>
-          <el-col :lg="6"> <div class="nav__item" :class="{ active: step == 4 }" @click="step = 4"> PICK YOUR COLORS </div> </el-col>
+          <el-col :sm="12" :lg="6"> <div class="nav__item" :class="{ active: step == 1 }" @click="step = 1"> PICK YOUR FRAME </div> </el-col>
+          <el-col :sm="12" :lg="6"> <div class="nav__item" :class="{ active: step == 2 }" @click="step = 2"> ADD YOUR MESH </div> </el-col>
+          <el-col :sm="12" :lg="6"> <div class="nav__item" :class="{ active: step == 3 }" @click="step = 3"> ADD YOUR LOGO </div> </el-col>
+          <el-col :sm="12" :lg="6"> <div class="nav__item" :class="{ active: step == 4 }" @click="step = 4"> PICK YOUR COLORS </div> </el-col>
       </el-row>
 
       <!-- Pick Frame -->
       <div class="step" v-show="step == 1">
 
           <el-row :gutter="50" class="asset-radio">
-            <el-col :lg="12">
+            <el-col :sm="12">
                 <el-radio class="" v-model="frame_val" label="1u-rectangle"> <img src="dist/fonts/1u-rectangle.svg" style="width: 100%;" alt=""> </el-radio>                
             </el-col>  
-            <el-col :lg="12">         
+            <el-col :sm="12">         
                 <el-radio class="" v-model="frame_val" label="1u-dogbone"> <img src="dist/fonts/1u-dogbone.svg" style="width: 100%" alt=""> </el-radio>
             </el-col>
           </el-row>
           
           <el-row :gutter="50" class="asset-radio">
-            <el-col :lg="12">
+            <el-col :sm="12">
               <el-radio class="" v-model="frame_val" label="2u-rectangle"> <img src="dist/fonts/2u-rectangle.svg" style="width: 100%;" alt=""> </el-radio>
             </el-col>
-            <el-col :lg="12">
+            <el-col :sm="12">
               <el-radio class="" v-model="frame_val" label="2u-dogbone"> <img src="dist/fonts/2u-dogbone.svg" style="width: 100%;" alt=""> </el-radio>
             </el-col>
           </el-row>
@@ -53,16 +71,16 @@
 
           <div class="label-margin"> {{ server_size }}U mesh is available in partial or full coverage options </div> 
           <el-row :gutter="10" class="asset-radio">
-            <el-col :lg="8">
+            <el-col :sm="12" :lg="8">
               <el-radio class="" v-model="mesh_val" :label="server_size + 'u-circle'"> <img :src="'dist/fonts/' + server_size + 'u-circle.svg'" style="width: 250px;" alt=""> </el-radio>
             </el-col>
-            <el-col :lg="8">
+            <el-col :sm="12" :lg="8">
               <el-radio class="" v-model="mesh_val" :label="server_size + 'u-hex'"> <img :src="'dist/fonts/' + server_size + 'u-hex.svg'" style="width: 250px;" alt=""> </el-radio>
             </el-col>
-            <el-col :lg="8">
+            <el-col :sm="12" :lg="8">
               <el-radio class="" v-model="mesh_val" :label="server_size + 'u-square'"> <img :src="'dist/fonts/' + server_size + 'u-square.svg'" style="width: 250px;" alt=""> </el-radio>
             </el-col>
-            <el-col :lg="24">
+            <el-col :sm="12" :lg="24">
               <el-radio class="" v-model="mesh_val" label="none"> No Mesh </el-radio>
             </el-col>
           </el-row>
@@ -76,7 +94,7 @@
       <!-- Add Logo -->
       <div class="step" v-show="step == 3">
           <el-row>
-            <el-col :lg="12" class="badge-buttons">
+            <el-col :sm="24" :lg="12" class="badge-buttons">
 
               <h2 class="label-margin"> Choose a Shape </h2>
 
@@ -109,7 +127,7 @@
 
             </el-col>
 
-            <el-col :lg="12" class="badge-preview" v-show="badge_val && badge_val !== 'none'">
+            <el-col :sm="24" :lg="12" class="badge-preview" v-show="badge_val && badge_val !== 'none'">
 
               <div class="upload-logo">
                 <h2 class="label-margin"> Preview </h2>

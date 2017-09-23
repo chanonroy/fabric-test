@@ -15,15 +15,28 @@
         border: 2px solid transparent;
         transition: all 0.2s ease;
         cursor: pointer;
+
+        @media screen and (max-width: 1200px) {
+            padding-top: 10px;
+            padding-bottom: 10px;;
+        }
+
         &:hover {
             color: $color-green;
         }
         &.active {
             font-weight: bold;
             border: 2px solid $color-green;
-            border-bottom: 2px solid transparent;
             color: $color-green;
+
+            @media screen and (min-width: 1200px) {
+                border-bottom: 2px solid transparent;
+            }
         }
+    }
+
+    @media screen and (max-width: 1200px) {
+        margin-bottom: 20px;
     }
 }
 
@@ -54,6 +67,10 @@
         width: 350px;
         text-align: center;
         margin: 0 0 0 auto;
+
+        @media screen and (max-width: 1200px) {
+            margin: 0 auto;
+        }
 
       .canvas-container {
         display: block;
@@ -99,14 +116,6 @@
     margin-top: 10px !important;
 }
 
-// Containers
-.badge-buttons {
-    width: 50%;
-}
-.badge-preview {
-    width: 50%;
-}
-
 // Canvas Containers
 .preview {
     
@@ -119,6 +128,16 @@
                 position: absolute !important;
                 top: 44%;
                 left: 8.1%;
+
+                @media screen and (max-width: 992px) {
+                    top: 24%;
+                    left: 10.1%;
+                }
+
+                @media screen and (max-width: 768px) {
+                    top: 105px;
+                    left: 77px;
+                }
             }
             img {
                 display: block;
@@ -133,6 +152,16 @@
                 position: absolute !important;
                 top: 45%;
                 left: 5.7%;
+
+                @media screen and (max-width: 992px) {
+                    top: 20%;
+                    left: 7.7%;
+                }
+
+                @media screen and (max-width: 768px) {
+                    top: 73px;
+                    left: 55px;
+                }
             }
             img {
                 display: block;
@@ -165,7 +194,13 @@
         div {
             color: grey;
             font-style: italic;
-        } 
+        }
+        
+        @media screen and (max-width: 992px) {
+            margin-top: 40px;
+            position: static;
+            text-align: center;
+        }
     }
 
 }

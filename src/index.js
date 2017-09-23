@@ -247,7 +247,7 @@ var app = new Vue({
       if (val == 'oval') {
         this.setup_logo_canvas(150, 350, 25);
         custom_props = {
-          rx: 175
+          rx: 250
         };
       }
 
@@ -441,6 +441,12 @@ var app = new Vue({
               cornerColor: "#CDE6B3",
               borderColor: "#FFFFFF",
             })
+            badge_logo.setControlsVisibility({
+              mt: false,
+              mr: false,
+              mb: false,
+              ml: false
+            });
 
             app.badge_photo = badge_logo;
             app.logo_canvas.add(app.badge_photo);
