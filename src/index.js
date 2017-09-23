@@ -4,7 +4,7 @@ import { throttle, findIndex } from 'lodash'
 import { Slider, Compact } from 'vue-color'
 import { defaultColors } from './js/default_colors'
 import { object_prevent_overfill } from './js/utils/object_prevent_overfill'
-import { canvas_prevent_overfill } from './js/utils/canvas_prevent_overfill'
+import { server_prevent_overfill } from './js/utils/server_prevent_overfill'
 import './scss/main.scss';
 
 Vue.use(ElementUI);
@@ -136,7 +136,7 @@ var app = new Vue({
           top: -5,
           left: -5,
           width: app.frame.width,
-          scaleX: app.canvas.width / app.frame.width + 0.01,
+          scaleX: app.canvas.width / app.frame.width,
           scaleY: app.canvas.height / app.frame.height + 0.025
         });
 
@@ -334,7 +334,7 @@ var app = new Vue({
         top: -5,
         left: -5,
         width: app.mesh.width,
-        scaleX: app.canvas.width / app.mesh.width + 0.01,
+        scaleX: app.canvas.width / app.mesh.width,
         scaleY: app.canvas.height / app.mesh.height + 0.025
       });
 
@@ -498,6 +498,6 @@ var app = new Vue({
     this.canvas.setWidth(this.canvas_size[this.server_size].width);
     // this.canvas.preserveObjectStacking = true;
 
-    canvas_prevent_overfill(this.canvas);
+    server_prevent_overfill(this.canvas);
   },
 })
