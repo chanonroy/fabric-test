@@ -19,7 +19,9 @@ var app = new Vue({
     // General Settings
     step: 1,                      // { Number } - for keeping order of app progress (e.g., 1, 2, 3, 4)
     loading: false,               // { Boolean } - to trigger loading icon
-    static_path: 'dist/assets/',
+    
+    static_path: '',
+
     canvas_size: {
       '1': {
         'height': 60,
@@ -140,12 +142,14 @@ var app = new Vue({
 
         app.clean_main_canvas();
 
-        var badge_index = findIndex(app.canvas._objects, [ 'selectable', true ]);
-        var current_badge = app.canvas._objects[badge_index];
+        if (app.badge) {
+          var badge_index = findIndex(app.canvas._objects, [ 'selectable', true ]);
+          var current_badge = app.canvas._objects[badge_index];
 
-        app.canvas.centerObject(current_badge);
-        current_badge.setCoords();
-        app.canvas.setActiveObject(current_badge);
+          app.canvas.centerObject(current_badge);
+          current_badge.setCoords();
+          app.canvas.setActiveObject(current_badge);
+        }
 
         app.canvas.renderAll();
         app.loading = false;
@@ -484,6 +488,9 @@ var app = new Vue({
     }
   },
   mounted() {
+    // Grab inline Django template variables
+    this.static_path = static_path;
+
     // Server Preview Canvas
     this.canvas = new fabric.Canvas('c');
     this.canvas.backgroundColor="rgba(0, 0, 0, 0)";
