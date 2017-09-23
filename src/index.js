@@ -1,13 +1,11 @@
 import Vue from 'vue';
 import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-default/index.css'
 import { throttle, findIndex } from 'lodash'
 import { Slider, Compact } from 'vue-color'
 import { defaultColors } from './js/default_colors'
 import { object_prevent_overfill } from './js/utils/object_prevent_overfill'
 import { canvas_prevent_overfill } from './js/utils/canvas_prevent_overfill'
 import './scss/main.scss';
-import './assets/_assets.js';
 
 Vue.use(ElementUI);
 
@@ -21,6 +19,7 @@ var app = new Vue({
     // General Settings
     step: 1,                      // { Number } - for keeping order of app progress (e.g., 1, 2, 3, 4)
     loading: false,               // { Boolean } - to trigger loading icon
+    static_path: 'dist/assets/',
     canvas_size: {
       '1': {
         'height': 60,
@@ -120,7 +119,7 @@ var app = new Vue({
       app.canvas.renderAll();
 
       app.loading = true;
-      new fabric.loadSVGFromURL('dist/fonts/' + val + '.svg', function(objects, options) {
+      new fabric.loadSVGFromURL(app.static_path + val + '.svg', function(objects, options) {
         app.canvas.remove(app.frame);
         app.frame = fabric.util.groupSVGElements(objects, options);
 
@@ -181,7 +180,7 @@ var app = new Vue({
       } else {
         // Cache miss, generate mesh (2-3 seconds)
         app.loading = true;
-        new fabric.loadSVGFromURL('dist/fonts/' + val + '.svg', function(objects, options) {
+        new fabric.loadSVGFromURL(app.static_path + val + '.svg', function(objects, options) {
             app.canvas.remove(app.mesh);
             app.mesh_cache[val] = fabric.util.groupSVGElements(objects, options);
             app.mesh = app.mesh_cache[val];

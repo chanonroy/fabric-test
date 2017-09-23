@@ -8,24 +8,13 @@
      <link rel="icon" href="dist/assets/server-icon.png" type="image/x-icon">
      <title> Fabric.js Test </title>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/2.0.0-beta.4/fabric.js"></script>
+     <link href="dist/css/main.css" rel="stylesheet">
    </head>
    <body>
     <script>
       // Django static files should give paths here
-      var one_dogbone     = '1u-dogbone.svg';  
-      var one_rectangle   = '1u-rectangle.svg";'
-      var two_dogbone     = '2u-dogbone.svg';
-      var two_rectangle   = '2u-rectangle.svg';
-
-      var one_circle      = '1u-circle.svg';
-      var one_hex         = '1u-hex.svg';
-      var one_square      = '1u-square.svg';
-      var two_circle      = '2u-circle.svg';
-      var two_hex         = '2u-hex.svg';
-      var two_square      = '2u-square.svg';
-
-      var one_server      = '1u-server.png';
-      var two_server      = '2u-server.png';
+      var static_path = 'dist/assets/';
+      var post_path = '';                 // just gimmie a random url to POST against here
     </script>
 
      <div id="app" class="container" v-cloak>
@@ -44,19 +33,19 @@
 
           <el-row :gutter="50" class="asset-radio">
             <el-col :sm="12">
-                <el-radio class="" v-model="frame_val" label="1u-rectangle"> <img src="dist/fonts/1u-rectangle.svg" style="width: 100%;" alt=""> </el-radio>                
+                <el-radio class="" v-model="frame_val" label="1u-rectangle"> <img src="dist/assets/1u-rectangle.svg" style="width: 100%;" alt=""> </el-radio>                
             </el-col>  
             <el-col :sm="12">         
-                <el-radio class="" v-model="frame_val" label="1u-dogbone"> <img src="dist/fonts/1u-dogbone.svg" style="width: 100%" alt=""> </el-radio>
+                <el-radio class="" v-model="frame_val" label="1u-dogbone"> <img src="dist/assets/1u-dogbone.svg" style="width: 100%" alt=""> </el-radio>
             </el-col>
           </el-row>
           
           <el-row :gutter="50" class="asset-radio">
             <el-col :sm="12">
-              <el-radio class="" v-model="frame_val" label="2u-rectangle"> <img src="dist/fonts/2u-rectangle.svg" style="width: 100%;" alt=""> </el-radio>
+              <el-radio class="" v-model="frame_val" label="2u-rectangle"> <img src="dist/assets/2u-rectangle.svg" style="width: 100%;" alt=""> </el-radio>
             </el-col>
             <el-col :sm="12">
-              <el-radio class="" v-model="frame_val" label="2u-dogbone"> <img src="dist/fonts/2u-dogbone.svg" style="width: 100%;" alt=""> </el-radio>
+              <el-radio class="" v-model="frame_val" label="2u-dogbone"> <img src="dist/assets/2u-dogbone.svg" style="width: 100%;" alt=""> </el-radio>
             </el-col>
           </el-row>
 
@@ -72,13 +61,13 @@
           <div class="label-margin"> {{ server_size }}U mesh is available in partial or full coverage options </div> 
           <el-row :gutter="10" class="asset-radio">
             <el-col :sm="12" :lg="8">
-              <el-radio class="" v-model="mesh_val" :label="server_size + 'u-circle'"> <img :src="'dist/fonts/' + server_size + 'u-circle.svg'" style="width: 250px;" alt=""> </el-radio>
+              <el-radio class="" v-model="mesh_val" :label="server_size + 'u-circle'"> <img :src="'dist/assets/' + server_size + 'u-circle.svg'" style="width: 250px;" alt=""> </el-radio>
             </el-col>
             <el-col :sm="12" :lg="8">
-              <el-radio class="" v-model="mesh_val" :label="server_size + 'u-hex'"> <img :src="'dist/fonts/' + server_size + 'u-hex.svg'" style="width: 250px;" alt=""> </el-radio>
+              <el-radio class="" v-model="mesh_val" :label="server_size + 'u-hex'"> <img :src="'dist/assets/' + server_size + 'u-hex.svg'" style="width: 250px;" alt=""> </el-radio>
             </el-col>
             <el-col :sm="12" :lg="8">
-              <el-radio class="" v-model="mesh_val" :label="server_size + 'u-square'"> <img :src="'dist/fonts/' + server_size + 'u-square.svg'" style="width: 250px;" alt=""> </el-radio>
+              <el-radio class="" v-model="mesh_val" :label="server_size + 'u-square'"> <img :src="'dist/assets/' + server_size + 'u-square.svg'" style="width: 250px;" alt=""> </el-radio>
             </el-col>
             <el-col :sm="12" :lg="24">
               <el-radio class="" v-model="mesh_val" label="none"> No Mesh </el-radio>
@@ -194,7 +183,12 @@
       </div>
 
       <div :class="'preview-container ' + size_label" v-show="step !== 3">
-        <img :src="'assets/' + server_size + 'u-server.png'" alt="server">
+        <div v-if="server_size == 1">
+          <img src="dist/assets/1u-server.png" alt="server">
+        </div>
+        <div v-if="server_size == 2">
+          <img src="dist/assets/2u-server.png" alt="server">
+        </div>
         <canvas id="c"></canvas>
         <div class="preview-buttons">
             <div v-show="badge && badge_val !== 'none'" style="margin-bottom: 30px;"> Position your logo by dragging it</div>
@@ -205,5 +199,7 @@
       </div>
 
      </div>
+
+     <script type="text/javascript" src="dist/main.js"></script>
    </body>
  </html>

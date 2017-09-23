@@ -1,5 +1,4 @@
 var webpack = require('webpack');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
 var path = require('path');
 
 var BASE_DIR = path.resolve(__dirname, '../');
@@ -83,12 +82,6 @@ module.exports = {
         vue: 'vue/dist/vue.js'
       }
     },
-
-    plugins: [
-        new HtmlWebpackPlugin({
-          template: 'index.html'
-        }),
-    ],
 
     devServer: {
       historyApiFallback: true,

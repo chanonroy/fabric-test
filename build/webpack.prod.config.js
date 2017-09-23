@@ -1,7 +1,5 @@
 var webpack = require('webpack');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var CleanWebpackPlugin = require('clean-webpack-plugin');
 var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 var path = require('path');
 
@@ -93,14 +91,6 @@ module.exports = {
         'process.env': {
           NODE_ENV: JSON.stringify('production')
         }
-      }),
-      new CleanWebpackPlugin(['./dist'], {
-        root: BASE_DIR,
-        verbose: true,
-        dry: false,
-      }),
-      new HtmlWebpackPlugin({
-        template: 'index.html'
       }),
       new ExtractTextPlugin({
         filename: "css/[name].css",
