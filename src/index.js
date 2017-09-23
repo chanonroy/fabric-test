@@ -141,6 +141,13 @@ var app = new Vue({
 
         app.clean_main_canvas();
 
+        var badge_index = findIndex(app.canvas._objects, [ 'selectable', true ]);
+        var current_badge = app.canvas._objects[badge_index];
+
+        app.canvas.centerObject(current_badge);
+        current_badge.setCoords();
+        app.canvas.setActiveObject(current_badge);
+
         app.canvas.renderAll();
         app.loading = false;
       });

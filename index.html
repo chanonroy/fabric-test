@@ -133,7 +133,7 @@
                 <h2 class="label-margin"> Preview </h2>
                 <div class="preview-center"><canvas id="logo_canvas"></canvas></div>
                 <div style="margin-top: 20px;">
-                  <el-button @click="save_badge" style="text-align: right;"> Save </el-button>
+                  <el-button @click="save_badge" style="text-align: right;"> Save Changes </el-button>
                 </div>
               </div>
 
@@ -175,7 +175,7 @@
           </el-col>
 
           <el-col :lg="24">
-            <div v-show="badge_val && badge_val !== 'none'">
+            <div v-show="badge && badge_val !== 'none'">
               <h2 class="label-margin"> Pick a Badge Color </h2>
               <div class="color-input">
                 <el-input v-model="badge_color_input"></el-input>
@@ -197,6 +197,7 @@
         <img :src="'assets/' + server_size + 'u-server.png'" alt="server">
         <canvas id="c"></canvas>
         <div class="preview-buttons">
+            <div v-show="badge && badge_val !== 'none'" style="margin-bottom: 30px;"> Position your logo by dragging it</div>
             <div v-if="!selections_done"> Please make all the selections </div>
             <div style="margin-top: 20px;"> <el-button @click="start_over()" :disabled="!selections_done"> Place Your Order </el-button> </div>
             <div style="margin-top: 20px;"> <el-button @click="start_over()"> Download PDF </el-button> </div>
