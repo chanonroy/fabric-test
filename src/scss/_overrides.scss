@@ -12,6 +12,10 @@
     border-color: grey; 
 }
 
+.el-upload__input {
+    display: none !important;
+}
+
 // Buttons
 .el-button.el-button--primary {
     background-color: $color-green;
