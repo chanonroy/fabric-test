@@ -148,7 +148,7 @@
           <el-col :lg="24">
             <div v-show="frame_val && frame_val !== 'none'">
               <h2 class="label-margin"> Pick a Frame Color </h2>
-              <div class="color-input">
+              <div class="color-input" :class="{ greyscale: frame_color_input == frame_color_default }">
                 <el-input v-model="frame_color_input"></el-input>
                 <el-button class="color-input__clear" @click="reset_color('frame')"> X </el-button>                
                 <slider-picker v-model="frame_color" />
@@ -159,7 +159,7 @@
           <el-col :lg="24">
             <div v-show="mesh_val && mesh_val !== 'none'">
               <h2 class="label-margin"> Pick a Mesh Color </h2>
-              <div class="color-input">
+              <div class="color-input" :class="{ greyscale: mesh_color_input == mesh_color_default }">
                 <el-input v-model="mesh_color_input"></el-input>
                 <el-button class="color-input__clear" @click="reset_color('mesh')"> X </el-button>
                 <slider-picker v-model="mesh_color" />
@@ -170,7 +170,7 @@
           <el-col :lg="24">
             <div v-show="badge && badge_val !== 'none'">
               <h2 class="label-margin"> Pick a Badge Color </h2>
-              <div class="color-input">
+              <div class="color-input" :class="{ greyscale: badge_color_input == badge_color_default }">
                 <el-input v-model="badge_color_input"></el-input>
                 <el-button class="color-input__clear" @click="reset_color('badge')"> X </el-button>
                 <slider-picker v-model="badge_color" />

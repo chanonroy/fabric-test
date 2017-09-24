@@ -61705,6 +61705,8 @@ var app = new _vue2.default({
       // Removing photo from the button
       var app = this;
 
+      app.canvas.remove(app.badge);
+
       app.logo_canvas.remove(app.badge_photo);
       app.badge = '';
       app.badge_photo = '';
@@ -61778,7 +61780,7 @@ var app = new _vue2.default({
     }
   },
   mounted: function mounted() {
-    // Grab inline Django template variables
+    // Grab inline Django template variables  
 
     // Server Preview Canvas
     this.canvas = new fabric.Canvas('c');
