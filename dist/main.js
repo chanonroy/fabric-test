@@ -61563,22 +61563,23 @@ var app = new _vue2.default({
       } else {
 
         var payload = {
-          'id_rack_size': this.frame_val ? this.pk_dict.frame[this.frame_val] : '', // { Number }
-          'id_mesh': this.mesh_val ? this.pk_dict.mesh[this.mesh_val] : '', // { Number }
-          'id_logo_shape': this.badge ? this.pk_dict.badge[this.badge_shape] : '', // { String }
-          'id_logo': this.badge ? this.badge.toSVG() : 'none', // { String ? } <-- this is a giant SVG string
-          'id_top': this.badge ? this.badge.top : '', // { Float }
-          'id_left': this.badge ? this.badge.left : '', // { Float }
-          'id_canvas_height': this.badge ? this.canvas.height : '', // { Number }
-          'id_canvas_width': this.badge ? this.canvas.width : '', // { Number }
-          'id_badge_color': this.badge ? this.mesh_color_input : '', // { String } - #414645
-          'id_mesh_color': this.mesh_color_input, // { String } - #414645
-          'id_frame_color': this.frame_color_input // { String } - #414645
+          'rack_size': this.frame_val ? this.pk_dict.frame[this.frame_val] : '', // { Number }
+          'mesh': this.mesh_val ? this.pk_dict.mesh[this.mesh_val] : '', // { Number }
+          'logo_shape': this.badge ? this.pk_dict.badge[this.badge_shape] : '', // { String }
+          'logo': this.badge ? this.badge.toSVG() : '', // { String ? } <-- this is a giant SVG string
+          'top': this.badge ? this.badge.top : '', // { Float }
+          'left': this.badge ? this.badge.left : '', // { Float }
+          'canvas_height': this.badge ? this.canvas.height : '', // { Number }
+          'canvas_width': this.badge ? this.canvas.width : '', // { Number }
+          'badge_color': this.badge ? this.mesh_color_input : '', // { String } - #414645
+          'mesh_color': this.mesh_color_input, // { String } - #414645
+          'frame_color': this.frame_color_input // { String } - #414645
 
 
           // AJAX HERE
         };_axios2.default.post('/shopping-cart/add/', payload).then(function (response) {
           console.log(response);
+          top.window.location.href = '/shopping-cart/show/';
         }).catch(function (error) {
           console.log(error);
         });
