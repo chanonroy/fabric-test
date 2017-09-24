@@ -22,7 +22,7 @@ var app = new Vue({
     loading: false,               // { Boolean } - to trigger loading icon
     
     // Shit from Django
-    static_path: '',
+    static_path: 'https://s3.amazonaws.com/bezel-mbx/assets/',
     post_path: '',
 
     canvas_size: {
@@ -183,7 +183,10 @@ var app = new Vue({
 
         app.canvas.renderAll();
         app.loading = false;
-      });
+      },
+      null,
+      { crossOrigin: 'Anonymous' }
+      );
     },
     mesh_color() {
       this.mesh_color_input = this.mesh_color.hex;
@@ -225,7 +228,9 @@ var app = new Vue({
             }
 
             app.setup_mesh();
-          }
+          },
+          null,
+          { crossOrigin: 'Anonymous' }
         );
       } // - else
 
@@ -321,6 +326,13 @@ var app = new Vue({
     },
     server_size(val) {
       this.mesh_val = 'none';
+    },
+    step(val) {
+
+      if (val == 1 || val == 2 || val == 4) {
+        this.save_badge();
+      }
+
     }
   },
   methods: {
@@ -349,7 +361,7 @@ var app = new Vue({
           console.log(response); 
           top.window.location.href='/shopping-cart/show/';
         }).catch(function(error) { 
-          console.log(error); 
+          this.$message.error('Server error'); 
         });
 
       }
@@ -527,7 +539,10 @@ var app = new Vue({
             app.badge_photo.setCoords();
             app.logo_canvas.setActiveObject(app.badge_photo);
             app.logo_canvas.renderAll();
-         });
+         },
+         null,
+         { crossOrigin: 'Anonymous' }
+        );
       }
     },
     reset_color(item) {
@@ -563,7 +578,7 @@ var app = new Vue({
     server_prevent_overfill(this.canvas);
   },
   created() {
-        this.static_path = static_path;
-        this.post_path = post_path;       // old_post_path
+        this.static_path = old_static_path;
+        this.post_path = old_post_path;       // old_post_path
   }
 })

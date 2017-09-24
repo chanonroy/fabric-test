@@ -61257,7 +61257,7 @@ var app = new _vue2.default({
     loading: false, // { Boolean } - to trigger loading icon
 
     // Shit from Django
-    static_path: '',
+    static_path: 'https://s3.amazonaws.com/bezel-mbx/assets/',
     post_path: '',
 
     canvas_size: {
@@ -61418,7 +61418,7 @@ var app = new _vue2.default({
 
         app.canvas.renderAll();
         app.loading = false;
-      });
+      }, null, { crossOrigin: 'Anonymous' });
     },
     mesh_color: function mesh_color() {
       this.mesh_color_input = this.mesh_color.hex;
@@ -61459,7 +61459,7 @@ var app = new _vue2.default({
           }
 
           app.setup_mesh();
-        });
+        }, null, { crossOrigin: 'Anonymous' });
       } // - else
     },
     badge_color: function badge_color() {
@@ -61553,6 +61553,12 @@ var app = new _vue2.default({
     },
     server_size: function server_size(val) {
       this.mesh_val = 'none';
+    },
+    step: function step(val) {
+
+      if (val == 1 || val == 2 || val == 4) {
+        this.save_badge();
+      }
     }
   },
   methods: {
@@ -61581,7 +61587,7 @@ var app = new _vue2.default({
           console.log(response);
           top.window.location.href = '/shopping-cart/show/';
         }).catch(function (error) {
-          console.log(error);
+          this.$message.error('Server error');
         });
       }
     },
@@ -61757,7 +61763,7 @@ var app = new _vue2.default({
           app.badge_photo.setCoords();
           app.logo_canvas.setActiveObject(app.badge_photo);
           app.logo_canvas.renderAll();
-        });
+        }, null, { crossOrigin: 'Anonymous' });
       };
     },
     reset_color: function reset_color(item) {
@@ -61792,8 +61798,8 @@ var app = new _vue2.default({
     (0, _server_prevent_overfill.server_prevent_overfill)(this.canvas);
   },
   created: function created() {
-    this.static_path = static_path;
-    this.post_path = post_path; // old_post_path
+    this.static_path = old_static_path;
+    this.post_path = old_post_path; // old_post_path
   }
 });
 
