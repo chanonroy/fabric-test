@@ -61645,7 +61645,6 @@ var app = new _vue2.default({
 
       // If no photo, don't save it
       if (!this.badge_photo) {
-        this.$message.warning('Badge should have logo');
         return;
       }
 
@@ -61798,8 +61797,8 @@ var app = new _vue2.default({
     (0, _server_prevent_overfill.server_prevent_overfill)(this.canvas);
   },
   created: function created() {
-    this.static_path = old_static_path;
-    this.post_path = old_post_path; // old_post_path
+    this.static_path = static_path;
+    this.post_path = post_path; // old_post_path
   }
 });
 

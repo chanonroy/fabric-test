@@ -420,7 +420,6 @@ var app = new Vue({
 
       // If no photo, don't save it
       if (!this.badge_photo) {
-        this.$message.warning('Badge should have logo');
         return;
       }
 
