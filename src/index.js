@@ -69,12 +69,12 @@ var app = new Vue({
     frame_color_input: '#808080', // { String } - hex for input
     frame_color_default: '#808080',
     
-    mesh_val: '',                 // { String } - value indicating type of mesh from select
+    mesh_val: 'none',                 // { String } - value indicating type of mesh from select
     mesh_color: defaultColors,    // { Object } - color object used for the vue color sliders
     mesh_color_input: '#414645',  // { String } - hex for input
     mesh_color_default: '#414645',
 
-    badge_val: '',                // { String } - value indicating type of badge from select
+    badge_val: 'none',                // { String } - value indicating type of badge from select
     badge_color: defaultColors,   // { Object } - color object used for the vue color sliders
     badge_color_input: '#AFAFB4', // { String } - hex for input
     badge_color_default: '#AFAFB4',
@@ -577,7 +577,7 @@ var app = new Vue({
     server_prevent_overfill(this.canvas);
   },
   created() {
-        this.static_path = static_path;
-        this.post_path = post_path;       // old_post_path
+        this.static_path = old_static_path;
+        this.post_path = old_post_path;       // old_post_path
   }
 })
