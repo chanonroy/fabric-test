@@ -74,7 +74,7 @@ var app = new Vue({
     mesh_color_input: '#414645',  // { String } - hex for input
     mesh_color_default: '#414645',
 
-    badge_val: 'none',                // { String } - value indicating type of badge from select
+    badge_val: 'none',            // { String } - value indicating type of badge from select
     badge_color: defaultColors,   // { Object } - color object used for the vue color sliders
     badge_color_input: '#AFAFB4', // { String } - hex for input
     badge_color_default: '#AFAFB4',
@@ -345,7 +345,7 @@ var app = new Vue({
         var payload = {
           'rack_size': this.frame_val ? this.pk_dict.frame[this.frame_val] : '',      // { Number }
           'mesh': this.mesh_val ? this.pk_dict.mesh[this.mesh_val] : '',              // { Number }
-          'logo_shape': this.badge ? this.pk_dict.badge[this.badge_shape] : '',       // { String }
+          'logo_shape': this.badge ? this.pk_dict.badge[this.badge_val] : '',       // { String }
           'logo': this.badge ? this.badge.toSVG() : '',                               // { String ? } <-- this is a giant SVG string
           'top': this.badge ? this.badge.top : '',                                    // { Float }
           'left': this.badge ? this.badge.left : '',                                  // { Float }
