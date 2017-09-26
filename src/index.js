@@ -390,8 +390,14 @@ var app = new Vue({
 
         // AJAX HERE
         axios.post('/shopping-cart/add/', payload).then(function(response) { 
-          console.log(response); 
-          top.window.location.href='/shopping-cart/show/';
+          var win = window.open(response.data, '_blank');
+            if (win) {
+                //Browser has allowed it to be opened
+                win.focus();
+            } else {
+                //Browser has blocked it
+                alert('Please allow popups for this website');
+            }
         }).catch(function(error) { 
           this.$message.error('Server error'); 
         });
