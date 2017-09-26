@@ -205,7 +205,7 @@
             <div v-show="badge && badge_val !== 'none'" style="margin-bottom: 30px;"> Position your logo by dragging it</div>
             <div v-if="!selections_done"> Please make all the selections </div>
             <div style="margin-top: 20px;"> <el-button @click="send_payload()" class="btn btn-primary btn-sm" :disabled="!selections_done"> Place Your Order </el-button> </div>
-            <div style="margin-top: 20px;"> <el-button @click="start_over()" class="btn btn-primary btn-sm"> Download PDF </el-button> </div>
+            <div style="margin-top: 20px;"> <el-button @click="get_pdf()" class="btn btn-primary btn-sm"> Download PDF </el-button> </div>
         </div>
       </div>
 

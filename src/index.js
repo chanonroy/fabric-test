@@ -367,6 +367,38 @@ var app = new Vue({
       }
 
     },
+    get_pdf() {
+
+      if (!this.selections_done) {
+        return false;
+      } else {
+
+        var payload = {
+          'rack_size': this.frame_val ? this.pk_dict.frame[this.frame_val] : '',      // { Number }
+          'mesh': this.mesh_val ? this.pk_dict.mesh[this.mesh_val] : '',              // { Number }
+          'logo_shape': this.badge ? this.pk_dict.badge[this.badge_val] : '',         // { String }
+          'logo': this.badge ? this.badge.toSVG() : '',                               // { String ? } <-- this is a giant SVG string
+          'top': this.badge ? this.badge.top : '',                                    // { Float }
+          'left': this.badge ? this.badge.left : '',                                  // { Float }
+          'canvas_height': this.badge ? this.canvas.height : '',                      // { Number }
+          'canvas_width': this.badge ? this.canvas.width : '',                        // { Number }
+          'badge_color': this.badge ? this.mesh_color_input : '',                     // { String } - #414645
+          'mesh_color': this.mesh_color_input,                                        // { String } - #414645
+          'frame_color': this.frame_color_input,
+          'get_pdf': ''
+        }
+
+        // AJAX HERE
+        axios.post('/shopping-cart/add/', payload).then(function(response) { 
+          console.log(response); 
+          top.window.location.href='/shopping-cart/show/';
+        }).catch(function(error) { 
+          this.$message.error('Server error'); 
+        });
+
+      }
+
+    },
     setup_logo_canvas(height, width, radius) {
       // Image Upload and Badge Selection Canvas
       this.logo_canvas = new fabric.Canvas('logo_canvas');
