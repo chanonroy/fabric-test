@@ -55,7 +55,7 @@
           </el-row>
 
           <div class="step__footer">
-            <el-button icon="close" @click="start_over()"> Start Over </el-button>
+            <el-button class="btn btn-primary btn-sm" icon="close" @click="start_over()"> Start Over </el-button>
           </div>
 
       </div>
@@ -80,7 +80,7 @@
           </el-row>
 
           <div class="step__footer">
-              <el-button icon="close" @click="start_over()"> Start Over </el-button>
+              <el-button class="btn btn-primary btn-sm" icon="close" @click="start_over()"> Start Over </el-button>
             </div>
 
       </div>
@@ -115,7 +115,7 @@
                           <el-button icon="picture" type="primary"> Upload Photo </el-button>
                         </el-upload>
                       </div>
-                      <el-button v-else @click="remove_photo"> Remove Photo </el-button>
+                      <el-button v-else class="btn btn-primary btn-sm" @click="remove_photo"> Remove Photo </el-button>
                   </div>
               </div>
 
@@ -133,7 +133,7 @@
           </el-row>
 
           <div class="step__footer">
-            <el-button icon="close" @click="start_over()"> Start Over </el-button>
+            <el-button icon="close" class"btn btn-primary btn-sm" @click="start_over()"> Start Over </el-button>
           </div>
 
       </div>
@@ -147,11 +147,11 @@
             <div v-show="frame_val && frame_val !== 'none'">
               <h2 class="label-margin"> 
                 Pick a Frame Color 
-                <span style="color: grey;" v-if="frame_color_input == frame_color_default"> (Default) </span>
+                <span style="color: lightgrey;" v-if="frame_color_input == frame_color_default"> (Default) </span>
               </h2>
               <div class="color-input">
                 <el-input v-model="frame_color_input"></el-input>
-                <el-button class="color-input__clear" @click="reset_color('frame')"> X </el-button>                
+                <el-button class="color-input__clear btn btn-primary btn-sm" @click="reset_color('frame')"> X </el-button>                
                 <slider-picker v-model="frame_color" />
               </div>
             </div>
@@ -161,11 +161,11 @@
             <div v-show="mesh_val && mesh_val !== 'none'">
               <h2 class="label-margin"> 
                 Pick a Mesh Color 
-                <span style="color: grey;" v-if="mesh_color_input == mesh_color_default"> (Default) </span>
+                <span style="color: lightgrey;" v-if="mesh_color_input == mesh_color_default"> (Default) </span>
               </h2>
               <div class="color-input">
                 <el-input v-model="mesh_color_input"></el-input>
-                <el-button class="color-input__clear" @click="reset_color('mesh')"> X </el-button>
+                <el-button class="color-input__clear btn btn-primary btn-sm" @click="reset_color('mesh')"> X </el-button>
                 <slider-picker v-model="mesh_color" />
               </div>
             </div>
@@ -175,11 +175,11 @@
             <div v-show="badge && badge_val !== 'none'">
               <h2 class="label-margin"> 
                 Pick a Badge Color
-                <span style="color: grey;" v-if="badge_color_input == badge_color_default"> (Default) </span>
+                <span style="color: lightgrey;" v-if="badge_color_input == badge_color_default"> (Default) </span>
               </h2>
               <div class="color-input">
                 <el-input v-model="badge_color_input"></el-input>
-                <el-button class="color-input__clear" @click="reset_color('badge')"> X </el-button>
+                <el-button class="color-input__clear btn btn-primary btn-sm" @click="reset_color('badge')"> X </el-button>
                 <slider-picker v-model="badge_color" />
               </div>
             </div>
@@ -188,7 +188,7 @@
         </el-row>
 
         <div class="step__footer">
-          <el-button icon="close" @click="start_over()"> Start Over </el-button>
+          <el-button class="btn btn-primary btn-sm" icon="close" @click="start_over()"> Start Over </el-button>
         </div>
 
       </div>
@@ -204,8 +204,8 @@
         <div class="preview-buttons">
             <div v-show="badge && badge_val !== 'none'" style="margin-bottom: 30px;"> Position your logo by dragging it</div>
             <div v-if="!selections_done"> Please make all the selections </div>
-            <div style="margin-top: 20px;"> <el-button @click="send_payload()" :disabled="!selections_done"> Place Your Order </el-button> </div>
-            <div style="margin-top: 20px;"> <el-button @click="start_over()"> Download PDF </el-button> </div>
+            <div style="margin-top: 20px;"> <el-button @click="send_payload()" class="btn btn-primary btn-sm" :disabled="!selections_done"> Place Your Order </el-button> </div>
+            <div style="margin-top: 20px;"> <el-button @click="start_over()" class="btn btn-primary btn-sm"> Download PDF </el-button> </div>
         </div>
       </div>
 
