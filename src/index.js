@@ -6,6 +6,7 @@ import { Slider, Compact } from 'vue-color'
 import { defaultColors } from './js/default_colors'
 import { object_prevent_overfill } from './js/utils/object_prevent_overfill'
 import { server_prevent_overfill } from './js/utils/server_prevent_overfill'
+import { html2canvas } from 'html2canvas'
 import './scss/main.scss';
 
 Vue.use(ElementUI);
@@ -35,6 +36,8 @@ var app = new Vue({
         'width': 564,
       }
     },
+
+    canvas_img: '',
 
     pk_dict: {
       'frame': {
@@ -336,7 +339,21 @@ var app = new Vue({
     }
   },
   methods: {
-    send_payload() {
+    prepare_payload(type) {
+      // type = 'finish' or 'pdf'
+      html2canvas(document.getElementById("preview-container"), {
+              onrendered: function (canvas) {
+                  this.canvas_img = canvas.toDataURL('image/png', 1.0);
+
+                  if (type == 'finish') {
+                    this.finish_order();
+                  } else {
+                    this.get_pdf();
+                  }
+              }
+          });
+    },
+    finish_order() {
 
       if (!this.selections_done) {
         return false;
@@ -352,7 +369,8 @@ var app = new Vue({
           'canvas_height': this.badge ? this.canvas.height : '',                      // { Number }
           'canvas_width': this.badge ? this.canvas.width : '',                        // { Number }
           'badge_color': this.badge ? this.mesh_color_input : '',                     // { String } - #414645
-          'mesh_color': this.mesh_color_input,                                        // { String } - #414645
+          'mesh_color': this.mesh_color_input,
+          'representation': this.canvas_img,                                        // { String } - #414645
           'frame_color': this.frame_color_input                                       // { String } - #414645
         }
 
@@ -385,6 +403,7 @@ var app = new Vue({
           'badge_color': this.badge ? this.mesh_color_input : '',                     // { String } - #414645
           'mesh_color': this.mesh_color_input,                                        // { String } - #414645
           'frame_color': this.frame_color_input,
+          'representation': this.canvas_img,
           'get_pdf': ''
         }
 
