@@ -343,6 +343,7 @@ var app = new Vue({
       var app = this;
 
       html2canvas(document.getElementById("preview-container"), {
+              useCORS:true,
               onrendered: function (canvas) {
                   app.canvas_img = canvas.toDataURL('image/png', 1.0);
 
