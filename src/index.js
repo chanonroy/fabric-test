@@ -6,7 +6,6 @@ import { Slider, Compact } from 'vue-color'
 import { defaultColors } from './js/default_colors'
 import { object_prevent_overfill } from './js/utils/object_prevent_overfill'
 import { server_prevent_overfill } from './js/utils/server_prevent_overfill'
-import { html2canvas } from 'html2canvas'
 import './scss/main.scss';
 
 Vue.use(ElementUI);
@@ -341,14 +340,16 @@ var app = new Vue({
   methods: {
     prepare_payload(type) {
       // type = 'finish' or 'pdf'
+      var app = this;
+
       html2canvas(document.getElementById("preview-container"), {
               onrendered: function (canvas) {
-                  this.canvas_img = canvas.toDataURL('image/png', 1.0);
+                  app.canvas_img = canvas.toDataURL('image/png', 1.0);
 
                   if (type == 'finish') {
-                    this.finish_order();
+                    app.finish_order();
                   } else {
-                    this.get_pdf();
+                    app.get_pdf();
                   }
               }
           });
@@ -634,7 +635,7 @@ var app = new Vue({
     server_prevent_overfill(this.canvas);
   },
   created() {
-        this.static_path = old_static_path;
-        this.post_path = old_post_path;       // old_post_path
+        this.static_path = static_path;
+        this.post_path = post_path;       // old_post_path
   }
 })

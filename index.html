@@ -8,6 +8,7 @@
      <link rel="icon" href="dist/assets/server-icon.png" type="image/x-icon">
      <title> Fabric.js Test </title>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/2.0.0-beta.4/fabric.js"></script>
+     <script src="dist/html2canvas.js"></script>
      <link href="dist/css/main.css" rel="stylesheet">
    </head>
    <body>
@@ -193,7 +194,7 @@
 
       </div>
 
-      <div :class="'preview-container ' + size_label" v-show="step !== 3">
+      <div id="preview-container" :class="'preview-container ' + size_label" v-show="step !== 3">
         <div v-if="server_size == 1">
           <img :src="static_path + '1u-server.png'" crossorigin='anonymous' alt="server">
         </div>
