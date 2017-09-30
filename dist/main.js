@@ -13822,59 +13822,59 @@ var defaultColors = exports.defaultColors = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+        value: true
 });
 exports.object_prevent_overfill = object_prevent_overfill;
 function object_prevent_overfill(canvas, radius) {
 
-    canvas.on('object:moving', function (e) {
-        var obj = e.target;
-        obj.setCoords();
+        canvas.on('object:moving', function (e) {
+                var obj = e.target;
+                obj.setCoords();
 
-        var boundingRect = obj.getBoundingRect(); // height, width
+                var boundingRect = obj.getBoundingRect(); // height, width
 
-        var max_top = radius;
-        var max_bot = canvas.height - boundingRect.height - radius;
-        var max_left = radius;
-        var max_right = canvas.width - boundingRect.width - radius;
+                var max_top = radius;
+                var max_bot = canvas.height - boundingRect.height - radius;
+                var max_left = radius;
+                var max_right = canvas.width - boundingRect.width - radius;
 
-        if (boundingRect.top < max_top) {
-            obj.top = max_top;
-        }
+                if (boundingRect.top < max_top) {
+                        obj.top = max_top;
+                }
 
-        if (boundingRect.left < max_left) {
-            obj.left = max_left;
-        }
+                if (boundingRect.left < max_left) {
+                        obj.left = max_left;
+                }
 
-        if (boundingRect.top > max_bot) {
-            obj.top = max_bot;
-        }
+                if (boundingRect.top > max_bot) {
+                        obj.top = max_bot;
+                }
 
-        if (boundingRect.left > max_right) {
-            obj.left = max_right;
-        }
-    });
+                if (boundingRect.left > max_right) {
+                        obj.left = max_right;
+                }
+        });
 
-    canvas.on('object:modified', function (options) {
+        canvas.on('object:modified', function (options) {
 
-        var obj = options.target;
-        var boundingRect = obj.getBoundingRect(true);
+                var obj = options.target;
+                var boundingRect = obj.getBoundingRect(true);
 
-        var max_top = radius;
-        var max_bot = canvas.height - boundingRect.height - radius;
-        var max_left = radius;
-        var max_right = canvas.width - boundingRect.width - radius;
+                var max_top = radius;
+                var max_bot = canvas.height - boundingRect.height - radius;
+                var max_left = radius;
+                var max_right = canvas.width - boundingRect.width - radius;
 
-        if (boundingRect.top < max_top || boundingRect.left < max_left || boundingRect.top > max_bot || boundingRect.left > max_right) {
+                if (boundingRect.top < max_top || boundingRect.left < max_left || boundingRect.top > max_bot || boundingRect.left > max_right) {
 
-            obj.scaleToWidth(canvas.width / 2);
-            obj.scaleToHeight(canvas.height / 2);
-            canvas.centerObject(obj);
-            obj.setCoords();
-            canvas.setActiveObject(obj);
-            canvas.renderAll();
-        }
-    });
+                        obj.scaleToWidth(canvas.width / 2);
+                        obj.scaleToHeight(canvas.height / 2);
+                        canvas.centerObject(obj);
+                        obj.setCoords();
+                        canvas.setActiveObject(obj);
+                        canvas.renderAll();
+                }
+        });
 }
 
 /***/ }),
@@ -61303,15 +61303,15 @@ var app = new _vue2.default({
     // Settings Components
     frame_val: '', // { String } - value indicating type of frame from select
     frame_color: _default_colors.defaultColors, // { Object } - color object used for the vue color sliders
-    frame_color_input: '#808080', // { String } - hex for input
-    frame_color_default: '#808080',
+    frame_color_input: '#FFFFFF', // { String } - hex for input
+    frame_color_default: '#FFFFFF',
 
-    mesh_val: 'none', // { String } - value indicating type of mesh from select
+    mesh_val: '', // { String } - value indicating type of mesh from select
     mesh_color: _default_colors.defaultColors, // { Object } - color object used for the vue color sliders
-    mesh_color_input: '#414645', // { String } - hex for input
-    mesh_color_default: '#414645',
+    mesh_color_input: '#FFFFFF', // { String } - hex for input
+    mesh_color_default: '#FFFFFF',
 
-    badge_val: 'none', // { String } - value indicating type of badge from select
+    badge_val: '', // { String } - value indicating type of badge from select
     badge_color: _default_colors.defaultColors, // { Object } - color object used for the vue color sliders
     badge_color_input: '#AFAFB4', // { String } - hex for input
     badge_color_default: '#AFAFB4',
@@ -61473,8 +61473,6 @@ var app = new _vue2.default({
       }
     },
     badge_val: function badge_val(val) {
-      // Remove old values from logo canvas
-      this.badge_photo = '';
 
       // initialize custom_props
       var custom_props = {};
@@ -61526,7 +61524,7 @@ var app = new _vue2.default({
       }
 
       var default_props = {
-        fill: "#AFAFB4",
+        fill: this.badge_color_input,
         left: 0,
         top: 0,
         width: this.logo_canvas.width,
@@ -61549,8 +61547,11 @@ var app = new _vue2.default({
 
       // A photo exists
       if (this.badge_photo !== '') {
-        this.logo_canvas.add(this.badge_photo);
-        this.save_badge();
+        app.logo_canvas.add(app.badge_photo);
+        app.logo_canvas.centerObject(app.badge_photo);
+        app.badge_photo.setCoords();
+        app.logo_canvas.setActiveObject(app.badge_photo);
+        app.logo_canvas.renderAll();
       }
     },
     server_size: function server_size(val) {
@@ -61569,6 +61570,7 @@ var app = new _vue2.default({
       var app = this;
 
       html2canvas(document.getElementById("preview-container"), {
+        useCORS: true,
         onrendered: function onrendered(canvas) {
           app.canvas_img = canvas.toDataURL('image/png', 1.0);
 
@@ -61678,16 +61680,19 @@ var app = new _vue2.default({
         app.mesh.item(i).set('fill', app.mesh_color_input);
       }
 
+      var scale_height = app.server_size == 2 ? app.canvas.height / app.mesh.height + 0.025 : app.canvas.height / app.mesh.height / 1.3;
+      var top_value = app.server_size == 2 ? -5 : 5;
+
       // Set properties of the mesh
       app.mesh.set({
         selectable: false,
         hasControls: false,
         hoverCursor: 'default',
-        top: -5,
+        top: top_value,
         left: -5,
         width: app.mesh.width,
         scaleX: app.canvas.width / app.mesh.width,
-        scaleY: app.canvas.height / app.mesh.height + 0.025
+        scaleY: scale_height
       });
 
       app.clean_main_canvas();
@@ -61852,8 +61857,8 @@ var app = new _vue2.default({
     (0, _server_prevent_overfill.server_prevent_overfill)(this.canvas);
   },
   created: function created() {
-    this.static_path = static_path;
-    this.post_path = post_path; // old_post_path
+    this.static_path = old_static_path;
+    this.post_path = old_post_path; // old_post_path
   }
 });
 

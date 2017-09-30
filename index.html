@@ -65,15 +65,24 @@
       <div class="step" v-show="step == 2">
 
           <div class="label-margin"> {{ server_size }}U mesh is available in partial or full coverage options </div> 
-          <el-row :gutter="10" class="asset-radio">
+          <el-row :gutter="25" class="asset-radio">
             <el-col :sm="12" :lg="8">
-              <el-radio class="" v-model="mesh_val" :label="server_size + 'u-circle'"> <img :src="static_path + server_size + 'u-circle.svg'" crossorigin='anonymous' style="width: 250px;" alt=""> </el-radio>
+              <el-radio class="" v-model="mesh_val" :label="server_size + 'u-circle'"> 
+                <img :src="static_path + server_size + 'u-circle.svg'" crossorigin='anonymous' style="width: 250px;" alt="">
+                <div style="text-align: center;"> Circle Pattern </div>
+              </el-radio>
             </el-col>
             <el-col :sm="12" :lg="8">
-              <el-radio class="" v-model="mesh_val" :label="server_size + 'u-hex'"> <img :src="static_path + server_size + 'u-hex.svg'" crossorigin='anonymous' style="width: 250px;" alt=""> </el-radio>
+              <el-radio class="" v-model="mesh_val" :label="server_size + 'u-hex'">
+                <img :src="static_path + server_size + 'u-hex.svg'" crossorigin='anonymous' style="width: 250px;" alt="">
+                <div style="text-align: center;"> Hex Pattern </div>
+              </el-radio>
             </el-col>
             <el-col :sm="12" :lg="8">
-              <el-radio class="" v-model="mesh_val" :label="server_size + 'u-square'"> <img :src="static_path + server_size + 'u-square.svg'" crossorigin='anonymous' style="width: 250px;" alt=""> </el-radio>
+              <el-radio class="" v-model="mesh_val" :label="server_size + 'u-square'">
+                <img :src="static_path + server_size + 'u-square.svg'" crossorigin='anonymous' style="width: 250px;" alt="">
+                <div style="text-align: center;"> Square Pattern </div>
+              </el-radio>
             </el-col>
             <el-col :sm="12" :lg="24">
               <el-radio class="" v-model="mesh_val" label="none"> No Mesh </el-radio>
@@ -134,7 +143,7 @@
           </el-row>
 
           <div class="step__footer">
-            <el-button icon="close" class"btn btn-primary btn-sm" @click="start_over()"> Start Over </el-button>
+            <el-button icon="close" class="btn btn-primary btn-sm" @click="start_over()"> Start Over </el-button>
           </div>
 
       </div>
