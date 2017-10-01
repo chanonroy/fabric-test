@@ -13861,14 +13861,14 @@ function object_prevent_overfill(canvas, radius) {
                 var boundingRect = obj.getBoundingRect(true);
 
                 var max_top = radius;
-                var max_bot = canvas.height - boundingRect.height - radius;
+                var max_bot = canvas.height - boundingRect.height;
                 var max_left = radius;
                 var max_right = canvas.width - boundingRect.width - radius;
 
                 if (boundingRect.top < max_top || boundingRect.left < max_left || boundingRect.top > max_bot || boundingRect.left > max_right) {
 
                         obj.scaleToWidth(canvas.width / 2);
-                        obj.scaleToHeight(canvas.height / 2);
+                        // obj.scaleToHeight(canvas.height / 2);
                         canvas.centerObject(obj);
                         obj.setCoords();
                         canvas.setActiveObject(obj);
@@ -61313,8 +61313,8 @@ var app = new _vue2.default({
 
     badge_val: '', // { String } - value indicating type of badge from select
     badge_color: _default_colors.defaultColors, // { Object } - color object used for the vue color sliders
-    badge_color_input: '#AFAFB4', // { String } - hex for input
-    badge_color_default: '#AFAFB4',
+    badge_color_input: '#FFFFFF', // { String } - hex for input
+    badge_color_default: '#FFFFFF',
 
     server_size: 2, // { Number } - 0 unassigned, 1 for 1U, 2 for 2U
 
@@ -61489,35 +61489,35 @@ var app = new _vue2.default({
 
       // badge types: 'circle', 'square', 'rectangle', 'racetrack', 'oval', 'none'
       if (val == 'circle') {
-        this.setup_logo_canvas(150, 150, 25);
+        this.setup_logo_canvas(150, 150, 0); // 25
         custom_props = {
           rx: 150
         };
       }
 
       if (val == 'square') {
-        this.setup_logo_canvas(150, 150, 5);
+        this.setup_logo_canvas(150, 150, 0); // 5
         custom_props = {
           rx: 10
         };
       }
 
       if (val == 'rectangle') {
-        this.setup_logo_canvas(150, 300, 5);
+        this.setup_logo_canvas(150, 300, 0); // 5
         custom_props = {
           rx: 15
         };
       }
 
       if (val == 'racetrack') {
-        this.setup_logo_canvas(150, 350, 15);
+        this.setup_logo_canvas(150, 350, 0); // 15
         custom_props = {
           rx: 75
         };
       }
 
       if (val == 'oval') {
-        this.setup_logo_canvas(150, 350, 20);
+        this.setup_logo_canvas(150, 350, 0); // 20
         custom_props = {
           rx: 250
         };
@@ -61527,14 +61527,16 @@ var app = new _vue2.default({
         fill: this.badge_color_input,
         left: 0,
         top: 0,
-        width: this.logo_canvas.width,
-        height: this.logo_canvas.height,
+        width: this.logo_canvas.width - 2,
+        height: this.logo_canvas.height - 2,
         selectable: false,
         hasControls: false,
         lockRotation: true,
         lockScalingX: true,
         lockScalingY: true,
         hasBorders: false,
+        stroke: '#adadad',
+        strokeWidth: 2,
         hoverCursor: 'default'
       };
 
@@ -61597,7 +61599,7 @@ var app = new _vue2.default({
           'left': this.badge ? this.badge.left : '', // { Float }
           'canvas_height': this.badge ? this.canvas.height : '', // { Number }
           'canvas_width': this.badge ? this.canvas.width : '', // { Number }
-          'badge_color': this.badge ? this.mesh_color_input : '', // { String } - #414645
+          'badge_color': this.badge ? this.badge_color_input : '', // { String } - #414645
           'mesh_color': this.mesh_color_input,
           'representation': this.canvas_img, // { String } - #414645
           'frame_color': this.frame_color_input // { String } - #414645
@@ -61627,7 +61629,7 @@ var app = new _vue2.default({
           'left': this.badge ? this.badge.left : '', // { Float }
           'canvas_height': this.badge ? this.canvas.height : '', // { Number }
           'canvas_width': this.badge ? this.canvas.width : '', // { Number }
-          'badge_color': this.badge ? this.mesh_color_input : '', // { String } - #414645
+          'badge_color': this.badge ? this.badge_color_input : '', // { String } - #414645
           'mesh_color': this.mesh_color_input, // { String } - #414645
           'frame_color': this.frame_color_input,
           'representation': this.canvas_img,
@@ -61806,8 +61808,8 @@ var app = new _vue2.default({
           badge_logo.set({
             lockRotation: true,
             hasRotatingPoint: false,
-            cornerColor: "#CDE6B3",
-            borderColor: "#FFFFFF"
+            cornerColor: "#adadad",
+            borderColor: "#adadad"
           });
           badge_logo.setControlsVisibility({
             mt: false,
