@@ -31,7 +31,8 @@
         border-color: $color-grey;
     }
     &:hover {
-        color: $color-green;
+        color: white;
+        background-color: $color-green;
         border-color: $color-green;
     }
 }

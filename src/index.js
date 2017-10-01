@@ -283,14 +283,14 @@ var app = new Vue({
       }
       
       if (val == 'racetrack') {
-        this.setup_logo_canvas(150, 350, 25);
+        this.setup_logo_canvas(150, 350, 15);
         custom_props = {
           rx: 75
         };
       }
 
       if (val == 'oval') {
-        this.setup_logo_canvas(150, 350, 25);
+        this.setup_logo_canvas(150, 350, 20);
         custom_props = {
           rx: 250
         };

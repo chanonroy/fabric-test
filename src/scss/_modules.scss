@@ -159,7 +159,7 @@
                 }
 
                 @media screen and (max-width: 768px) {
-                    top: 73px;
+                    top: 71px;
                     left: 55px;
                 }
             }
@@ -216,6 +216,9 @@
     margin-bottom: 20px;
     .vc-slider {
         width: 78%;
+        @media screen and (max-width: 992px) {
+            width: 50%;
+        }
     }
 
     &__clear {
