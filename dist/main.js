@@ -13822,59 +13822,59 @@ var defaultColors = exports.defaultColors = {
 
 
 Object.defineProperty(exports, "__esModule", {
-        value: true
+    value: true
 });
 exports.object_prevent_overfill = object_prevent_overfill;
 function object_prevent_overfill(canvas, radius) {
 
-        canvas.on('object:moving', function (e) {
-                var obj = e.target;
-                obj.setCoords();
+    canvas.on('object:moving', function (e) {
+        var obj = e.target;
+        obj.setCoords();
 
-                var boundingRect = obj.getBoundingRect(); // height, width
+        var boundingRect = obj.getBoundingRect(); // height, width
 
-                var max_top = radius;
-                var max_bot = canvas.height - boundingRect.height - radius;
-                var max_left = radius;
-                var max_right = canvas.width - boundingRect.width - radius;
+        var max_top = radius;
+        var max_bot = canvas.height - boundingRect.height - radius;
+        var max_left = radius;
+        var max_right = canvas.width - boundingRect.width - radius;
 
-                if (boundingRect.top < max_top) {
-                        obj.top = max_top;
-                }
+        if (boundingRect.top < max_top) {
+            obj.top = max_top;
+        }
 
-                if (boundingRect.left < max_left) {
-                        obj.left = max_left;
-                }
+        if (boundingRect.left < max_left) {
+            obj.left = max_left;
+        }
 
-                if (boundingRect.top > max_bot) {
-                        obj.top = max_bot;
-                }
+        if (boundingRect.top > max_bot) {
+            obj.top = max_bot;
+        }
 
-                if (boundingRect.left > max_right) {
-                        obj.left = max_right;
-                }
-        });
+        if (boundingRect.left > max_right) {
+            obj.left = max_right;
+        }
+    });
 
-        canvas.on('object:modified', function (options) {
+    canvas.on('object:modified', function (options) {
 
-                var obj = options.target;
-                var boundingRect = obj.getBoundingRect(true);
+        var obj = options.target;
+        var boundingRect = obj.getBoundingRect(true);
 
-                var max_top = radius;
-                var max_bot = canvas.height - boundingRect.height;
-                var max_left = radius;
-                var max_right = canvas.width - boundingRect.width - radius;
+        var max_top = radius;
+        var max_bot = canvas.height - boundingRect.height;
+        var max_left = radius;
+        var max_right = canvas.width - boundingRect.width - radius;
 
-                if (boundingRect.top < max_top || boundingRect.left < max_left || boundingRect.top > max_bot || boundingRect.left > max_right) {
+        if (boundingRect.top < max_top || boundingRect.left < max_left || boundingRect.top > max_bot || boundingRect.left > max_right) {
 
-                        obj.scaleToWidth(canvas.width / 2);
-                        // obj.scaleToHeight(canvas.height / 2);
-                        canvas.centerObject(obj);
-                        obj.setCoords();
-                        canvas.setActiveObject(obj);
-                        canvas.renderAll();
-                }
-        });
+            obj.scaleToWidth(canvas.width / 2);
+            // obj.scaleToHeight(canvas.height / 2);
+            canvas.centerObject(obj);
+            obj.setCoords();
+            canvas.setActiveObject(obj);
+            canvas.renderAll();
+        }
+    });
 }
 
 /***/ }),
@@ -61310,6 +61310,7 @@ var app = new _vue2.default({
     mesh_color: _default_colors.defaultColors, // { Object } - color object used for the vue color sliders
     mesh_color_input: '#FFFFFF', // { String } - hex for input
     mesh_color_default: '#FFFFFF',
+    mesh_coverage: 'full',
 
     badge_val: '', // { String } - value indicating type of badge from select
     badge_color: _default_colors.defaultColors, // { Object } - color object used for the vue color sliders
@@ -61558,6 +61559,9 @@ var app = new _vue2.default({
     },
     server_size: function server_size(val) {
       this.mesh_val = 'none';
+      if (val == 1) {
+        this.server_size = 'full';
+      }
     },
     step: function step(val) {
 
@@ -61602,7 +61606,8 @@ var app = new _vue2.default({
           'badge_color': this.badge ? this.badge_color_input : '', // { String } - #414645
           'mesh_color': this.mesh_color_input,
           'representation': this.canvas_img, // { String } - #414645
-          'frame_color': this.frame_color_input // { String } - #414645
+          'frame_color': this.frame_color_input, // { String } - #414645
+          'mesh_coverage': this.mesh_coverage // { String } - 'full' or 'partial'
 
 
           // AJAX HERE
@@ -61633,7 +61638,8 @@ var app = new _vue2.default({
           'mesh_color': this.mesh_color_input, // { String } - #414645
           'frame_color': this.frame_color_input,
           'representation': this.canvas_img,
-          'get_pdf': ''
+          'get_pdf': '',
+          'mesh_coverage': this.mesh_coverage // { String } - 'full' or 'partial'
 
           // AJAX HERE
         };_axios2.default.post('/shopping-cart/add/', payload).then(function (response) {

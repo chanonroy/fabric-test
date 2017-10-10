@@ -75,6 +75,7 @@ var app = new Vue({
     mesh_color: defaultColors,    // { Object } - color object used for the vue color sliders
     mesh_color_input: '#FFFFFF',  // { String } - hex for input
     mesh_color_default: '#FFFFFF',
+    mesh_coverage: 'full',
 
     badge_val: '',                // { String } - value indicating type of badge from select
     badge_color: defaultColors,   // { Object } - color object used for the vue color sliders
@@ -331,6 +332,9 @@ var app = new Vue({
     },
     server_size(val) {
       this.mesh_val = 'none';
+      if (val == 1) {
+        this.server_size = 'full';
+      }
     },
     step(val) {
 
@@ -376,7 +380,8 @@ var app = new Vue({
           'badge_color': this.badge ? this.badge_color_input : '',                     // { String } - #414645
           'mesh_color': this.mesh_color_input,
           'representation': this.canvas_img,                                        // { String } - #414645
-          'frame_color': this.frame_color_input                                       // { String } - #414645
+          'frame_color': this.frame_color_input,                                       // { String } - #414645
+          'mesh_coverage': this.mesh_coverage                                         // { String } - 'full' or 'partial'
         }
 
         // AJAX HERE
@@ -409,7 +414,9 @@ var app = new Vue({
           'mesh_color': this.mesh_color_input,                                        // { String } - #414645
           'frame_color': this.frame_color_input,
           'representation': this.canvas_img,
-          'get_pdf': ''
+          'get_pdf': '',
+          'mesh_coverage': this.mesh_coverage                                         // { String } - 'full' or 'partial'
+          
         }
 
         // AJAX HERE

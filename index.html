@@ -64,7 +64,16 @@
       <!-- Add Mesh -->
       <div class="step" v-show="step == 2">
 
-          <div class="label-margin"> {{ server_size }}U mesh is available in partial or full coverage options </div> 
+          <div v-if="server_size == 2">
+            <div class="label-margin">
+              2U mesh is available in partial or full coverage options
+            </div>
+            <div class="label-margin">
+              <el-radio v-model="mesh_coverage" label="full">Full</el-radio>
+              <el-radio v-model="mesh_coverage" label="partial">Partial</el-radio>
+            </div>
+          </div>
+          
           <el-row :gutter="25" class="asset-radio">
             <el-col :sm="12" :lg="8">
               <el-radio class="" v-model="mesh_val" :label="server_size + 'u-circle'"> 
