@@ -384,12 +384,14 @@ var app = new Vue({
           'mesh_coverage': this.mesh_coverage                                         // { String } - 'full' or 'partial'
         }
 
+        var app = this;
+
         // AJAX HERE
         axios.post('/shopping-cart/add/', payload).then(function(response) { 
           console.log(response); 
           top.window.location.href='/shopping-cart/show/';
         }).catch(function(error) { 
-          this.$message.error('Server error'); 
+          app.$message.error('Server error'); 
         });
 
       }
@@ -419,6 +421,8 @@ var app = new Vue({
           
         }
 
+        var app = this;
+
         // AJAX HERE
         axios.post('/shopping-cart/add/', payload).then(function(response) { 
           var win = window.open(response.data, '_blank');
@@ -430,7 +434,7 @@ var app = new Vue({
                 alert('Please allow popups for this website');
             }
         }).catch(function(error) { 
-          this.$message.error('Server error'); 
+          app.$message.error('Server error'); 
         });
 
       }
@@ -570,9 +574,11 @@ var app = new Vue({
     beforeUpload(file) {
       // Validation for file uploading
 
+      var app = this;
+
       const isSVG = file.type === 'image/svg+xml';
       if (!isSVG) {
-        this.$message.warning('Logo should be in .svg format');
+        app.$message.warning('Logo should be in .svg format');
         return false;
       }
     },
