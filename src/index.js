@@ -333,7 +333,7 @@ var app = new Vue({
     server_size(val) {
       this.mesh_val = 'none';
       if (val == 1) {
-        this.server_size = 'full';
+        this.mesh_coverage = 'full';
       }
     },
     step(val) {
