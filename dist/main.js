@@ -61311,6 +61311,7 @@ var app = new _vue2.default({
     mesh_color_input: '#FFFFFF', // { String } - hex for input
     mesh_color_default: '#FFFFFF',
     mesh_coverage: 'full',
+    mesh_size: 2,
 
     badge_val: '', // { String } - value indicating type of badge from select
     badge_color: _default_colors.defaultColors, // { Object } - color object used for the vue color sliders
@@ -61446,7 +61447,16 @@ var app = new _vue2.default({
         return;
       }
 
-      // TODO: FIX THIS SHIT
+      if (app.server_size == 2) {
+
+        if (val == "partial") {
+          app.mesh_size = 1;
+          app.mesh_val = app.mesh_val.replace("2", "1");
+        } else {
+          app.mesh_size = 2;
+          app.mesh_val = app.mesh_val.replace("1", "2");
+        }
+      }
     },
     mesh_val: function mesh_val(val) {
       var app = this;
@@ -61577,8 +61587,12 @@ var app = new _vue2.default({
     },
     server_size: function server_size(val) {
       this.mesh_val = 'none';
-      if (val == 1) {
-        this.mesh_coverage = 'full';
+      this.mesh_coverage = 'full';
+
+      if (val == 2) {
+        this.mesh_size = 2;
+      } else {
+        this.mesh_size = 1;
       }
     },
     step: function step(val) {
