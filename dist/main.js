@@ -13822,59 +13822,59 @@ var defaultColors = exports.defaultColors = {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+        value: true
 });
 exports.object_prevent_overfill = object_prevent_overfill;
 function object_prevent_overfill(canvas, radius) {
 
-    canvas.on('object:moving', function (e) {
-        var obj = e.target;
-        obj.setCoords();
+        canvas.on('object:moving', function (e) {
+                var obj = e.target;
+                obj.setCoords();
 
-        var boundingRect = obj.getBoundingRect(); // height, width
+                var boundingRect = obj.getBoundingRect(); // height, width
 
-        var max_top = radius;
-        var max_bot = canvas.height - boundingRect.height - radius;
-        var max_left = radius;
-        var max_right = canvas.width - boundingRect.width - radius;
+                var max_top = radius;
+                var max_bot = canvas.height - boundingRect.height - radius;
+                var max_left = radius;
+                var max_right = canvas.width - boundingRect.width - radius;
 
-        if (boundingRect.top < max_top) {
-            obj.top = max_top;
-        }
+                if (boundingRect.top < max_top) {
+                        obj.top = max_top;
+                }
 
-        if (boundingRect.left < max_left) {
-            obj.left = max_left;
-        }
+                if (boundingRect.left < max_left) {
+                        obj.left = max_left;
+                }
 
-        if (boundingRect.top > max_bot) {
-            obj.top = max_bot;
-        }
+                if (boundingRect.top > max_bot) {
+                        obj.top = max_bot;
+                }
 
-        if (boundingRect.left > max_right) {
-            obj.left = max_right;
-        }
-    });
+                if (boundingRect.left > max_right) {
+                        obj.left = max_right;
+                }
+        });
 
-    canvas.on('object:modified', function (options) {
+        canvas.on('object:modified', function (options) {
 
-        var obj = options.target;
-        var boundingRect = obj.getBoundingRect(true);
+                var obj = options.target;
+                var boundingRect = obj.getBoundingRect(true);
 
-        var max_top = radius;
-        var max_bot = canvas.height - boundingRect.height;
-        var max_left = radius;
-        var max_right = canvas.width - boundingRect.width - radius;
+                var max_top = radius;
+                var max_bot = canvas.height - boundingRect.height;
+                var max_left = radius;
+                var max_right = canvas.width - boundingRect.width - radius;
 
-        if (boundingRect.top < max_top || boundingRect.left < max_left || boundingRect.top > max_bot || boundingRect.left > max_right) {
+                if (boundingRect.top < max_top || boundingRect.left < max_left || boundingRect.top > max_bot || boundingRect.left > max_right) {
 
-            obj.scaleToWidth(canvas.width / 2);
-            // obj.scaleToHeight(canvas.height / 2);
-            canvas.centerObject(obj);
-            obj.setCoords();
-            canvas.setActiveObject(obj);
-            canvas.renderAll();
-        }
-    });
+                        obj.scaleToWidth(canvas.width / 2);
+                        // obj.scaleToHeight(canvas.height / 2);
+                        canvas.centerObject(obj);
+                        obj.setCoords();
+                        canvas.setActiveObject(obj);
+                        canvas.renderAll();
+                }
+        });
 }
 
 /***/ }),
@@ -61311,6 +61311,7 @@ var app = new _vue2.default({
     mesh_color_input: '#FFFFFF', // { String } - hex for input
     mesh_color_default: '#FFFFFF',
     mesh_coverage: 'full',
+    mesh_size: 2,
 
     badge_val: '', // { String } - value indicating type of badge from select
     badge_color: _default_colors.defaultColors, // { Object } - color object used for the vue color sliders
@@ -61384,6 +61385,10 @@ var app = new _vue2.default({
 
       app.server_size = Number(val[0]); // 1 or 2
 
+      if (app.server_size == 1) {
+        app.mesh_coverage = 'full';
+      }
+
       app.canvas.setHeight(app.canvas_size[app.server_size].height);
       app.canvas.setWidth(app.canvas_size[app.server_size].width);
       app.canvas.renderAll();
@@ -61435,6 +61440,24 @@ var app = new _vue2.default({
       this.mesh_color.hex = this.mesh_color_input;
       this.canvas.renderAll();
     },
+    mesh_coverage: function mesh_coverage(val) {
+      var app = this;
+
+      if (!app.mesh_val) {
+        return;
+      }
+
+      if (app.server_size == 2) {
+
+        if (val == "partial") {
+          app.mesh_size = 1;
+          app.mesh_val = app.mesh_val.replace("2", "1");
+        } else {
+          app.mesh_size = 2;
+          app.mesh_val = app.mesh_val.replace("1", "2");
+        }
+      }
+    },
     mesh_val: function mesh_val(val) {
       var app = this;
 
@@ -61442,6 +61465,11 @@ var app = new _vue2.default({
         app.canvas.remove(app.mesh);
         app.mesh = '';
         return;
+      }
+
+      if (app.mesh_coverage == 'partial') {
+        // Partial coverage meshes should use 1U covers
+        val = val.replace("2", "1");
       }
 
       if (app.mesh_cache[val] !== '') {
@@ -61559,8 +61587,12 @@ var app = new _vue2.default({
     },
     server_size: function server_size(val) {
       this.mesh_val = 'none';
-      if (val == 1) {
-        this.server_size = 'full';
+      this.mesh_coverage = 'full';
+
+      if (val == 2) {
+        this.mesh_size = 2;
+      } else {
+        this.mesh_size = 1;
       }
     },
     step: function step(val) {
@@ -61608,14 +61640,16 @@ var app = new _vue2.default({
           'representation': this.canvas_img, // { String } - #414645
           'frame_color': this.frame_color_input, // { String } - #414645
           'mesh_coverage': this.mesh_coverage // { String } - 'full' or 'partial'
+        };
 
+        var app = this;
 
-          // AJAX HERE
-        };_axios2.default.post('/shopping-cart/add/', payload).then(function (response) {
+        // AJAX HERE
+        _axios2.default.post('/shopping-cart/add/', payload).then(function (response) {
           console.log(response);
           top.window.location.href = '/shopping-cart/show/';
         }).catch(function (error) {
-          this.$message.error('Server error');
+          app.$message.error('Server error');
         });
       }
     },
@@ -61641,8 +61675,12 @@ var app = new _vue2.default({
           'get_pdf': '',
           'mesh_coverage': this.mesh_coverage // { String } - 'full' or 'partial'
 
-          // AJAX HERE
-        };_axios2.default.post('/shopping-cart/add/', payload).then(function (response) {
+        };
+
+        var app = this;
+
+        // AJAX HERE
+        _axios2.default.post('/shopping-cart/add/', payload).then(function (response) {
           var win = window.open(response.data, '_blank');
           if (win) {
             //Browser has allowed it to be opened
@@ -61652,7 +61690,7 @@ var app = new _vue2.default({
             alert('Please allow popups for this website');
           }
         }).catch(function (error) {
-          this.$message.error('Server error');
+          app.$message.error('Server error');
         });
       }
     },
@@ -61688,19 +61726,53 @@ var app = new _vue2.default({
         app.mesh.item(i).set('fill', app.mesh_color_input);
       }
 
+      // Configure Scaling Based on Selections
+      var mesh_props = {
+        "full": {
+          "1": {
+            "scaleX": 0.06,
+            "scaleY": 0.1,
+            "top": 5,
+            "left": 35
+          },
+          "2": { // done
+            "scaleX": 0.07,
+            "scaleY": 0.07,
+            "top": 8,
+            "left": 45
+          }
+        },
+        "partial": {
+          "1": {
+            "scaleX": 0.07,
+            "scaleY": 0.07,
+            "top": '',
+            "left": ''
+          },
+          "2": { // done
+            "scaleX": 0.08,
+            "scaleY": 0.5,
+            "top": 30,
+            "left": 50
+          }
+        }
+      };
+
       var scale_height = app.server_size == 2 ? app.canvas.height / app.mesh.height + 0.025 : app.canvas.height / app.mesh.height / 1.3;
       var top_value = app.server_size == 2 ? -5 : 5;
+      var left_value = app.server_size == 2 ? 40 : 0;
+      var scale_factor = app.server_size == 2 ? 0.07 : 0;
 
       // Set properties of the mesh
       app.mesh.set({
         selectable: false,
         hasControls: false,
         hoverCursor: 'default',
-        top: top_value,
-        left: -5,
+        top: mesh_props[app.mesh_coverage][app.server_size]["top"],
+        left: mesh_props[app.mesh_coverage][app.server_size]["left"],
         width: app.mesh.width,
-        scaleX: app.canvas.width / app.mesh.width,
-        scaleY: scale_height
+        scaleX: app.canvas.width / app.mesh.width - mesh_props[app.mesh_coverage][app.server_size]["scaleX"],
+        scaleY: app.canvas.height / app.mesh.height - mesh_props[app.mesh_coverage][app.server_size]["scaleY"]
       });
 
       app.clean_main_canvas();
@@ -61790,9 +61862,11 @@ var app = new _vue2.default({
     beforeUpload: function beforeUpload(file) {
       // Validation for file uploading
 
+      var app = this;
+
       var isSVG = file.type === 'image/svg+xml';
       if (!isSVG) {
-        this.$message.warning('Logo should be in .svg format');
+        app.$message.warning('Logo should be in .svg format');
         return false;
       }
     },
