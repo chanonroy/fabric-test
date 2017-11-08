@@ -8,6 +8,8 @@ import { object_prevent_overfill } from './js/utils/object_prevent_overfill'
 import { server_prevent_overfill } from './js/utils/server_prevent_overfill'
 import './scss/main.scss';
 
+var fabric = require('fabric').fabric;
+
 Vue.use(ElementUI);
 
 var app = new Vue({
