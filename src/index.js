@@ -189,20 +189,20 @@ var app = new Vue({
           app.badge.setCoords();
           app.canvas.setActiveObject(app.badge);
 
+          let scaling = app.server_size == 2 ? 0.23 : 0.2;
+          let height_fix = app.server_size == 2 ? 2 : 0;
+          app.badge.set({ top: app.badge.top + height_fix });
+          let right_val = app.server_size == 2 ? 65 : 70;
+
           if (app.badge_position == 'center') {
-            // nothing
+            app.badge.set({ left: app.badge.left - 5 });
           } else if (app.badge_position == 'left') {
-            app.badge.set({ left: 55 });
+            app.badge.set({ left: app.server_size == 2 ? 55 : 60 });
           } else if (app.badge_position == 'right') {
-            app.badge.set({ left: app.canvas.width - (app.badge.width * scaling + 65) });
+            app.badge.set({ left: app.canvas.width - (app.badge.width * scaling + right_val) });
           }
 
           app.clean_main_canvas();
-          app.canvas.renderAll();
-
-          app.canvas.centerObject(current_badge);
-          current_badge.setCoords();
-          app.canvas.setActiveObject(current_badge);
         }
 
         app.canvas.renderAll();
@@ -634,12 +634,17 @@ var app = new Vue({
         app.badge.setCoords();
         app.canvas.setActiveObject(app.badge);
 
+        let height_fix = app.server_size == 2 ? 2 : 0;
+        app.badge.set({ top: app.badge.top + height_fix });
+
+        let right_val = app.server_size == 2 ? 65 : 70;
+
         if (app.badge_position == 'center') {
-          // nothing
+          app.badge.set({ left: app.badge.left - 5 });
         } else if (app.badge_position == 'left') {
-          app.badge.set({ left: 55 });
+          app.badge.set({ left: app.server_size == 2 ? 55 : 60 });
         } else if (app.badge_position == 'right') {
-          app.badge.set({ left: app.canvas.width - (app.badge.width * scaling + 65) });
+          app.badge.set({ left: app.canvas.width - (app.badge.width * scaling + right_val) });
         }
 
         app.clean_main_canvas();
