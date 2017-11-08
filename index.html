@@ -146,10 +146,12 @@
                     </div>
                   </el-col>
 
-                  <h2 class="label-margin"> Badge Position </h2>
-                  <el-col :lg="8"><el-radio class="badge" v-model="badge_position" label="left"> Left </el-radio></el-col>
-                  <el-col :lg="8"><el-radio class="badge" v-model="badge_position" label="center"> Center </el-radio></el-col>
-                  <el-col :lg="8"><el-radio class="badge" v-model="badge_position" label="right"> Right </el-radio></el-col>
+                  <div v-if="badge_photo">
+                    <h2 class="label-margin"> Badge Position </h2>
+                    <el-col :lg="8"><el-radio class="badge" v-model="badge_position" label="left"> Left </el-radio></el-col>
+                    <el-col :lg="8"><el-radio class="badge" v-model="badge_position" label="center"> Center </el-radio></el-col>
+                    <el-col :lg="8"><el-radio class="badge" v-model="badge_position" label="right"> Right </el-radio></el-col>
+                  </div>
 
               </div>
 
@@ -227,7 +229,7 @@
 
       </div>
 
-      <div id="preview-container" :class="'preview-container ' + size_label" v-show="step !== 3">
+      <div id="preview-container" :class="'preview-container ' + size_label">
         <div v-if="server_size == 1">
           <img :src="static_path + '1u-server.png'" crossorigin='anonymous' alt="server">
         </div>
@@ -236,7 +238,6 @@
         </div>
         <canvas id="c"></canvas>
         <div class="preview-buttons">
-            <div v-show="badge && badge_val !== 'none'" style="margin-bottom: 30px;"> Position your logo by dragging it</div>
             <div v-if="!selections_done"> Please make all the selections </div>
             <div style="margin-top: 20px;"> <el-button @click="prepare_payload('finish')" class="btn btn-primary btn-sm" :disabled="!selections_done"> Place Your Order </el-button> </div>
             <div style="margin-top: 20px;"> <el-button @click="prepare_payload('pdf')" class="btn btn-primary btn-sm" :disabled="!selections_done"> Download PDF </el-button> </div>

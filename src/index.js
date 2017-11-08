@@ -172,7 +172,7 @@ var app = new Vue({
           selectable: false,
           hasControls: false,
           hoverCursor: 'default',
-          top: -5,
+          top: -3,
           left: -5,
           width: app.frame.width,
           scaleX: app.canvas.width / app.frame.width,
@@ -184,6 +184,21 @@ var app = new Vue({
         if (app.badge) {
           var badge_index = findIndex(app.canvas._objects, [ 'selectable', true ]);
           var current_badge = app.canvas._objects[badge_index];
+          
+          app.canvas.centerObject(app.badge);
+          app.badge.setCoords();
+          app.canvas.setActiveObject(app.badge);
+
+          if (app.badge_position == 'center') {
+            // nothing
+          } else if (app.badge_position == 'left') {
+            app.badge.set({ left: 55 });
+          } else if (app.badge_position == 'right') {
+            app.badge.set({ left: app.canvas.width - (app.badge.width * scaling + 65) });
+          }
+
+          app.clean_main_canvas();
+          app.canvas.renderAll();
 
           app.canvas.centerObject(current_badge);
           current_badge.setCoords();
@@ -269,6 +284,9 @@ var app = new Vue({
       } // - else
 
     },
+    badge_position() {
+      this.save_badge();
+    },
     badge_color() {
       this.badge_color_input = this.badge_color.hex;
     },
@@ -283,6 +301,7 @@ var app = new Vue({
       var custom_props = {};
 
       if (val == 'none') {
+        app.badge_position = 'center';
         app.canvas.remove(app.badge);
         app.badge = '';
         return;
@@ -360,6 +379,8 @@ var app = new Vue({
         app.logo_canvas.setActiveObject(app.badge_photo);
         app.logo_canvas.renderAll();
       }
+
+      app.save_badge();
     },
     server_size(val) {
       this.mesh_val = 'none';
@@ -373,9 +394,9 @@ var app = new Vue({
     },
     step(val) {
 
-      if (val == 1 || val == 2 || val == 4) {
-        this.save_badge();
-      }
+      // if (val == 1 || val == 2 || val == 4) {
+      //   this.save_badge();
+      // }
 
     }
   },
@@ -476,6 +497,8 @@ var app = new Vue({
 
     },
     setup_logo_canvas(height, width, radius) {
+      let app = this;
+
       // Image Upload and Badge Selection Canvas
       this.logo_canvas = new fabric.Canvas('logo_canvas');
       this.logo_canvas.backgroundColor="rgba(0, 0, 0, 0)";
@@ -483,6 +506,10 @@ var app = new Vue({
       this.logo_canvas.setWidth(width);
       this.logo_canvas.preserveObjectStacking = true;
       object_prevent_overfill(this.logo_canvas, radius);
+      this.logo_canvas.on('object:modified', function (e) {
+        app.save_badge();
+      });
+
     },
     clean_main_canvas() {
       this.canvas.remove(this.mesh);
@@ -513,13 +540,13 @@ var app = new Vue({
           "1": {
             "scaleX": 0.06,
             "scaleY": 0.1,
-            "top": 5,
+            "top": 7,
             "left": 35,
           },
           "2": { // done
-            "scaleX": 0.07,
-            "scaleY": 0.07,
-            "top": 8,
+            "scaleX": 0.070,
+            "scaleY": 0.075,
+            "top": 11,
             "left": 45,
           }
         },
@@ -531,9 +558,9 @@ var app = new Vue({
             "left": '',
           },
           "2": { // done
-            "scaleX": 0.08,
+            "scaleX": 0.075,
             "scaleY": 0.5,
-            "top": 30,
+            "top": 34,
             "left": 50,
           }
         }
@@ -582,48 +609,40 @@ var app = new Vue({
 
       // Async load of the badge clone
       new fabric.loadSVGFromString(badge_string, function(objects, options) {
-        
-        var badge_exists = false;
-        var badge_top = 0;
-        var badge_left = 0;
-
-        if (app.badge) {
-          badge_exists = true;
-          var badge_index = findIndex(app.canvas._objects, [ 'selectable', true ]);
-          var badge_old = app.canvas._objects[badge_index];
-          badge_top = badge_old.top;
-          badge_left = badge_old.left;
-        }
 
         app.canvas.remove(app.badge);
         app.badge = fabric.util.groupSVGElements(objects, options);
 
+        let scaling = app.server_size == 2 ? 0.23 : 0.2;
+
         app.badge.set({
-          scaleX: 0.3,
-          scaleY: 0.3,
+          scaleX: scaling,
+          scaleY: scaling,
           selectable: true,
           hasControls: false,
           hasBorders: false,
           lockRotation: true,
+          lockMovementX: true,
+          lockMovementY: true,
           lockScalingX: true,
           lockScalingY: true,
         })
 
         app.logo_canvas.renderAll();
 
-        if (badge_exists) {
-          app.badge.set({
-            top: badge_top,
-            left: badge_left
-          })
-          app.clean_main_canvas();
-        } else {
-          app.clean_main_canvas();
-          app.canvas.centerObject(app.badge);
-          app.badge.setCoords();
-          app.canvas.setActiveObject(app.badge);
+        app.canvas.centerObject(app.badge);
+        app.badge.setCoords();
+        app.canvas.setActiveObject(app.badge);
+
+        if (app.badge_position == 'center') {
+          // nothing
+        } else if (app.badge_position == 'left') {
+          app.badge.set({ left: 55 });
+        } else if (app.badge_position == 'right') {
+          app.badge.set({ left: app.canvas.width - (app.badge.width * scaling + 65) });
         }
 
+        app.clean_main_canvas();
         app.canvas.renderAll();
       });
 
@@ -686,6 +705,8 @@ var app = new Vue({
             app.badge_photo.setCoords();
             app.logo_canvas.setActiveObject(app.badge_photo);
             app.logo_canvas.renderAll();
+
+            app.save_badge();
          },
          null,
          { crossOrigin: 'Anonymous' }
@@ -720,6 +741,7 @@ var app = new Vue({
     this.canvas.backgroundColor="rgba(0, 0, 0, 0)";
     this.canvas.setHeight(this.canvas_size[this.server_size].height);
     this.canvas.setWidth(this.canvas_size[this.server_size].width);
+    this.canvas.hoverCursor = 'default';
     // this.canvas.preserveObjectStacking = true;
 
     server_prevent_overfill(this.canvas);
