@@ -747,7 +747,7 @@ var app = new Vue({
     server_prevent_overfill(this.canvas);
   },
   created() {
-        this.static_path = old_static_path;
-        this.post_path = old_post_path;       // old_post_path
+        this.static_path = static_path;
+        this.post_path = post_path;       // old_post_path
   }
 })
