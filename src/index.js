@@ -82,6 +82,7 @@ var app = new Vue({
     badge_color: defaultColors,   // { Object } - color object used for the vue color sliders
     badge_color_input: '#FFFFFF', // { String } - hex for input
     badge_color_default: '#FFFFFF',
+    badge_position: 'center',     // { String } - 'left', 'center', or 'right'
 
     server_size: 2,               // { Number } - 0 unassigned, 1 for 1U, 2 for 2U
 
@@ -562,12 +563,13 @@ var app = new Vue({
     save_badge: throttle(function() {
       var app = this;
 
+      app.badge_base.set('fill', app.badge_color_input);
+      app.logo_canvas.renderAll();
+
       // If no photo, don't save it
       if (!this.badge_photo) {
         return;
       }
-
-      app.badge_base.set('fill', app.badge_color_input);
 
       // Create clones to not group the objects together
       var temp_badge_base = fabric.util.object.clone(this.badge_base);
@@ -723,7 +725,7 @@ var app = new Vue({
     server_prevent_overfill(this.canvas);
   },
   created() {
-        this.static_path = static_path;
-        this.post_path = post_path;       // old_post_path
+        this.static_path = old_static_path;
+        this.post_path = old_post_path;       // old_post_path
   }
 })

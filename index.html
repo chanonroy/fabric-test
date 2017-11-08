@@ -122,20 +122,35 @@
 
               <!-- TODO - fix url action here -->
               <div v-show="badge_val && badge_val !== 'none'">
+
                   <h2 class="label-margin"> Upload Your Logo  </h2>
-                  <div class="label-margin">
-                      <div v-if="!badge_photo">
-                        <el-upload
-                          v-if="!badge_photo"
-                          :action="post_path"
-                          :show-file-list="false"
-                          :on-success="handleUpload"
-                          :before-upload="beforeUpload">
-                          <el-button icon="picture" type="primary"> Upload Photo </el-button>
-                        </el-upload>
-                      </div>
-                      <el-button v-else class="btn btn-primary btn-sm" @click="remove_photo"> Remove Photo </el-button>
-                  </div>
+
+                  <el-row class="label-margin">
+                    <el-col :lg="8"><el-radio class="badge" v-model="badge_color_input" label="#FFFFFF"> White </el-radio></el-col>
+                    <el-col :lg="8"><el-radio class="badge" v-model="badge_color_input" label="#0e151d"> Black </el-radio></el-col>
+                  </el-row>
+
+                  <el-col :lg="24"></el-col>
+                    <div class="label-margin">
+                        <div v-if="!badge_photo">
+                          <el-upload
+                            v-if="!badge_photo"
+                            :action="post_path"
+                            :show-file-list="false"
+                            :on-success="handleUpload"
+                            :before-upload="beforeUpload">
+                            <el-button icon="picture" type="primary"> Upload Photo </el-button>
+                          </el-upload>
+                        </div>
+                        <el-button v-else class="btn btn-primary btn-sm" @click="remove_photo"> Remove Photo </el-button>
+                    </div>
+                  </el-col>
+
+                  <h2 class="label-margin"> Badge Position </h2>
+                  <el-col :lg="8"><el-radio class="badge" v-model="badge_position" label="left"> Left </el-radio></el-col>
+                  <el-col :lg="8"><el-radio class="badge" v-model="badge_position" label="center"> Center </el-radio></el-col>
+                  <el-col :lg="8"><el-radio class="badge" v-model="badge_position" label="right"> Right </el-radio></el-col>
+
               </div>
 
             </el-col>
