@@ -10,6 +10,15 @@
      <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/2.0.0-beta.4/fabric.js"></script> -->
      <script src="dist/html2canvas.js"></script>
      <link href="dist/css/main.css" rel="stylesheet">
+     <style>
+      .zoom-center{
+          text-align:center;
+      }
+      .zoom-center img{
+          border-radius:60px;
+      }
+
+    </style>
    </head>
    <body>
     <script>
@@ -63,6 +72,39 @@
 
       <!-- Add Mesh -->
       <div class="step" v-show="step == 2">
+          
+          <el-row :gutter="25" class="asset-radio">
+            <el-col :sm="12" :lg="8">
+              <el-radio class="" v-model="mesh_val" :label="mesh_size + 'u-circle'"> 
+                <div class="zoom-center">
+                  <img :src="static_path + 'circle-zoom.png'" crossorigin="anonymous" style="width:120px;text-align:center;" />
+                </div>
+                <img :src="static_path + mesh_size + 'u-circle.svg'" crossorigin='anonymous' style="width: 250px;" alt="">
+                <div style="text-align: center;"> Circle Pattern </div>
+              </el-radio>
+            </el-col>
+            <el-col :sm="12" :lg="8">
+              <el-radio class="" v-model="mesh_val" :label="mesh_size + 'u-hex'">
+                <div class="zoom-center">
+                  <img :src="static_path + 'hex-zoom.png'" crossorigin="anonymous" style="width:120px;text-align:center;" />
+                </div>
+                <img :src="static_path + mesh_size + 'u-hex.svg'" crossorigin='anonymous' style="width: 250px;" alt="">
+                <div style="text-align: center;"> Hex Pattern </div>
+              </el-radio>
+            </el-col>
+            <el-col :sm="12" :lg="8">
+              <el-radio class="" v-model="mesh_val" :label="mesh_size + 'u-square'">
+                <div class="zoom-center">
+                  <img :src="static_path + 'square-zoom.png'" crossorigin="anonymous" style="width:120px;text-align:center;" />
+                </div>
+                <img :src="static_path + mesh_size + 'u-square.svg'" crossorigin='anonymous' style="width: 250px;" alt="">
+                <div style="text-align: center;"> Square Pattern </div>
+              </el-radio>
+            </el-col>
+            <el-col :sm="12" :lg="24">
+              <el-radio class="" v-model="mesh_val" label="none"> No Mesh </el-radio>
+            </el-col>
+          </el-row>
 
           <div v-if="server_size == 2">
             <div class="label-margin">
@@ -73,30 +115,6 @@
               <el-radio v-model="mesh_coverage" label="partial">Partial</el-radio>
             </div>
           </div>
-          
-          <el-row :gutter="25" class="asset-radio">
-            <el-col :sm="12" :lg="8">
-              <el-radio class="" v-model="mesh_val" :label="mesh_size + 'u-circle'"> 
-                <img :src="static_path + mesh_size + 'u-circle.svg'" crossorigin='anonymous' style="width: 250px;" alt="">
-                <div style="text-align: center;"> Circle Pattern </div>
-              </el-radio>
-            </el-col>
-            <el-col :sm="12" :lg="8">
-              <el-radio class="" v-model="mesh_val" :label="mesh_size + 'u-hex'">
-                <img :src="static_path + mesh_size + 'u-hex.svg'" crossorigin='anonymous' style="width: 250px;" alt="">
-                <div style="text-align: center;"> Hex Pattern </div>
-              </el-radio>
-            </el-col>
-            <el-col :sm="12" :lg="8">
-              <el-radio class="" v-model="mesh_val" :label="mesh_size + 'u-square'">
-                <img :src="static_path + mesh_size + 'u-square.svg'" crossorigin='anonymous' style="width: 250px;" alt="">
-                <div style="text-align: center;"> Square Pattern </div>
-              </el-radio>
-            </el-col>
-            <el-col :sm="12" :lg="24">
-              <el-radio class="" v-model="mesh_val" label="none"> No Mesh </el-radio>
-            </el-col>
-          </el-row>
 
           <div class="step__footer">
               <el-button class="btn btn-primary btn-sm" icon="close" @click="start_over()"> Start Over </el-button>
@@ -129,22 +147,32 @@
                     <el-col :lg="8"><el-radio class="badge" v-model="badge_color_input" label="#FFFFFF"> White </el-radio></el-col>
                     <el-col :lg="8"><el-radio class="badge" v-model="badge_color_input" label="#0e151d"> Black </el-radio></el-col>
                   </el-row>
+                  
+                  <div class="label-margin">
+                      
+                    <div v-if="!badge_photo">
+                        <el-upload
+                          v-if="!badge_photo"
+                          :action="post_path"
+                          :show-file-list="false"
+                          :on-success="handleUpload"
+                          :before-upload="beforeUpload">
+                          <el-button icon="picture" class="label-margin" type="primary"> Upload Photo </el-button>
+                        </el-upload>
+                      </div>
+                      <el-button v-else class="label-margin" @click="remove_photo"> Remove Photo </el-button>
 
-                  <el-col :lg="24"></el-col>
-                    <div class="label-margin">
-                        <div v-if="!badge_photo">
-                          <el-upload
-                            v-if="!badge_photo"
-                            :action="post_path"
-                            :show-file-list="false"
-                            :on-success="handleUpload"
-                            :before-upload="beforeUpload">
-                            <el-button icon="picture" type="primary"> Upload Photo </el-button>
-                          </el-upload>
-                        </div>
-                        <el-button v-else class="btn btn-primary btn-sm" @click="remove_photo"> Remove Photo </el-button>
-                    </div>
-                  </el-col>
+                      <div class="label-margin">
+                        <div> <b>Logo must be in .svg format</b>. </div>
+                        <div> Use the links below to convert your file. </div>
+                      </div>
+
+                      <div style="margin-top: 5px">
+                        <el-button><a href="https://cloudconvert.com/eps-to-svg"> .eps to .svg </a></el-button>
+                        <el-button><a href="https://cloudconvert.com/ai-to-svg"> .ai to .svg </a></el-button>
+                      </div>
+
+                  </div>
 
                   <div v-if="badge_photo">
                     <h2 class="label-margin"> Badge Position </h2>
@@ -218,6 +246,13 @@
                 <el-button class="color-input__clear btn btn-primary btn-sm" @click="reset_color('badge')"> X </el-button>
                 <slider-picker v-model="badge_color" />
               </div>
+            </div>
+          </el-col>
+
+          <el-col :lg="24" style="margin-top: 10px">
+            <div class="label-margin">
+              Warning: The colors displayed on your computer screen are an approximation and may vary from the actual final product.
+              MBX Systems is not responsible for color variations between your screen and the final product.
             </div>
           </el-col>
 

@@ -439,7 +439,8 @@ var app = new Vue({
           'mesh_color': this.mesh_color_input,
           'representation': this.canvas_img,                                        // { String } - #414645
           'frame_color': this.frame_color_input,                                       // { String } - #414645
-          'mesh_coverage': this.mesh_coverage                                         // { String } - 'full' or 'partial'
+          'mesh_coverage': this.mesh_coverage == 'full' ? 2 : 1,                       // { String } - 'full' or 'partial'
+          'badge_position': this.badge_position                                       // { String } - 'left', 'center', 'right'
         }
 
         var app = this;
@@ -475,7 +476,9 @@ var app = new Vue({
           'frame_color': this.frame_color_input,
           'representation': this.canvas_img,
           'get_pdf': '',
-          'mesh_coverage': this.mesh_coverage                                         // { String } - 'full' or 'partial'
+          'mesh_coverage': this.mesh_coverage == 'full' ? 2 : 1,                                        // { String } - 'full' or 'partial'
+          'badge_position': this.badge_position                                       // { String } - 'left', 'center', 'right'
+          
           
         }
 
@@ -754,7 +757,7 @@ var app = new Vue({
     server_prevent_overfill(this.canvas);
   },
   created() {
-        this.static_path = static_path;
-        this.post_path = post_path;       // old_post_path
+        this.static_path = old_static_path;
+        this.post_path = old_post_path;       // old_post_path
   }
 })
