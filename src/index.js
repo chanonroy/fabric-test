@@ -237,10 +237,12 @@ var app = new Vue({
 
         if (val == "partial") {
           app.mesh_size = 1;
-          app.mesh_val = app.mesh_val.replace("2", "1");
+          app.mesh_val = this.mesh_val.replace("2", "1");
+          app.setup_mesh_coverage();
         } else {
           app.mesh_size = 2;
-          app.mesh_val = app.mesh_val.replace("1", "2");
+          app.mesh_val = this.mesh_val.replace("1", "2");
+          app.setup_mesh_coverage();
         }
 
       }
@@ -419,6 +421,41 @@ var app = new Vue({
                   }
               }
           });
+    },
+    setup_mesh_coverage() {
+      let app = this;
+
+      let val = app.mesh_val;
+
+      if (app.mesh_coverage == 'partial') {
+        // Partial coverage meshes should use 1U covers
+        val = val.replace("2", "1");
+      }
+
+      if (app.mesh_cache[val] !== '') {
+        // Cache hit, use mesh cache
+        app.canvas.remove(app.mesh);
+        app.mesh = app.mesh_cache[val];
+        app.setup_mesh();
+      } else {
+        // Cache miss, generate mesh (2-3 seconds)
+        app.loading = true;
+        new fabric.loadSVGFromURL(app.static_path + val + '.svg', function(objects, options) {
+            app.canvas.remove(app.mesh);
+            app.mesh_cache[val] = fabric.util.groupSVGElements(objects, options);
+            app.mesh = app.mesh_cache[val];
+          
+            if (app.server_size == 2) {
+              app.mesh.set({ 
+              })
+            }
+
+            app.setup_mesh();
+          },
+          null,
+          { crossOrigin: 'Anonymous' }
+        );
+      } // - else
     },
     finish_order() {
 
